@@ -3,71 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor Executivo Cloud SaaS - c/ Painel TI</title>
+  <title>Gestor Executivo Cloud SaaS</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
-      theme: { extend: {} }
+      theme: { extend: { colors: { brand: { 500: '#22c55e' } } } }
     }
   </script>
   
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
     body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
 
-    /* Scrollbars Minimalistas */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    /* DARK MODE */
+    .dark body { background-color: #0b0f19; color: #f8fafc; }
+    .dark .glass-panel { background: #111827; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
+    .dark .glass-input { background: rgba(31, 41, 55, 0.6); border: 1px solid rgba(255,255,255,0.12); color: white; }
+    
+    /* LIGHT MODE */
+    body:not(.dark) { background-color: #f8fafc; color: #0f172a; }
+    body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    body:not(.dark) .glass-input { background: #ffffff; border: 1px solid #cbd5e1; color: #0f172a; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); }
+
+    .glass-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
     .dark ::-webkit-scrollbar-track { background: #0f172a; }
     .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     body:not(.dark) ::-webkit-scrollbar-track { background: #f1f5f9; }
     body:not(.dark) ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-    /* Campos de texto inline na tabela */
+    /* STATUS BADGES */
+    .status-CONCLUÍDO { font-weight: 700; }
+    body:not(.dark) .status-CONCLUÍDO { background-color: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .dark .status-CONCLUÍDO { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .status-EM-ANDAMENTO { font-weight: 700; }
+    body:not(.dark) .status-EM-ANDAMENTO { background-color: #fefce8; color: #ca8a04; border: 1px solid #fde047; }
+    .dark .status-EM-ANDAMENTO { background-color: rgba(234, 179, 8, 0.15); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.3); }
+
+    .status-EM-ESPERA { font-weight: 700; }
+    body:not(.dark) .status-EM-ESPERA { background-color: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+    .dark .status-EM-ESPERA { background-color: rgba(249, 115, 22, 0.15); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.3); }
+
+    .status-NÃO-HOUVE { font-weight: 700; }
+    body:not(.dark) .status-NÃO-HOUVE { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .dark .status-NÃO-HOUVE { background-color: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+
     .inline-textarea {
-      width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; resize: none; overflow: hidden; transition: all 0.2s; outline: none;
+      width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; resize: none; overflow: hidden; transition: all 0.2s;
     }
-    body:not(.dark) .inline-textarea { color: #1e293b; }
-    .dark .inline-textarea { color: #f8fafc; }
-    
-    body:not(.dark) .inline-textarea:hover { background: rgba(0,0,0,0.03); border-color: #cbd5e1; }
+    body:not(.dark) .inline-textarea { color: #334155; }
+    .dark .inline-textarea { color: #e2e8f0; }
+    body:not(.dark) .inline-textarea:hover { background: #f1f5f9; border-color: #e2e8f0; }
     .dark .inline-textarea:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-    
-    .inline-textarea:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); background: transparent; }
+    .inline-textarea:focus { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6; outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased pb-10 bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100">
+<body class="min-h-screen flex flex-col antialiased pb-10">
 
   <!-- ================= TELA DE LOGIN ================= -->
-  <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4 transition-opacity">
-    <div class="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+  <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-8 shadow-2xl relative overflow-hidden">
       <div class="text-center mb-6 relative z-10">
-        <div class="inline-flex p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl mb-3">
+        <div class="inline-flex p-3 bg-blue-100 dark:bg-blue-600/20 text-blue-600 dark:text-blue-500 rounded-xl mb-3">
           <i data-lucide="shield-check" class="w-8 h-8"></i>
         </div>
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Acesso SaaS</h2>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Ambiente Operacional Seguro</p>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Acesso SaaS Seguro</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Dados operacionais isolados.</p>
       </div>
 
-      <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700">
-        <button onclick="setAuthMode('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow transition-all">Entrar</button>
+      <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700 relative z-10">
+        <button onclick="setAuthMode('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow">Entrar</button>
         <button onclick="setAuthMode('register')" id="tabRegister" class="flex-1 py-2 text-xs font-bold rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">Criar Conta</button>
       </div>
 
-      <form id="authForm" onsubmit="handleAuthAction(event)" class="space-y-4">
-        <div id="authError" class="hidden bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs p-3 rounded-lg border border-red-200 dark:border-red-800"></div>
+      <form id="authForm" onsubmit="handleAuthAction(event)" class="space-y-4 relative z-10">
+        <div id="authError" class="hidden bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 text-xs p-3 rounded-lg border border-red-200 dark:border-red-500/30"></div>
         
         <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">E-mail Corporativo</label>
-          <input type="email" id="authEmail" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none" placeholder="joao@empresa.com">
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">E-mail Corporativo</label>
+          <input type="email" id="authEmail" required class="w-full glass-input px-4 py-2.5 rounded-xl" placeholder="joao@empresa.com">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Senha de Acesso</label>
-          <input type="password" id="authPassword" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••">
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Senha de Acesso</label>
+          <input type="password" id="authPassword" required class="w-full glass-input px-4 py-2.5 rounded-xl" placeholder="••••••••">
           <p id="pwdHint" class="hidden text-[10px] text-slate-500 mt-1">Mín. 6 chars, 1 Maiúscula, 1 Número, 1 Símbolo (@!$)</p>
         </div>
 
@@ -80,46 +105,44 @@
 
   <!-- ================= APLICATIVO PRINCIPAL ================= -->
   <div id="appContainer" class="hidden flex-1 flex-col">
-    <!-- HEADER APP -->
-    <header class="bg-white dark:bg-[#111827] sticky top-0 z-30 px-4 lg:px-8 py-3 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <!-- TOP HEADER -->
+    <header class="glass-panel sticky top-0 z-30 px-4 lg:px-8 py-3 rounded-none border-t-0 border-l-0 border-r-0 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         
         <div class="flex items-center gap-3">
-          <div class="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
+          <div class="p-2.5 bg-blue-100 dark:bg-blue-600/20 text-blue-600 dark:text-blue-500 rounded-xl">
             <i data-lucide="cloud" class="w-6 h-6"></i>
           </div>
           <div>
             <h1 class="font-bold text-lg leading-tight flex items-center gap-2 text-slate-900 dark:text-white">
-              Gestor Nuvem
-              <span class="text-[10px] px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded-full" id="userEmailDisplay">Logado</span>
+              Gestor Operacional Nuvem
+              <span class="text-[10px] px-2 py-0.5 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 rounded-full font-bold" id="userEmailDisplay">Logado</span>
             </h1>
           </div>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <button onclick="toggleTheme()" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition text-slate-600 dark:text-slate-300">
-            <i data-lucide="sun" id="themeIcon" class="w-4 h-4"></i>
+          <button onclick="toggleTheme()" class="p-2 glass-input rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Alternar Tema">
+            <i data-lucide="sun" id="themeIcon" class="w-4 h-4 text-slate-600 dark:text-slate-300"></i>
           </button>
 
-          <!-- SELETOR DE MÊS -->
-          <div class="flex items-center gap-1 p-1 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-            <i data-lucide="calendar" class="w-4 h-4 text-blue-600 dark:text-blue-400 ml-2"></i>
-            <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-bold text-sm px-2 py-1 outline-none cursor-pointer text-slate-800 dark:text-white"></select>
-            <div class="flex gap-1 pr-1">
-              <button onclick="openNewCompetenceModal()" class="bg-blue-600 hover:bg-blue-700 text-white p-1.5 rounded-md transition"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
-              <button onclick="toggleCompetenceLock()" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-md transition"><i data-lucide="lock" class="w-3.5 h-3.5"></i></button>
-            </div>
+          <div class="flex items-center gap-2 p-1.5 rounded-xl glass-input">
+            <i data-lucide="calendar" class="w-4 h-4 text-blue-600 dark:text-blue-400 ml-1"></i>
+            <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-bold text-sm px-1 py-1 outline-none cursor-pointer text-slate-800 dark:text-white"></select>
+            <button onclick="openNewCompetenceModal()" class="bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition" title="Nova Competência"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            <button onclick="toggleCompetenceLock()" id="toggleLockBtn" class="bg-amber-500 text-white p-1.5 rounded-lg hover:bg-amber-600 transition" title="Trancar/Destrancar"><i data-lucide="lock" class="w-4 h-4"></i></button>
+            <button onclick="confirmDeleteCompetence()" class="bg-red-500 text-white p-1.5 rounded-lg hover:bg-red-600 transition" title="Apagar Mês"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
 
-          <!-- AÇÕES EXTRAS E ADMIN -->
-          <div class="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 dark:border-slate-700">
+          <div class="hidden sm:flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 dark:border-slate-700">
+            <button onclick="exportData()" class="glass-input px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-slate-700 dark:text-slate-300">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> JSON
+            </button>
             <button onclick="exportStyledExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
-              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Excel
+              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Excel
             </button>
-              <i data-lucide="database" class="w-4 h-4 text-purple-400"></i> Painel TI
-            </button>
-            <button onclick="logout()" class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition ml-1" title="Sair">
-              <i data-lucide="log-out" class="w-5 h-5"></i>
+            <button onclick="logout()" class="p-2 glass-input text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition ml-1" title="Sair">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
@@ -127,59 +150,65 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex-1 w-full space-y-6">
-
-      <!-- BANNER DA COMPETÊNCIA -->
-      <div id="competenceBanner" class="p-3 rounded-xl border flex items-center justify-between">
+      <div id="competenceBanner" class="p-3 rounded-xl border flex items-center justify-between transition-all">
         <div class="flex items-center gap-3">
           <span id="competenceStatusBadge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider"></span>
-          <span id="competenceBannerText" class="text-xs font-medium text-slate-600 dark:text-slate-300"></span>
+          <span id="competenceBannerText" class="text-xs text-slate-600 dark:text-slate-300 font-medium"></span>
         </div>
+        <div class="text-xs font-mono font-bold text-slate-400 dark:text-slate-500" id="competenceDateInfo"></div>
       </div>
 
-      <!-- CARDS MENSURAÇÃO (Design Limpo) -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div class="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 p-4 rounded-xl flex flex-col shadow-sm">
-          <span class="text-xs font-bold text-slate-500">Total Tarefas</span>
-          <span id="metricTotal" class="text-2xl font-black text-slate-800 dark:text-white mt-1">0</span>
+        <div class="glass-panel p-4 rounded-xl flex flex-col">
+          <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Total Tarefas</span>
+          <span id="metricTotal" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
-        <div class="bg-white dark:bg-[#111827] border-l-4 border-emerald-500 border-y border-r border-slate-200 dark:border-slate-800 p-4 rounded-xl flex flex-col shadow-sm">
-          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-500">Concluído</span>
-          <span id="metricConcluido" class="text-2xl font-black text-slate-800 dark:text-white mt-1">0</span>
+        <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-emerald-500">
+          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Concluído</span>
+          <span id="metricConcluido" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
-        <div class="bg-white dark:bg-[#111827] border-l-4 border-yellow-500 border-y border-r border-slate-200 dark:border-slate-800 p-4 rounded-xl flex flex-col shadow-sm">
-          <span class="text-xs font-bold text-yellow-600 dark:text-yellow-500">Em Andamento</span>
-          <span id="metricAndamento" class="text-2xl font-black text-slate-800 dark:text-white mt-1">0</span>
+        <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-yellow-500">
+          <span class="text-xs font-bold text-yellow-600 dark:text-yellow-400">Em Andamento</span>
+          <span id="metricAndamento" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
-        <div class="bg-white dark:bg-[#111827] border-l-4 border-orange-500 border-y border-r border-slate-200 dark:border-slate-800 p-4 rounded-xl flex flex-col shadow-sm">
-          <span class="text-xs font-bold text-orange-600 dark:text-orange-500">Em Espera</span>
-          <span id="metricEspera" class="text-2xl font-black text-slate-800 dark:text-white mt-1">0</span>
+        <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-orange-500">
+          <span class="text-xs font-bold text-orange-600 dark:text-orange-400">Em Espera</span>
+          <span id="metricEspera" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
-        <div class="bg-white dark:bg-[#111827] border-l-4 border-red-500 border-y border-r border-slate-200 dark:border-slate-800 p-4 rounded-xl flex flex-col shadow-sm col-span-2 md:col-span-1">
-          <span class="text-xs font-bold text-red-600 dark:text-red-500">Não Houve</span>
-          <span id="metricNaoHouve" class="text-2xl font-black text-slate-800 dark:text-white mt-1">0</span>
+        <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-red-500 col-span-2 md:col-span-1">
+          <span class="text-xs font-bold text-red-600 dark:text-red-400">Não Houve</span>
+          <span id="metricNaoHouve" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
       </div>
 
-      <!-- BARRA DE AÇÕES E BUSCA -->
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        <div class="flex items-center gap-2 flex-1 max-w-md relative">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
-          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade..." class="w-full pl-9 pr-3 py-2 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white shadow-sm">
+        <div class="flex items-center gap-2 flex-1 max-w-md">
+          <div class="relative w-full">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+            <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade ou anotação..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl glass-input font-medium">
+          </div>
         </div>
 
         <div class="flex items-center gap-2">
-          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
-            <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
+          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-md">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> Nova Atividade
           </button>
-          <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-1"></div>
-          <button onclick="openAIModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
+          <div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+          <div class="p-1 rounded-xl glass-input flex items-center">
+            <button id="viewTableBtn" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white">
+              <i data-lucide="table" class="w-3.5 h-3.5 inline mr-1"></i> Tabela
+            </button>
+            <button id="viewKanbanBtn" onclick="setView('kanban')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <i data-lucide="kanban" class="w-3.5 h-3.5 inline mr-1"></i> Kanban
+            </button>
+          </div>
+          <button onclick="openAIModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-md">
             <i data-lucide="sparkles" class="w-4 h-4"></i> IA
           </button>
         </div>
       </div>
 
-      <!-- TABELA VIEW -->
-      <div class="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div id="tableView" class="glass-panel rounded-xl overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
             <thead>
@@ -193,78 +222,57 @@
                 <th class="py-3 px-4 w-24 text-center">Ações</th>
               </tr>
             </thead>
-            <tbody id="tasksTableBody" class="divide-y divide-slate-200 dark:divide-slate-800/50 text-slate-700 dark:text-slate-200"></tbody>
+            <tbody id="tasksTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
           </table>
         </div>
+      </div>
+
+      <div id="kanbanView" class="hidden grid grid-cols-1 md:grid-cols-4 gap-4">
       </div>
     </main>
   </div>
 
-  <!-- ================= PAINEL DE TI / BANCO DE DADOS (NOVO) ================= -->
-  <div id="adminContainer" class="hidden flex-1 flex-col bg-slate-100 dark:bg-[#0b0f19]">
-    <header class="bg-indigo-700 text-white sticky top-0 z-30 px-4 lg:px-8 py-4 shadow-md">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <i data-lucide="database" class="w-6 h-6 text-indigo-300"></i>
-          <div>
-            <h1 class="font-bold text-xl leading-tight">Painel de Administração (TI)</h1>
-            <p class="text-xs text-indigo-200">Gestão de Funcionários e Banco de Dados Local</p>
-          </div>
-        </div>
-        <button onclick="closeAdminPanel()" class="bg-indigo-800 hover:bg-indigo-900 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar ao Operacional
-        </button>
-      </div>
-    </header>
+  <button id="floatNotesBtn" onclick="toggleNotesPanel()" class="hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105 items-center justify-center">
+    <i data-lucide="sticky-note" class="w-6 h-6"></i>
+  </button>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 flex-1 w-full space-y-6">
-      <div class="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-        <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">Contas Registradas no Banco</h2>
-        
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm border-collapse">
-            <thead>
-              <tr class="bg-slate-50 dark:bg-slate-800 font-bold uppercase text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
-                <th class="py-3 px-4">Usuário / E-mail</th>
-                <th class="py-3 px-4">Senha Criptografada</th>
-                <th class="py-3 px-4">Total Competências</th>
-                <th class="py-3 px-4 text-center">Ações de TI</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200 font-medium">
-              <!-- Gerado via JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </main>
+  <div id="notesPanel" class="fixed top-0 right-0 h-full w-full sm:w-[400px] glass-panel border-l border-slate-200 dark:border-slate-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50">
+      <h3 class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-white">
+        <i data-lucide="book-open" class="w-5 h-5 text-blue-600 dark:text-blue-500"></i> Notas da Competência
+      </h3>
+      <button onclick="toggleNotesPanel()" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition text-slate-500"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="p-4 flex-1 flex flex-col bg-white dark:bg-transparent">
+      <textarea id="generalNotesArea" oninput="updateGeneralNotes(this.value)" class="flex-1 w-full glass-input rounded-xl p-4 text-sm font-medium resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-inner custom-scrollbar text-slate-800 dark:text-slate-200" placeholder="Rascunhos gerais do mês..."></textarea>
+    </div>
   </div>
 
-  <!-- MODAL: NOVA COMPETÊNCIA -->
+  <!-- MODAL NOVA COMPETENCIA -->
   <div id="newCompetenceModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white"><i data-lucide="folder-plus" class="w-5 h-5 text-blue-600"></i> Criar Mês</h3>
         <button onclick="closeModal('newCompetenceModal')" class="text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form onsubmit="handleCreateCompetence(event)" class="space-y-4">
-        <input type="text" id="newCompetenceId" required placeholder="Ex: 11 ATIVIDADES 10-112026" class="w-full border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-white font-medium text-sm px-3 py-2 rounded-xl outline-none focus:border-blue-500">
-        <div class="p-3 rounded-xl border border-slate-300 dark:border-slate-700">
+        <input type="text" id="newCompetenceId" required placeholder="Nome/ID (Ex: MÊS 11-2026)" class="w-full glass-input font-medium text-sm px-3 py-2 rounded-xl">
+        <div class="p-3 rounded-xl glass-input">
           <label class="flex items-center gap-2 text-xs font-bold cursor-pointer text-slate-700 dark:text-slate-300">
-            <input type="checkbox" id="clonePreviousTasks" checked class="rounded"> Copiar base de tarefas do mês atual
+            <input type="checkbox" id="clonePreviousTasks" checked class="rounded border-slate-300"> Copiar base de tarefas do mês atual
           </label>
         </div>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
+          <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs font-bold glass-input rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
           <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl">Criar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: TAREFA -->
+  <!-- MODAL TAREFA -->
   <div id="taskModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
+    <div class="glass-panel w-full max-w-lg rounded-2xl p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
         <h3 id="modalTaskTitle" class="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white"><i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> Tarefa</h3>
         <button onclick="closeModal('taskModal')" class="text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -273,16 +281,16 @@
         <input type="hidden" id="taskId">
         <div>
           <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Atividade *</label>
-          <input type="text" id="taskName" required class="w-full border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-white text-sm font-medium px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+          <input type="text" id="taskName" required class="w-full glass-input text-sm font-medium px-3 py-2 rounded-xl">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Prazo</label>
-            <input type="text" id="taskDeadline" class="w-full border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-white text-sm font-medium px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+            <input type="text" id="taskDeadline" class="w-full glass-input text-sm font-medium px-3 py-2 rounded-xl">
           </div>
           <div>
             <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Situação</label>
-            <select id="taskStatus" required class="w-full border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-white text-sm font-bold px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+            <select id="taskStatus" required class="w-full glass-input text-sm font-bold px-3 py-2 rounded-xl cursor-pointer">
               <option value="CONCLUÍDO">CONCLUÍDO</option>
               <option value="EM ANDAMENTO">EM ANDAMENTO</option>
               <option value="EM ESPERA">EM ESPERA</option>
@@ -292,10 +300,10 @@
         </div>
         <div>
           <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Data Execução</label>
-          <input type="text" id="taskExecDate" class="w-full border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-white text-sm font-medium px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+          <input type="text" id="taskExecDate" class="w-full glass-input text-sm font-medium px-3 py-2 rounded-xl">
         </div>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('taskModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
+          <button type="button" onclick="closeModal('taskModal')" class="px-4 py-2 text-xs font-bold glass-input rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
           <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl">Salvar</button>
         </div>
       </form>
@@ -308,13 +316,20 @@
     let appData = { competences: {} };
     let currentCompetenceId = '';
     let authMode = 'login';
+    let currentView = 'table';
 
+    // O modelo Master, apenas para o dp-aprendiz2
     const DEFAULT_TASKS = [
       { id: '1', activity: 'ECONET', deadline: '1º DIA DO MÊS', status: 'CONCLUÍDO', execDate: '', notes: '' },
       { id: '2', activity: 'PROVISÕES', deadline: 'APÓS 5º UTIL', status: 'CONCLUÍDO', execDate: '', notes: 'QUANDO FOR FAZER PROVISÃO DO MÊS 12/2026 E 13º ALTERAR A PARAMETRIZAÇÃO' },
       { id: '3', activity: 'ATUALIZAR O DRIVE DA CONTABILIDADE', deadline: 'APÓS PROVISÕES', status: 'CONCLUÍDO', execDate: '', notes: '' },
       { id: '4', activity: 'PLANILHA DE BENEFC', deadline: 'APÓS 5º UTIL', status: 'CONCLUÍDO', execDate: '', notes: '' },
-      { id: '5', activity: 'SENAI', deadline: 'APÓS 10º DIA', status: 'CONCLUÍDO', execDate: '', notes: '' }
+      { id: '5', activity: 'SENAI', deadline: 'APÓS 10º DIA', status: 'CONCLUÍDO', execDate: '', notes: '' },
+      { id: '6', activity: 'AUTONOMO', deadline: 'APÓS 5º UTIL', status: 'EM ESPERA', execDate: '', notes: '' },
+      { id: '7', activity: 'ISBET', deadline: 'APÓS 15º DIA', status: 'CONCLUÍDO', execDate: '', notes: '' },
+      { id: '8', activity: 'ABRE SP', deadline: '25º DIA', status: 'CONCLUÍDO', execDate: '', notes: 'ESPECIFICAR NO EMAIL (SERTTEL/MOBILIDADE/SP INDUSTR)' },
+      { id: '9', activity: 'ABRE', deadline: '25º DIA', status: 'CONCLUÍDO', execDate: '', notes: 'ESPECIFICAR NO EMAIL (SERTTEL/MOBILIDADE/SP INDUSTR)' },
+      { id: '10', activity: 'CIEE', deadline: 'SEM PREVISÃO', status: 'NÃO HOUVE', execDate: '', notes: '' }
     ];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -350,7 +365,7 @@
 
     function handleAuthAction(e) {
       e.preventDefault();
-      const email = document.getElementById('authEmail').value;
+      const email = document.getElementById('authEmail').value.trim();
       const pwd = document.getElementById('authPassword').value;
       const errorDiv = document.getElementById('authError');
       const userKey = `cloud_db_${email}`;
@@ -391,6 +406,8 @@
       document.getElementById('authScreen').classList.add('hidden');
       document.getElementById('appContainer').classList.remove('hidden');
       document.getElementById('appContainer').classList.add('flex');
+      document.getElementById('floatNotesBtn').classList.remove('hidden');
+      document.getElementById('floatNotesBtn').classList.add('flex');
       document.getElementById('userEmailDisplay').textContent = currentUser.email;
       loadCloudData();
     }
@@ -408,18 +425,24 @@
       lucide.createIcons();
     }
 
-    // --- CARGA DE DADOS APP ---
+    // --- CARGA DE DADOS COM REGRA DE USUÁRIO MASTER VS VIRGEM ---
     function loadCloudData() {
       const db = JSON.parse(localStorage.getItem(currentUser.userKey));
       appData = db.data;
 
       if (!appData.competences || Object.keys(appData.competences).length === 0) {
-        const initial = '10 ATIVIDADES 09-102026';
+        
+        // Verifica se é o Master para dar os dados iniciais, senão cria virgem
+        const isMaster = currentUser.email === 'dp-aprendiz2@serttel.com.br';
+        const initialId = isMaster ? '10 ATIVIDADES 09-102026' : 'MÊS INICIAL';
+        const initialTasks = isMaster ? JSON.parse(JSON.stringify(DEFAULT_TASKS)) : [];
+
         appData.competences = {
-          [initial]: { id: initial, status: 'OPEN', createdAt: new Date().toISOString(), tasks: JSON.parse(JSON.stringify(DEFAULT_TASKS)), generalNotes: '' }
+          [initialId]: { id: initialId, status: 'OPEN', createdAt: new Date().toISOString(), tasks: initialTasks, generalNotes: '' }
         };
         saveCloudData();
       }
+
       const keys = Object.keys(appData.competences).sort((a, b) => new Date(appData.competences[b].createdAt) - new Date(appData.competences[a].createdAt));
       currentCompetenceId = keys[0];
       renderCompetenceSelector();
@@ -447,6 +470,21 @@
       });
     }
 
+    function confirmDeleteCompetence() {
+      const pwd = prompt("Para apagar este mês permanentemente, digite sua senha de login:");
+      if (pwd === null) return;
+      if (pwd !== currentUser.pwd) { alert("SENHA INCORRETA! Exclusão bloqueada."); return; }
+      
+      const keys = Object.keys(appData.competences);
+      if (keys.length <= 1) { alert("Você precisa ter no mínimo 1 competência."); return; }
+
+      delete appData.competences[currentCompetenceId];
+      saveCloudData();
+      currentCompetenceId = Object.keys(appData.competences)[0];
+      renderCompetenceSelector();
+      renderApp();
+    }
+
     function toggleCompetenceLock() {
       const comp = appData.competences[currentCompetenceId];
       if (!comp) return;
@@ -454,7 +492,7 @@
       saveCloudData(); renderCompetenceSelector(); renderApp();
     }
 
-    // --- RENDERIZAÇÃO APP ---
+    // --- RENDERIZAÇÃO ---
     function renderApp() {
       const comp = appData.competences[currentCompetenceId];
       if(!comp) return;
@@ -473,6 +511,9 @@
         badge.textContent = "Em Aberto";
         document.getElementById('competenceBannerText').textContent = "Edição livre.";
       }
+      document.getElementById('competenceDateInfo').textContent = currentCompetenceId;
+      document.getElementById('generalNotesArea').value = comp.generalNotes || '';
+      document.getElementById('generalNotesArea').disabled = isLocked;
 
       const search = document.getElementById('searchInput').value.toLowerCase();
       const filteredTasks = comp.tasks.filter(t => t.activity.toLowerCase().includes(search) || t.notes.toLowerCase().includes(search));
@@ -486,6 +527,7 @@
       document.getElementById('metricNaoHouve').textContent = counts['NÃO HOUVE'];
 
       renderTable(filteredTasks, isLocked);
+      renderKanban(filteredTasks, isLocked);
       lucide.createIcons();
     }
 
@@ -494,7 +536,8 @@
     function renderTable(tasks, isLocked) {
       const tbody = document.getElementById('tasksTableBody');
       tbody.innerHTML = '';
-      
+      if(tasks.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 font-medium text-slate-500">Nenhum resultado encontrado.</td></tr>`; return; }
+
       const statusClasses = {
         'CONCLUÍDO': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30',
         'EM ANDAMENTO': 'bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-500/30',
@@ -535,6 +578,52 @@
       setTimeout(() => document.querySelectorAll('textarea.inline-textarea').forEach(el => autoResize(el)), 50);
     }
 
+    function renderKanban(tasks, isLocked) {
+      const cols = [
+        { id: 'CONCLUÍDO', color: 'emerald' },
+        { id: 'EM ANDAMENTO', color: 'yellow' },
+        { id: 'EM ESPERA', color: 'orange' },
+        { id: 'NÃO HOUVE', color: 'red' }
+      ];
+
+      const container = document.getElementById('kanbanView');
+      container.innerHTML = '';
+
+      cols.forEach(col => {
+        const stTasks = tasks.filter(t => t.status === col.id);
+        const colDiv = document.createElement('div');
+        colDiv.className = "bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-xl p-4 flex flex-col shadow-sm border-t-4 border-t-"+col.color+"-500";
+        
+        let cardsHtml = '';
+        stTasks.forEach(task => {
+          cardsHtml += `
+            <div class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 shadow-sm hover:border-blue-500 dark:hover:border-blue-500/50 transition cursor-grab active:cursor-grabbing mb-3" draggable="${!isLocked}" ondragstart="event.dataTransfer.setData('text/plain', '${task.id}')">
+              <div class="flex justify-between items-start mb-1">
+                <h4 class="font-bold text-xs text-slate-800 dark:text-white">${escapeHtml(task.activity)}</h4>
+                <button onclick="openEditTaskModal('${task.id}')" class="text-slate-400 hover:text-blue-500"><i data-lucide="more-horizontal" class="w-3 h-3"></i></button>
+              </div>
+              ${task.deadline ? `<div class="text-[10px] text-slate-500 mb-2 flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3 h-3"></i> ${escapeHtml(task.deadline)}</div>` : ''}
+              ${task.notes ? `<p class="text-[11px] text-slate-600 dark:text-slate-300 font-medium line-clamp-2 bg-slate-50 dark:bg-black/20 p-1.5 rounded">${escapeHtml(task.notes)}</p>` : ''}
+            </div>
+          `;
+        });
+
+        colDiv.innerHTML = `
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+            <span class="text-xs font-bold text-${col.color}-600 dark:text-${col.color}-500 uppercase tracking-wider">${col.id}</span>
+            <span class="text-xs bg-${col.color}-100 dark:bg-${col.color}-500/20 text-${col.color}-700 dark:text-${col.color}-400 px-2 py-0.5 rounded-full font-bold">${stTasks.length}</span>
+          </div>
+          <div class="flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, '${col.id}')">
+            ${cardsHtml}
+          </div>
+        `;
+        container.appendChild(colDiv);
+      });
+    }
+
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drop(ev, st) { ev.preventDefault(); updateTaskStatus(ev.dataTransfer.getData('text/plain'), st); }
+
     function updateTaskStatus(id, st) {
       const comp = appData.competences[currentCompetenceId];
       if (!comp || comp.status === 'LOCKED') return;
@@ -570,6 +659,24 @@
       saveCloudData();
     }
 
+    function toggleNotesPanel() { document.getElementById('notesPanel').classList.toggle('translate-x-full'); }
+    function updateGeneralNotes(val) {
+      const comp = appData.competences[currentCompetenceId];
+      if(comp && comp.status !== 'LOCKED') { comp.generalNotes = val; saveCloudData(); }
+    }
+
+    function setView(v) {
+      currentView = v;
+      document.getElementById('tableView').classList.toggle('hidden', v !== 'table');
+      document.getElementById('kanbanView').classList.toggle('hidden', v !== 'kanban');
+      
+      const btnT = document.getElementById('viewTableBtn');
+      const btnK = document.getElementById('viewKanbanBtn');
+      
+      btnT.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition ${v==='table'?'bg-blue-600 text-white shadow':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
+      btnK.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition ${v==='kanban'?'bg-blue-600 text-white shadow':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
+    }
+
     // --- MODAIS ---
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
@@ -582,9 +689,19 @@
       if(!newId) return;
       if(appData.competences[newId]) { alert('Já existe!'); return; }
 
-      let newTasks = clone && appData.competences[currentCompetenceId] 
-        ? appData.competences[currentCompetenceId].tasks.map(t => ({ ...t, status: 'EM ESPERA', execDate: '' }))
-        : JSON.parse(JSON.stringify(DEFAULT_TASKS));
+      let newTasks = [];
+      const isMaster = currentUser.email === 'dp-aprendiz2@serttel.com.br';
+
+      if(clone && appData.competences[currentCompetenceId]) {
+        // Clona da tela atual se marcado
+        newTasks = appData.competences[currentCompetenceId].tasks.map(t => ({ ...t, status: 'EM ESPERA', execDate: '' }));
+      } else if (isMaster) {
+        // Se desmarcar clone e for master, volta a estrutura padrão de dp-aprendiz
+        newTasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+      } else {
+        // Qualquer outro usuário que não clonar, recebe a estrutura vazia "virgem"
+        newTasks = [];
+      }
 
       appData.competences[newId] = { id: newId, status: 'OPEN', createdAt: new Date().toISOString(), tasks: newTasks, generalNotes: '' };
       currentCompetenceId = newId; saveCloudData(); closeModal('newCompetenceModal'); renderCompetenceSelector(); renderApp();
@@ -631,92 +748,20 @@
       if(confirm('Apagar esta atividade?')) { comp.tasks = comp.tasks.filter(t => t.id !== id); saveCloudData(); renderApp(); }
     }
 
-    // --- PAINEL ADMIN TI ---
-    function openAdminPanel() {
-      const pwd = prompt("Acesso Restrito (TI). Digite a senha Master:");
-      if(pwd !== '@Lk28197676') { alert("Acesso Negado. Senha incorreta."); return; }
-      
-      document.getElementById('appContainer').classList.add('hidden');
-      document.getElementById('adminContainer').classList.remove('hidden');
-      document.getElementById('adminContainer').classList.add('flex');
-      renderAdminTable();
+    // --- EXPORTAÇÃO ---
+    function exportData() {
+      const data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const a = document.createElement('a'); a.href = data; a.download = `backup_saas_${currentCompetenceId}.json`; document.body.appendChild(a); a.click(); a.remove();
     }
 
-    function closeAdminPanel() {
-      document.getElementById('adminContainer').classList.add('hidden');
-      document.getElementById('appContainer').classList.remove('hidden');
-    }
-
-    function renderAdminTable() {
-      const tbody = document.getElementById('adminTableBody');
-      tbody.innerHTML = '';
-
-      for(let i=0; i<localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if(key.startsWith('cloud_db_')) {
-          const db = JSON.parse(localStorage.getItem(key));
-          const compCount = Object.keys(db.data.competences || {}).length;
-          
-          const tr = document.createElement('tr');
-          tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/50 transition";
-          tr.innerHTML = `
-            <td class="py-4 px-4 font-bold text-slate-800 dark:text-white">${db.email}</td>
-            <td class="py-4 px-4 flex items-center gap-2">
-              <input type="password" id="pwd_${i}" value="${db.password}" readonly class="bg-transparent border-none outline-none text-slate-600 dark:text-slate-400 font-mono w-24">
-              <button onclick="togglePwdVisibility('pwd_${i}', this)" class="text-slate-400 hover:text-indigo-500"><i data-lucide="eye" class="w-4 h-4"></i></button>
-            </td>
-            <td class="py-4 px-4 text-slate-600 dark:text-slate-300 font-bold">${compCount} Planilhas</td>
-            <td class="py-4 px-4 text-center">
-              <button onclick="changeUserPassword('${key}')" class="p-1.5 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded transition" title="Mudar Senha"><i data-lucide="key" class="w-4 h-4"></i></button>
-              <button onclick="deleteUserAccount('${key}')" class="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded transition" title="Apagar Conta inteira"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        }
-      }
-      lucide.createIcons();
-    }
-
-    function togglePwdVisibility(id, btn) {
-      const input = document.getElementById(id);
-      const icon = btn.querySelector('i');
-      if (input.type === "password") {
-        input.type = "text";
-        icon.setAttribute('data-lucide', 'eye-off');
-      } else {
-        input.type = "password";
-        icon.setAttribute('data-lucide', 'eye');
-      }
-      lucide.createIcons();
-    }
-
-    function changeUserPassword(key) {
-      const newPwd = prompt("Digite a nova senha para este usuário (Min 6, 1 Maiuscula, 1 Num, 1 Simbolo):");
-      if (!newPwd) return;
-      const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-      if (!regex.test(newPwd)) { alert("A senha não atende aos requisitos de segurança."); return; }
-      
-      const db = JSON.parse(localStorage.getItem(key));
-      db.password = newPwd;
-      localStorage.setItem(key, JSON.stringify(db));
-      alert("Senha alterada com sucesso no Banco de Dados!");
-      renderAdminTable();
-    }
-
-    function deleteUserAccount(key) {
-      if(confirm("ALERTA CRÍTICO: Você tem certeza que deseja excluir esta conta e TODAS as suas planilhas operacionais?")) {
-        localStorage.removeItem(key);
-        // Se excluiu ele mesmo, desloga
-        if(currentUser && currentUser.userKey === key) { logout(); }
-        renderAdminTable();
-      }
-    }
-
-    // --- EXPORTAR EXCEL ---
     function exportStyledExcel() {
       const comp = appData.competences[currentCompetenceId];
-      let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"><style>th{background:#1e40af;color:white;border:1px solid #000;padding:6px}td{border:1px solid #d1d5db;padding:6px}</style></head><body><table><tr><th colspan="3">ATIVIDADES</th><th>DATA EXECUÇÃO</th><th>ANOTAÇÕES</th></tr>`;
-      comp.tasks.forEach(t => html += `<tr><td style="font-weight:bold">${t.activity}</td><td style="text-align:center">${t.deadline}</td><td style="text-align:center">${t.status}</td><td style="text-align:center">${t.execDate}</td><td>${t.notes}</td></tr>`);
+      let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"><style>th{background:#1e40af;color:white;border:1px solid #000;padding:6px}td{border:1px solid #d1d5db;padding:6px;vertical-align:middle}</style></head><body><table><tr><th colspan="3">ATIVIDADES</th><th>DATA EXECUÇÃO</th><th>ANOTAÇÕES</th></tr>`;
+      comp.tasks.forEach(t => {
+        let bg = t.status === 'CONCLUÍDO' ? '#10b981' : t.status === 'EM ANDAMENTO' ? '#eab308' : t.status === 'EM ESPERA' ? '#f97316' : '#ef4444';
+        html += `<tr><td style="font-weight:bold">${t.activity}</td><td style="text-align:center">${t.deadline}</td><td style="background-color:${bg};color:white;font-weight:bold;text-align:center">${t.status}</td><td style="text-align:center">${t.execDate}</td><td>${t.notes}</td></tr>`;
+      });
+      if(comp.generalNotes) html += `<tr><td colspan="5" style="height:20px;border:none"></td></tr><tr><th colspan="5" style="background:#1e3a8a">NOTAS GERAIS</th></tr><tr><td colspan="5" style="white-space:pre-wrap">${comp.generalNotes}</td></tr>`;
       html += `</table></body></html>`;
       const blob = new Blob(['\uFEFF' + html], { type: 'application/vnd.ms-excel;charset=utf-8' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${currentCompetenceId}.xls`; document.body.appendChild(a); a.click(); a.remove();
