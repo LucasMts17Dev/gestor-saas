@@ -20,31 +20,23 @@
     
     body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
 
-    /* DARK MODE */
-    .dark body { background-color: #0f172a; color: #f8fafc; }
+    /* Estilos dos Painéis (Glass) */
     .dark .glass-panel { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
-    .dark .glass-input { background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: white; }
-    
-    /* LIGHT MODE (FIXED CONTRAST) */
-    body:not(.dark) { background-color: #f1f5f9; color: #1e293b; }
     body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    
+    .dark .glass-input { background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: white; }
     body:not(.dark) .glass-input { background: #ffffff; border: 1px solid #cbd5e1; color: #1e293b; }
     
-    /* Force specific text colors in light mode to override potential Tailwind inherited issues */
-    body:not(.dark) th { color: #475569 !important; font-weight: 700; }
-    body:not(.dark) td { color: #1e293b !important; }
-    body:not(.dark) .text-slate-400 { color: #64748b !important; } /* Make light slate darker in light mode */
-    body:not(.dark) .text-white { color: #ffffff !important; } /* Ensure buttons keep white text */
-
     .glass-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
 
+    /* Scrollbars */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     .dark ::-webkit-scrollbar-track { background: #0f172a; }
     .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     body:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; }
     body:not(.dark) ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
 
-    /* STATUS BADGES */
+    /* Cores de Status */
     .status-CONCLUÍDO { font-weight: 700; }
     body:not(.dark) .status-CONCLUÍDO { background-color: #ecfdf5 !important; color: #059669 !important; border: 1px solid #a7f3d0 !important; }
     .dark .status-CONCLUÍDO { background-color: rgba(16, 185, 129, 0.15) !important; color: #34d399 !important; border: 1px solid rgba(16, 185, 129, 0.3) !important; }
@@ -61,6 +53,7 @@
     body:not(.dark) .status-NÃO-HOUVE { background-color: #fef2f2 !important; color: #dc2626 !important; border: 1px solid #fecaca !important; }
     .dark .status-NÃO-HOUVE { background-color: rgba(239, 68, 68, 0.15) !important; color: #fca5a5 !important; border: 1px solid rgba(239, 68, 68, 0.3) !important; }
 
+    /* Área de Texto Inline Automática */
     .inline-textarea {
       width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; resize: none; overflow: hidden; transition: all 0.2s; font-weight: 500;
     }
@@ -71,9 +64,9 @@
     .inline-textarea:focus { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6 !important; outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased pb-10">
+<body class="min-h-screen flex flex-col antialiased pb-10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
 
-  <!-- ================= LOGIN SCREEN ================= -->
+  <!-- ================= TELA DE LOGIN ================= -->
   <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-8 shadow-2xl relative overflow-hidden border border-slate-200 dark:border-slate-700">
       
@@ -110,7 +103,7 @@
     </div>
   </div>
 
-  <!-- ================= MAIN APPLICATION ================= -->
+  <!-- ================= APLICATIVO PRINCIPAL ================= -->
   <div id="appContainer" class="hidden flex-1 flex-col">
     <!-- TOP HEADER -->
     <header class="bg-white dark:bg-slate-800 sticky top-0 z-30 px-4 lg:px-8 py-3 border-b border-slate-200 dark:border-slate-700 shadow-sm">
@@ -158,7 +151,7 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex-1 w-full space-y-6">
 
-      <!-- COMPETENCE BANNER -->
+      <!-- BANNER DA COMPETÊNCIA -->
       <div id="competenceBanner" class="p-3 rounded-xl border flex items-center justify-between transition-all">
         <div class="flex items-center gap-3">
           <span id="competenceStatusBadge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider"></span>
@@ -167,7 +160,7 @@
         <div class="text-xs font-mono font-bold text-slate-500 dark:text-slate-400" id="competenceDateInfo"></div>
       </div>
 
-      <!-- METRIC CARDS -->
+      <!-- CARDS MENSURAÇÃO -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col shadow-sm">
           <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Total Tarefas</span>
@@ -191,11 +184,11 @@
         </div>
       </div>
 
-      <!-- ACTION BAR -->
+      <!-- BARRA DE AÇÕES -->
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <div class="flex items-center gap-2 flex-1 max-w-md relative">
           <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
-          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade ou anotação..." class="w-full pl-9 pr-3 py-2 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white shadow-sm placeholder-slate-400 dark:placeholder-slate-500">
+          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade ou anotação..." class="w-full pl-9 pr-3 py-2 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white shadow-sm placeholder-slate-400 dark:placeholder-slate-500">
         </div>
 
         <div class="flex items-center gap-2">
@@ -205,7 +198,7 @@
           
           <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-1"></div>
           
-          <div class="p-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center">
+          <div class="p-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 flex items-center">
             <button id="viewTableBtn" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white">
               <i data-lucide="table" class="w-3.5 h-3.5 inline mr-1"></i> Tabela
             </button>
@@ -216,7 +209,7 @@
         </div>
       </div>
 
-      <!-- TABLE VIEW -->
+      <!-- TABELA VIEW -->
       <div id="tableView" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-sm">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
@@ -301,10 +294,10 @@
           <div>
             <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Situação</label>
             <select id="taskStatus" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm font-bold px-3 py-2 rounded-xl outline-none focus:border-blue-500 cursor-pointer">
-              <option value="CONCLUÍDO">CONCLUÍDO</option>
-              <option value="EM ANDAMENTO">EM ANDAMENTO</option>
-              <option value="EM ESPERA">EM ESPERA</option>
-              <option value="NÃO HOUVE">NÃO HOUVE</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="CONCLUÍDO">CONCLUÍDO</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="EM ANDAMENTO">EM ANDAMENTO</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="EM ESPERA">EM ESPERA</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="NÃO HOUVE">NÃO HOUVE</option>
             </select>
           </div>
         </div>
@@ -321,13 +314,14 @@
   </div>
 
   <script>
-    // --- STATE & DATA ---
+    // --- ESTADO & DADOS ---
     let currentUser = null;
     let appData = { competences: {} };
     let currentCompetenceId = '';
     let authMode = 'login';
     let currentView = 'table';
 
+    // O modelo Master
     const DEFAULT_TASKS = [
       { id: '1', activity: 'ECONET', deadline: '1º DIA DO MÊS', status: 'CONCLUÍDO', execDate: '', notes: '' },
       { id: '2', activity: 'PROVISÕES', deadline: 'APÓS 5º UTIL', status: 'CONCLUÍDO', execDate: '', notes: 'QUANDO FOR FAZER PROVISÃO DO MÊS 12/2026 E 13º ALTERAR A PARAMETRIZAÇÃO' },
@@ -350,7 +344,7 @@
       }
     });
 
-    // --- AUTH LOGIC ---
+    // --- LÓGICA DE AUTH ---
     function setAuthMode(mode) {
       authMode = mode;
       const tabL = document.getElementById('tabLogin');
@@ -361,12 +355,12 @@
 
       if(mode === 'login') {
         tabL.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow transition-all";
-        tabR.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
+        tabR.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
         btn.textContent = "Entrar no Sistema";
         hint.classList.add('hidden');
       } else {
         tabR.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow transition-all";
-        tabL.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
+        tabL.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
         btn.textContent = "Finalizar Cadastro";
         hint.classList.remove('hidden');
       }
@@ -434,13 +428,12 @@
       lucide.createIcons();
     }
 
-    // --- CLOUD DATA & INITIALIZATION LOGIC ---
+    // --- CARGA DE DADOS ---
     function loadCloudData() {
       const db = JSON.parse(localStorage.getItem(currentUser.userKey));
       appData = db.data;
 
       if (!appData.competences || Object.keys(appData.competences).length === 0) {
-        // VIRGIN ACCOUNT RULE
         const isMaster = currentUser.email === 'dp-aprendiz2@serttel.com.br';
         const initialId = isMaster ? '10 ATIVIDADES 09-102026' : 'MÊS INICIAL';
         const initialTasks = isMaster ? JSON.parse(JSON.stringify(DEFAULT_TASKS)) : [];
@@ -472,7 +465,9 @@
       keys.forEach(id => {
         const comp = appData.competences[id];
         const opt = document.createElement('option');
-        opt.value = id; opt.textContent = `${id} ${comp.status === 'LOCKED' ? '🔒' : ''}`;
+        opt.value = id; 
+        opt.textContent = `${id} ${comp.status === 'LOCKED' ? '🔒' : ''}`;
+        opt.className = "bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-semibold";
         if(id === currentCompetenceId) opt.selected = true;
         sel.appendChild(opt);
       });
@@ -500,7 +495,7 @@
       saveCloudData(); renderCompetenceSelector(); renderApp();
     }
 
-    // --- APP RENDER ---
+    // --- RENDERIZAÇÃO ---
     function renderApp() {
       const comp = appData.competences[currentCompetenceId];
       if(!comp) return;
@@ -564,10 +559,10 @@
           <td class="py-3 px-4 font-medium text-slate-600 dark:text-slate-300">${escapeHtml(task.deadline || '-')}</td>
           <td class="py-3 px-4">
             <select onchange="updateTaskStatus('${task.id}', this.value)" ${isLocked?'disabled':''} class="${stClass} text-[11px] font-bold px-2 py-1.5 rounded-lg cursor-pointer outline-none w-full text-center appearance-none">
-              <option value="CONCLUÍDO" ${task.status==='CONCLUÍDO'?'selected':''}>CONCLUÍDO</option>
-              <option value="EM ANDAMENTO" ${task.status==='EM ANDAMENTO'?'selected':''}>EM ANDAMENTO</option>
-              <option value="EM ESPERA" ${task.status==='EM ESPERA'?'selected':''}>EM ESPERA</option>
-              <option value="NÃO HOUVE" ${task.status==='NÃO HOUVE'?'selected':''}>NÃO HOUVE</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="CONCLUÍDO" ${task.status==='CONCLUÍDO'?'selected':''}>CONCLUÍDO</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="EM ANDAMENTO" ${task.status==='EM ANDAMENTO'?'selected':''}>EM ANDAMENTO</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="EM ESPERA" ${task.status==='EM ESPERA'?'selected':''}>EM ESPERA</option>
+              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="NÃO HOUVE" ${task.status==='NÃO HOUVE'?'selected':''}>NÃO HOUVE</option>
             </select>
           </td>
           <td class="py-3 px-4">
@@ -685,7 +680,6 @@
       btnK.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition ${v==='kanban'?'bg-blue-600 text-white shadow':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
     }
 
-    // --- MODALS ---
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
