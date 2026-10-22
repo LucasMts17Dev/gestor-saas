@@ -3,1163 +3,404 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor Executivo SaaS - Cloud & IA</title>
+  <title>Gestor Executivo Cloud SaaS</title>
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>Q
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: { 50: '#f0fdf4', 500: '#22c55e', 600: '#16a34a' }
-          }
-        }
-      }
+      theme: { extend: { colors: { brand: { 500: '#22c55e' } } } }
     }
   </script>
   
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .theme-bg { @apply bg-slate-50 dark:bg-[#0b0f19] transition-colors duration-300; }
-      .theme-panel { @apply bg-white/80 dark:bg-slate-900/75 border border-slate-200 dark:border-white/10 backdrop-blur-xl shadow-lg transition-colors duration-300; }
-      .theme-text { @apply text-slate-800 dark:text-slate-200 transition-colors; }
-      .theme-text-muted { @apply text-slate-500 dark:text-slate-400 transition-colors; }
-      .theme-input { @apply bg-white dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors; }
-      .theme-header { @apply bg-slate-100/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 transition-colors; }
-      .theme-hover { @apply hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors; }
-      .theme-border { @apply border-slate-200 dark:border-slate-800; }
-    }
-  </style>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    body { font-family: 'Inter', sans-serif; }
     
+    body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+
+    /* DARK MODE */
+    .dark body { background-color: #0b0f19; color: #f3f4f6; }
+    .dark .glass-panel { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+    .dark .glass-input { background: rgba(31, 41, 55, 0.6); border: 1px solid rgba(255,255,255,0.12); color: white; }
+    
+    /* LIGHT MODE */
+    body:not(.dark) { background-color: #f8fafc; color: #0f172a; }
+    body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    body:not(.dark) .glass-input { background: #f1f5f9; border: 1px solid #cbd5e1; color: #0f172a; }
+    body:not(.dark) th { color: #334155; }
+    body:not(.dark) .text-slate-400 { color: #64748b; }
+    body:not(.dark) .text-slate-300 { color: #475569; }
+
+    .glass-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
+
     ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .dark ::-webkit-scrollbar-track { background: #0f172a; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    body:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; }
+    body:not(.dark) ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
 
-    /* Inline Textarea / Input for direct cell editing */
-    .inline-edit {
-      width: 100%;
-      background: transparent;
-      border: 1px solid transparent;
-      border-radius: 6px;
-      padding: 4px 8px;
-      resize: none;
-      overflow: hidden;
-      transition: all 0.2s;
+    .inline-textarea {
+      width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; resize: none; overflow: hidden;
     }
-    .inline-edit:hover { background: rgba(100, 116, 139, 0.1); }
-    .inline-edit:focus {
-      background: rgba(100, 116, 139, 0.15);
-      border-color: #3b82f6;
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-    }
-
-    /* Status Badges */
-    .status-CONCLUÍDO { background-color: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 600;}
-    .status-EM-ANDAMENTO { background-color: rgba(234, 179, 8, 0.15); color: #d97706; border: 1px solid rgba(234, 179, 8, 0.3); font-weight: 600;}
-    .status-EM-ESPERA { background-color: rgba(249, 115, 22, 0.15); color: #ea580c; border: 1px solid rgba(249, 115, 22, 0.3); font-weight: 600;}
-    .status-NÃO-HOUVE { background-color: rgba(239, 68, 68, 0.15); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); font-weight: 600;}
-    
-    .dark .status-CONCLUÍDO { color: #34d399; }
-    .dark .status-EM-ANDAMENTO { color: #fde047; }
-    .dark .status-EM-ESPERA { color: #fdba74; }
-    .dark .status-NÃO-HOUVE { color: #fca5a5; }
+    .inline-textarea:focus { background: rgba(59,130,246,0.1); border-color: #3b82f6; }
   </style>
-
-  <!-- Firebase Integration -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // IMPORTANT FOR VERCEL DEPLOYMENT:
-    // Replace the `firebaseConfig` object below with your own Firebase Project keys when hosting yourself.
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'gestor-atividades-saas';
-    let firebaseConfig = {};
-    if (typeof __firebase_config !== 'undefined') {
-        firebaseConfig = JSON.parse(__firebase_config);
-    } else {
-        // Fallback for independent hosting (Insert your Firebase Config here)
-        firebaseConfig = {
-            // apiKey: "YOUR_API_KEY",
-            // authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            // projectId: "YOUR_PROJECT_ID",
-            // storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            // messagingSenderId: "YOUR_SENDER_ID",
-            // appId: "YOUR_APP_ID"
-        };
-    }
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    window.firebaseAuth = auth;
-    window.firebaseDb = db;
-    window.EmailAuthProvider = EmailAuthProvider;
-    window.reauthenticateWithCredential = reauthenticateWithCredential;
-    
-    // Auth Listener
-    onAuthStateChanged(auth, (user) => {
-      const authScreen = document.getElementById('authScreen');
-      const appScreen = document.getElementById('appScreen');
-      
-      if (user) {
-        // User logged in
-        authScreen.classList.add('hidden');
-        appScreen.classList.remove('hidden');
-        window.userEmail = user.email;
-        document.getElementById('userEmailDisplay').textContent = window.userEmail;
-        listenToCompetences();
-      } else {
-        // User logged out
-        authScreen.classList.remove('hidden');
-        appScreen.classList.add('hidden');
-        if (window.competencesUnsubscribe) {
-            window.competencesUnsubscribe();
-        }
-      }
-    });
-
-    // Validates password complexity
-    function isStrongPassword(password) {
-        // Min 6 chars, 1 uppercase, 1 number, 1 special character
-        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-        return regex.test(password);
-    }
-
-    window.doLogin = async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('authEmail').value;
-        const pass = document.getElementById('authPass').value;
-        try {
-            await signInWithEmailAndPassword(auth, email, pass);
-            showToast("Login realizado com sucesso!", "success");
-        } catch (err) {
-            showToast("Erro no login: Credenciais inválidas.", "error");
-        }
-    };
-
-    window.doRegister = async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('authEmail').value;
-        const pass = document.getElementById('authPass').value;
-        
-        if (!isStrongPassword(pass)) {
-            showToast("A senha deve conter no mínimo 6 caracteres, 1 letra maiúscula, 1 número e 1 símbolo especial.", "error");
-            return;
-        }
-
-        try {
-            await createUserWithEmailAndPassword(auth, email, pass);
-            showToast("Conta criada com sucesso!", "success");
-        } catch (err) {
-            showToast("Erro no cadastro: " + err.message, "error");
-        }
-    };
-
-    window.doLogout = async () => {
-        await signOut(auth);
-        appData.competences = {};
-        renderCompetenceSelector();
-        showToast("Sessão encerrada.", "info");
-    };
-
-    // Database Sync
-    function listenToCompetences() {
-        if (!auth.currentUser) return;
-        
-        // RULE 1: Strict Paths -> /artifacts/{appId}/users/{userId}/{collectionName}
-        const colRef = collection(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'competences');
-        
-        // RULE 2: No Complex Queries -> Fetch all, sort in memory
-        window.competencesUnsubscribe = onSnapshot(colRef, (snapshot) => {
-            appData.competences = {};
-            snapshot.forEach(doc => {
-                appData.competences[doc.id] = doc.data();
-            });
-
-            // Initialize if completely empty for new user
-            if (Object.keys(appData.competences).length === 0) {
-                initializeDefaultCompetence();
-            } else {
-                if (!appData.competences[currentCompetenceId]) {
-                    // Sort by date to pick the latest
-                    const sorted = Object.values(appData.competences).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-                    currentCompetenceId = sorted[0].id;
-                }
-                renderCompetenceSelector();
-                renderApp();
-            }
-        }, (error) => {
-            console.error(error);
-            showToast("Erro ao sincronizar dados com a nuvem.", "error");
-        });
-    }
-
-    window.saveCompetenceToCloud = async (comp) => {
-        if (!auth.currentUser) return;
-        try {
-            const docRef = doc(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'competences', comp.id);
-            await setDoc(docRef, comp);
-        } catch(e) {
-            console.error("Save error", e);
-            showToast("Erro ao salvar.", "error");
-        }
-    };
-
-    window.deleteCompetenceFromCloud = async (compId) => {
-        if (!auth.currentUser) return;
-        try {
-            const docRef = doc(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'competences', compId);
-            await deleteDoc(docRef);
-            currentCompetenceId = '';
-            showToast("Competência excluída.", "success");
-        } catch(e) {
-            showToast("Erro ao excluir.", "error");
-        }
-    };
-  </script>
 </head>
-<body class="theme-bg min-h-screen flex flex-col antialiased pb-10">
+<body class="min-h-screen flex flex-col antialiased pb-10">
 
-  <!-- ==================== AUTH SCREEN ==================== -->
-  <div id="authScreen" class="min-h-screen flex items-center justify-center p-4">
-    <div class="theme-panel w-full max-w-md rounded-2xl p-8 border">
-      <div class="flex flex-col items-center mb-6">
-        <div class="p-3 bg-blue-600 text-white rounded-xl mb-3 shadow-lg shadow-blue-500/30">
+  <!-- ================= TELA DE LOGIN / CADASTRO COM ABAS ================= -->
+  <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-8 border border-slate-800 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-600 rounded-full blur-3xl opacity-20"></div>
+      
+      <div class="text-center mb-6 relative z-10">
+        <div class="inline-flex p-3 bg-blue-600/20 text-blue-500 rounded-xl mb-3 border border-blue-500/30">
           <i data-lucide="shield-check" class="w-8 h-8"></i>
         </div>
-        <h2 class="text-xl font-bold theme-text">Acesso SaaS Seguro</h2>
-        <p class="text-xs theme-text-muted mt-1 text-center">Gestor Operacional de Atividades<br>Seus dados são isolados e criptografados na nuvem.</p>
+        <h2 class="text-2xl font-bold text-white">Acesso SaaS Seguro</h2>
+        <p class="text-sm text-slate-400 mt-1">Seus dados são isolados e criptografados na nuvem.</p>
       </div>
-      
-      <form class="space-y-4">
+
+      <!-- SELETOR DE ABAS -->
+      <div class="flex gap-2 mb-6 bg-slate-900 p-1 rounded-lg border border-slate-800 relative z-10">
+        <button onclick="setAuthMode('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow">Entrar</button>
+        <button onclick="setAuthMode('register')" id="tabRegister" class="flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all">Criar Conta</button>
+      </div>
+
+      <form id="authForm" onsubmit="handleAuthAction(event)" class="space-y-4 relative z-10">
+        <div id="authError" class="hidden bg-red-500/20 text-red-400 text-xs p-3 rounded-lg border border-red-500/30"></div>
+        
         <div>
-          <label class="block text-xs font-semibold theme-text mb-1">E-mail Corporativo</label>
-          <input type="email" id="authEmail" required class="w-full theme-input rounded-lg p-2 text-sm" placeholder="exemplo@empresa.com">
+          <label class="block text-xs font-semibold text-slate-300 mb-1">E-mail Corporativo</label>
+          <input type="email" id="authEmail" required class="w-full glass-input px-4 py-2.5 rounded-xl" placeholder="joao@empresa.com">
         </div>
         <div>
-          <label class="block text-xs font-semibold theme-text mb-1">Senha de Acesso</label>
-          <input type="password" id="authPass" required class="w-full theme-input rounded-lg p-2 text-sm" placeholder="••••••••">
-          <p class="text-[10px] theme-text-muted mt-1">Regra p/ Cadastro: Mín. 6 caracteres, 1 maiúscula, 1 número, 1 símbolo (@$!%*?&).</p>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Senha de Acesso</label>
+          <input type="password" id="authPassword" required class="w-full glass-input px-4 py-2.5 rounded-xl" placeholder="••••••••">
+          <p id="pwdHint" class="hidden text-[10px] text-slate-500 mt-1">Mínimo 6 caracteres, 1 Maiúscula, 1 Número, 1 Símbolo (@!$)</p>
         </div>
-        <div class="pt-2 flex flex-col gap-2">
-          <button onclick="window.doLogin(event)" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-lg shadow-lg shadow-blue-500/20 transition-all text-sm">Entrar</button>
-          <button onclick="window.doRegister(event)" class="w-full bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700 font-medium py-2 rounded-lg transition-all text-sm border theme-border">Criar Nova Conta</button>
-        </div>
+
+        <button type="submit" id="authActionBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg shadow-blue-900/50 mt-2">
+          Entrar no Sistema
+        </button>
       </form>
     </div>
   </div>
 
-  <!-- ==================== MAIN APP SCREEN ==================== -->
-  <div id="appScreen" class="hidden flex-col w-full min-h-screen">
-    
-    <!-- TOP NAVBAR -->
-    <header class="theme-header sticky top-0 z-30 border-b px-4 lg:px-8 py-3 shadow-sm">
-      <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-        
-        <!-- Logo -->
+  <!-- ================= APLICATIVO PRINCIPAL ================= -->
+  <div id="appContainer" class="hidden flex-1 flex-col">
+    <!-- TOP HEADER -->
+    <header class="glass-panel sticky top-0 z-30 px-4 lg:px-8 py-3">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <div class="p-2.5 bg-blue-600 text-white rounded-xl shadow-md shadow-blue-500/20">
-            <i data-lucide="cloud" class="w-5 h-5"></i>
+          <div class="p-2.5 bg-blue-600/20 text-blue-500 rounded-xl border border-blue-500/30">
+            <i data-lucide="cloud" class="w-6 h-6"></i>
           </div>
           <div>
-            <h1 class="font-bold text-lg theme-text leading-tight flex items-center gap-2">
-              Gestor Executivo SaaS
-              <span class="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30 rounded-full font-bold uppercase tracking-wider">Online</span>
+            <h1 class="font-bold text-lg leading-tight flex items-center gap-2">
+              Gestor Operacional Nuvem
+              <span class="text-xs px-2 py-0.5 bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 rounded-full font-normal" id="userEmailDisplay">Logado</span>
             </h1>
-            <p class="text-xs theme-text-muted flex items-center gap-1">
-              <i data-lucide="user" class="w-3 h-3"></i> <span id="userEmailDisplay"></span>
-            </p>
           </div>
-        </div>
-
-        <!-- SELETOR DE COMPETÊNCIA -->
-        <div class="flex items-center gap-2 bg-slate-200/50 dark:bg-slate-900/90 p-1.5 rounded-xl border theme-border shadow-inner">
-          <div class="flex items-center gap-1.5 px-2 theme-text-muted text-xs font-semibold uppercase tracking-wider hidden sm:flex">
-            <i data-lucide="calendar" class="w-4 h-4 text-blue-500"></i> Competência:
-          </div>
-          <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-white dark:bg-slate-800 theme-text font-semibold text-sm rounded-lg px-3 py-1.5 border theme-border focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer min-w-[160px]">
-          </select>
-          
-          <button onclick="openNewCompetenceModal()" title="Criar Nova" class="bg-blue-600 hover:bg-blue-500 text-white p-1.5 rounded-lg transition-colors">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-          </button>
-
-          <div class="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
-
-          <button id="toggleLockBtn" onclick="toggleCompetenceLock()" title="Encerrar/Reabrir" class="bg-amber-100 hover:bg-amber-200 text-amber-700 dark:bg-amber-600/20 dark:hover:bg-amber-600/30 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5">
-            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-            <span id="lockBtnText" class="hidden md:inline">Encerrar</span>
-          </button>
-          
-          <button onclick="promptDeleteCompetence()" title="Excluir Competência" class="bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-500/20 dark:hover:bg-red-500/30 dark:text-red-400 border border-red-300 dark:border-red-500/30 p-1.5 rounded-lg text-xs transition-colors">
-            <i data-lucide="trash-2" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <!-- Global Actions -->
-        <div class="flex items-center gap-2">
-          <button onclick="toggleTheme()" class="theme-input px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-800 transition shadow-sm">
-            <i data-lucide="moon" id="themeIcon" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline" id="themeText">Tema</span>
-          </button>
-          <button onclick="exportStyledExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition shadow-lg shadow-emerald-600/20">
-            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-            <span class="hidden lg:inline">Excel</span>
-          </button>
-          <button onclick="window.doLogout()" title="Sair" class="theme-input p-1.5 rounded-lg text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition border-none shadow-none">
-            <i data-lucide="log-out" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-      </div>
-    </header>
-
-    <main class="max-w-[1400px] mx-auto px-4 lg:px-8 mt-6 flex-1 w-full space-y-6">
-
-      <!-- BANNER DA COMPETÊNCIA -->
-      <div id="competenceBanner" class="p-3 rounded-xl border flex items-center justify-between transition-all">
-        <div class="flex items-center gap-3">
-          <span id="competenceStatusBadge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider"></span>
-          <span id="competenceBannerText" class="text-xs theme-text hidden sm:inline"></span>
-        </div>
-        <div class="text-[10px] theme-text-muted font-mono uppercase tracking-widest" id="competenceDateInfo"></div>
-      </div>
-
-      <!-- CARDS MENSURAÇÃO -->
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div class="theme-panel p-4 rounded-xl flex flex-col border-l-4 border-blue-500">
-          <span class="text-xs font-semibold theme-text-muted uppercase">Total Tarefas</span>
-          <span id="metricTotal" class="text-2xl font-bold theme-text mt-1">0</span>
-        </div>
-        <div class="theme-panel p-4 rounded-xl flex flex-col border-l-4 border-emerald-500">
-          <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase">Concluído</span>
-          <span id="metricConcluido" class="text-2xl font-bold theme-text mt-1">0</span>
-        </div>
-        <div class="theme-panel p-4 rounded-xl flex flex-col border-l-4 border-yellow-500">
-          <span class="text-xs font-semibold text-yellow-600 dark:text-yellow-400 uppercase">Em Andamento</span>
-          <span id="metricAndamento" class="text-2xl font-bold theme-text mt-1">0</span>
-        </div>
-        <div class="theme-panel p-4 rounded-xl flex flex-col border-l-4 border-orange-500">
-          <span class="text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase">Em Espera</span>
-          <span id="metricEspera" class="text-2xl font-bold theme-text mt-1">0</span>
-        </div>
-        <div class="theme-panel p-4 rounded-xl flex flex-col border-l-4 border-red-500 col-span-2 md:col-span-1">
-          <span class="text-xs font-semibold text-red-600 dark:text-red-400 uppercase">Não Houve</span>
-          <span id="metricNaoHouve" class="text-2xl font-bold theme-text mt-1">0</span>
-        </div>
-      </div>
-
-      <!-- AÇÕES E BUSCA -->
-      <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        <div class="flex items-center gap-2 flex-1 max-w-md relative">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 theme-text-muted"></i>
-          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade ou anotação..." class="w-full pl-9 pr-3 py-2 text-sm rounded-xl theme-input">
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition shadow-lg shadow-blue-600/20">
-            <i data-lucide="plus-circle" class="w-4 h-4"></i>
-            Nova Atividade
+          <button onclick="toggleTheme()" class="p-2 glass-input rounded-xl hover:bg-blue-500/20 transition" title="Alternar Tema">
+            <i data-lucide="moon" id="themeIcon" class="w-4 h-4"></i>
           </button>
-
-          <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-1 hidden sm:block"></div>
-
-          <div class="bg-slate-200 dark:bg-slate-900/80 p-1 rounded-xl border theme-border flex items-center">
-            <button id="viewTableBtn" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-xs font-medium transition bg-blue-600 text-white shadow-sm">
-              <i data-lucide="table" class="w-3.5 h-3.5 inline mr-1"></i> Tabela
-            </button>
-            <button id="viewKanbanBtn" onclick="setView('kanban')" class="px-3 py-1.5 rounded-lg text-xs font-medium transition theme-text-muted hover:theme-text">
-              <i data-lucide="kanban" class="w-3.5 h-3.5 inline mr-1"></i> Kanban
-            </button>
+          <div class="flex items-center gap-2 p-1.5 rounded-xl border glass-input shadow-inner">
+            <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-semibold text-sm px-2 py-1 outline-none cursor-pointer"></select>
+            <button onclick="openNewCompetenceModal()" class="bg-blue-600 text-white p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            <button onclick="toggleCompetenceLock()" class="bg-amber-600 text-white p-1.5 rounded-lg"><i data-lucide="lock" class="w-4 h-4"></i></button>
+            <button onclick="confirmDeleteCompetence()" class="bg-red-600 text-white p-1.5 rounded-lg" title="Apagar Mês"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
-
-          <button onclick="openAIModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition shadow-lg shadow-purple-600/20">
-            <i data-lucide="sparkles" class="w-4 h-4"></i>
-            Assistente IA
+          <button onclick="logout()" class="p-2 glass-input text-red-400 hover:bg-red-500/20 rounded-xl transition" title="Sair do Sistema">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
           </button>
         </div>
       </div>
+    </header>
 
-      <!-- TABELA VIEW -->
-      <div id="tableView" class="theme-panel rounded-xl overflow-hidden">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex-1 w-full space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="relative w-full max-w-md">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl glass-input">
+        </div>
+        <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 shadow-lg">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i> Adicionar Tarefa
+        </button>
+      </div>
+
+      <div class="glass-panel rounded-xl overflow-hidden shadow-2xl">
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
+          <table class="w-full text-left text-xs">
             <thead>
-              <tr class="bg-slate-100 dark:bg-slate-900/90 theme-text-muted font-semibold uppercase tracking-wider border-b theme-border">
-                <th scope="col" class="py-4 px-4 w-12 text-center">#</th>
-                <th scope="col" class="py-4 px-4 min-w-[200px]">ATIVIDADES</th>
-                <th scope="col" class="py-4 px-4 min-w-[140px]">PRAZOS</th>
-                <th scope="col" class="py-4 px-4 min-w-[150px]">SITUAÇÃO</th>
-                <th scope="col" class="py-4 px-4 min-w-[180px]">DATA EXECUÇÃO</th>
-                <th scope="col" class="py-4 px-4 min-w-[320px]">ANOTAÇÕES REFERENTE A CADA ATIVIDADE</th>
-                <th scope="col" class="py-4 px-4 w-16 text-center"><i data-lucide="trash-2" class="w-4 h-4 mx-auto"></i></th>
+              <tr class="font-semibold uppercase tracking-wider border-b border-slate-700/50">
+                <th class="py-3 px-4 w-12">#</th>
+                <th class="py-3 px-4 min-w-[200px]">ATIVIDADE</th>
+                <th class="py-3 px-4 min-w-[150px]">SITUAÇÃO</th>
+                <th class="py-3 px-4 min-w-[180px]">DATA EXECUÇÃO</th>
+                <th class="py-3 px-4 min-w-[320px]">ANOTAÇÕES (Auto-Propaga)</th>
               </tr>
             </thead>
-            <tbody id="tasksTableBody" class="divide-y theme-border font-medium theme-text">
-            </tbody>
+            <tbody id="tasksTableBody" class="divide-y divide-slate-700/50 font-medium"></tbody>
           </table>
         </div>
       </div>
-
-      <!-- KANBAN VIEW -->
-      <div id="kanbanView" class="hidden grid grid-cols-1 md:grid-cols-4 gap-4">
-        <!-- Columns injected via JS -->
-      </div>
-
     </main>
-
-    <!-- NOTAS GERAIS BUTTON -->
-    <button onclick="toggleNotesPanel()" class="fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-full shadow-2xl shadow-blue-900/50 transition-transform hover:scale-105 flex items-center justify-center group">
-      <i data-lucide="sticky-note" class="w-6 h-6"></i>
-      <span class="absolute right-full mr-4 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-slate-700 shadow-lg">Anotações da Competência</span>
-    </button>
   </div>
 
-  <!-- PAINEL LATERAL DE NOTAS -->
-  <div id="notesPanel" class="fixed top-0 right-0 h-full w-full sm:w-[400px] theme-panel border-l shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
-    <div class="p-4 border-b theme-border flex items-center justify-between theme-header">
-      <h3 class="text-base font-bold theme-text flex items-center gap-2">
-        <i data-lucide="book-open" class="w-5 h-5 text-blue-500"></i>
-        Notas Gerais da Competência
-      </h3>
-      <button onclick="toggleNotesPanel()" class="p-2 theme-text-muted hover:theme-text theme-hover rounded-lg transition">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-    </div>
-    <div class="p-4 flex-1 flex flex-col theme-bg">
-      <div class="flex items-center gap-2 mb-3 bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20 px-3 py-2 rounded-lg text-[11px] shadow-sm">
-        <i data-lucide="info" class="w-4 h-4 shrink-0"></i>
-        <span>Anotações vinculadas a este mês. Salvo e sincronizado na nuvem automaticamente.</span>
-      </div>
-      <textarea id="generalNotesArea" oninput="updateGeneralNotes(this.value)" class="flex-1 w-full bg-white dark:bg-slate-950/50 border border-slate-200 dark:border-slate-700/50 rounded-xl p-4 text-sm theme-text resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-inner custom-scrollbar" placeholder="Digite as suas anotações livres, rascunhos, lembretes..."></textarea>
-    </div>
-  </div>
-
-  <!-- MODAL: AUTENTICAÇÃO P/ AÇÕES DESTRUTIVAS -->
-  <div id="customPromptModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
-    <div class="theme-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform" id="promptModalContent">
-      <div class="flex items-center gap-3 mb-2 text-red-500">
-        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
-        <h3 id="promptTitle" class="text-lg font-bold">Atenção</h3>
-      </div>
-      <p id="promptMsg" class="text-sm theme-text-muted mb-4"></p>
-      <input type="password" id="promptInput" class="w-full theme-input rounded-xl p-2 mb-4 hidden" placeholder="Digite a sua senha de acesso...">
+  <div id="newCompetenceModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-6">
+      <h3 class="text-base font-bold mb-4">Nova Competência (Mês)</h3>
+      <input type="text" id="newCompetenceId" required placeholder="Ex: 11-12/2026" class="w-full glass-input text-xs px-3 py-2 rounded-xl mb-4">
       <div class="flex justify-end gap-2">
-        <button onclick="closeCustomPrompt()" class="px-4 py-2 text-sm font-medium theme-text-muted theme-hover rounded-xl border theme-border">Cancelar</button>
-        <button id="promptConfirmBtn" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-500 rounded-xl shadow-lg">Confirmar</button>
+        <button onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs glass-input rounded-xl">Cancelar</button>
+        <button onclick="handleCreateCompetence()" class="px-4 py-2 text-xs text-white bg-blue-600 rounded-xl">Criar</button>
       </div>
     </div>
   </div>
-
-  <!-- MODAL: NOVA COMPETÊNCIA -->
-  <div id="newCompetenceModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="theme-panel w-full max-w-md rounded-2xl p-6 shadow-2xl">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold theme-text flex items-center gap-2">
-          <i data-lucide="folder-plus" class="w-5 h-5 text-blue-500"></i>
-          Criar Nova Competência
-        </h3>
-        <button onclick="closeModal('newCompetenceModal')" class="theme-text-muted hover:theme-text"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <form onsubmit="handleCreateCompetence(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold theme-text mb-1">Nome / Código da Competência</label>
-          <input type="text" id="newCompetenceId" required placeholder="Ex: 11 ATIVIDADES 10-112026" class="w-full theme-input p-2 rounded-xl text-sm">
-        </div>
-        <div class="bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border theme-border">
-          <label class="flex items-center gap-2 text-xs theme-text font-medium cursor-pointer">
-            <input type="checkbox" id="clonePreviousTasks" checked class="rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500 w-4 h-4">
-            Copiar estrutura de tarefas da competência atual
-          </label>
-        </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs font-medium theme-text-muted theme-hover border theme-border rounded-xl">Cancelar</button>
-          <button type="submit" class="px-4 py-2 text-xs font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg shadow-blue-500/20">Criar Competência</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: ADICIONAR TAREFA -->
-  <div id="taskModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="theme-panel w-full max-w-lg rounded-2xl p-6 shadow-2xl">
-      <div class="flex items-center justify-between mb-4">
-        <h3 id="modalTaskTitle" class="text-base font-bold theme-text flex items-center gap-2">
-          <i data-lucide="plus" class="w-5 h-5 text-blue-500"></i>
-          Nova Atividade
-        </h3>
-        <button onclick="closeModal('taskModal')" class="theme-text-muted hover:theme-text"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <form onsubmit="handleSaveTask(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold theme-text mb-1">Nome da Atividade *</label>
-          <input type="text" id="taskName" required class="w-full theme-input p-2 rounded-xl text-sm">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold theme-text mb-1">Prazo / Vencimento</label>
-            <input type="text" id="taskDeadline" class="w-full theme-input p-2 rounded-xl text-sm">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold theme-text mb-1">Situação *</label>
-            <select id="taskStatus" required class="w-full theme-input p-2 rounded-xl text-sm">
-              <option value="CONCLUÍDO">CONCLUÍDO</option>
-              <option value="EM ANDAMENTO">EM ANDAMENTO</option>
-              <option value="EM ESPERA">EM ESPERA</option>
-              <option value="NÃO HOUVE">NÃO HOUVE</option>
-            </select>
-          </div>
-        </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('taskModal')" class="px-4 py-2 text-xs font-medium theme-text-muted theme-hover border theme-border rounded-xl">Cancelar</button>
-          <button type="submit" class="px-4 py-2 text-xs font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg">Adicionar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: IA ASSISTANT -->
-  <div id="aiModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="theme-panel w-full max-w-2xl rounded-2xl p-6 shadow-2xl flex flex-col max-h-[90vh] border-purple-500/30">
-      <div class="flex items-center justify-between pb-3 border-b theme-border">
-        <div class="flex items-center gap-2">
-          <div class="p-2 bg-purple-100 text-purple-600 dark:bg-purple-600/20 dark:text-purple-400 rounded-lg">
-            <i data-lucide="sparkles" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold theme-text">Assistente de Inteligência Operacional</h3>
-            <p class="text-[11px] theme-text-muted">Análise automática via IA Gemini</p>
-          </div>
-        </div>
-        <button onclick="closeModal('aiModal')" class="theme-text-muted hover:theme-text"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-
-      <div class="my-3 p-3 bg-slate-50 dark:bg-slate-900/80 rounded-xl border theme-border flex items-center justify-between gap-3">
-        <div class="flex-1">
-          <label class="block text-[11px] font-medium theme-text-muted mb-1">Chave de API Gemini (Opcional):</label>
-          <input type="password" id="geminiApiKey" placeholder="API Key do Google Studio..." class="w-full theme-input p-2 rounded-lg text-xs">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2 mb-3">
-        <button onclick="runAIAssistant('resumo')" class="p-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl text-xs font-medium text-purple-600 dark:text-purple-300 border theme-border text-left transition flex items-center gap-2 shadow-sm">
-          <i data-lucide="file-text" class="w-4 h-4"></i> Resumo
-        </button>
-        <button onclick="runAIAssistant('pendencias')" class="p-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl text-xs font-medium text-amber-600 dark:text-amber-300 border theme-border text-left transition flex items-center gap-2 shadow-sm">
-          <i data-lucide="alert-circle" class="w-4 h-4"></i> Pendências
-        </button>
-        <button onclick="runAIAssistant('email')" class="p-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl text-xs font-medium text-blue-600 dark:text-blue-300 border theme-border text-left transition flex items-center gap-2 shadow-sm">
-          <i data-lucide="mail" class="w-4 h-4"></i> Minuta E-mail
-        </button>
-      </div>
-
-      <div class="flex-1 bg-slate-100 dark:bg-slate-950/80 rounded-xl p-4 border theme-border overflow-y-auto text-xs theme-text leading-relaxed font-mono min-h-[200px]" id="aiOutput">
-        Selecione uma análise para a IA examinar as tarefas...
-      </div>
-
-      <div class="mt-3 flex justify-end">
-        <button onclick="closeModal('aiModal')" class="px-4 py-2 text-xs font-medium theme-text-muted theme-hover border theme-border rounded-xl">Fechar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOAST CONTAINER -->
-  <div id="toastContainer" class="fixed bottom-5 right-5 z-[70] flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
-    // --- UI/UX GLOBALS ---
+    let currentUser = null;
     let appData = { competences: {} };
     let currentCompetenceId = '';
-    let currentView = 'table';
-    let promptCallback = null;
-
-    const DEFAULT_TASK_TEMPLATE = [
-      { id: '1', activity: 'ECONET', deadline: '1º DIA DO MÊS', status: 'CONCLUÍDO', execDate: '', notes: '' },
-      { id: '2', activity: 'PROVISÕES', deadline: 'APÓS 5º UTIL', status: 'CONCLUÍDO', execDate: '', notes: 'QUANDO FOR FAZER PROVISÃO DO MÊS 12/2026 E 13º ALTERAR A PARAMETRIZAÇÃO' },
-      { id: '3', activity: 'ATUALIZAR O DRIVE DA CONTABILIDADE', deadline: 'APÓS PROVISÕES', status: 'CONCLUÍDO', execDate: '', notes: '' },
-      { id: '4', activity: 'PLANILHA DE BENEFC', deadline: 'APÓS 5º UTIL', status: 'CONCLUÍDO', execDate: '', notes: '' },
-      { id: '5', activity: 'SENAI', deadline: 'APÓS 10º DIA', status: 'CONCLUÍDO', execDate: '', notes: '' },
-      { id: '6', activity: 'AUTONOMO', deadline: 'APÓS 5º UTIL', status: 'EM ESPERA', execDate: '', notes: '' },
-      { id: '7', activity: 'ISBET', deadline: 'APÓS 15º DIA', status: 'CONCLUÍDO', execDate: '', notes: '' },
-      { id: '8', activity: 'ABRE SP', deadline: '25º DIA', status: 'CONCLUÍDO', execDate: '', notes: 'ESPECIFICAR NO EMAIL (SERTTEL/MOBILIDADE/SP INDUSTR)' },
-      { id: '9', activity: 'ABRE', deadline: '25º DIA', status: 'CONCLUÍDO', execDate: '', notes: 'ESPECIFICAR NO EMAIL (SERTTEL/MOBILIDADE/SP INDUSTR)' },
-      { id: '10', activity: 'CIEE', deadline: 'SEM PREVISÃO', status: 'NÃO HOUVE', execDate: 'XXXXXXXXXXXXXXXXXXXXXXXX text', notes: 'XXXXXXXXXXXXXXXXXXXXXXXX text' }
-    ];
+    let authMode = 'login'; // 'login' ou 'register'
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      initTheme();
+      const savedSession = localStorage.getItem('saas_session');
+      if(savedSession) {
+        currentUser = JSON.parse(savedSession);
+        loginSuccess();
+      }
     });
 
-    // --- THEME SWITCHER ---
-    function initTheme() {
-        if (localStorage.theme === 'light') {
-            document.documentElement.classList.remove('dark');
-            document.getElementById('themeText').innerText = 'Modo Claro';
-            document.getElementById('themeIcon').setAttribute('data-lucide', 'sun');
-        } else {
-            document.documentElement.classList.add('dark');
-            document.getElementById('themeText').innerText = 'Modo Escuro';
-            document.getElementById('themeIcon').setAttribute('data-lucide', 'moon');
-        }
-        lucide.createIcons();
-    }
-    
-    function toggleTheme() {
-        if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            localStorage.theme = 'light';
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.theme = 'dark';
-        }
-        initTheme();
-    }
-
-    // --- TOAST NOTIFICATIONS ---
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
+    // MUDAR ABAS (ENTRAR / CADASTRAR)
+    function setAuthMode(mode) {
+      authMode = mode;
+      const tabL = document.getElementById('tabLogin');
+      const tabR = document.getElementById('tabRegister');
+      const btn = document.getElementById('authActionBtn');
+      const hint = document.getElementById('pwdHint');
+      const err = document.getElementById('authError');
       
-      let style = 'bg-slate-800 text-white border-slate-700';
-      if(type === 'success') style = 'bg-emerald-600 text-white border-emerald-700';
-      if(type === 'error') style = 'bg-red-600 text-white border-red-700';
+      err.classList.add('hidden'); // Limpa erros ao trocar de aba
 
-      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl text-xs font-medium transition-all duration-300 opacity-0 translate-y-4 ${style}`;
-      toast.innerHTML = `<span>${message}</span>`;
-      container.appendChild(toast);
-      
-      requestAnimationFrame(() => {
-        toast.classList.remove('opacity-0', 'translate-y-4');
-      });
-      setTimeout(() => {
-        toast.classList.add('opacity-0');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    // --- CUSTOM PROMPT MODAL ---
-    function showCustomPrompt(title, msg, showInput, callback) {
-        document.getElementById('promptTitle').textContent = title;
-        document.getElementById('promptMsg').textContent = msg;
-        const input = document.getElementById('promptInput');
-        if(showInput) {
-            input.classList.remove('hidden');
-            input.value = '';
-        } else {
-            input.classList.add('hidden');
-        }
-        
-        promptCallback = callback;
-        const modal = document.getElementById('customPromptModal');
-        modal.classList.remove('hidden');
-        requestAnimationFrame(() => {
-            modal.classList.remove('opacity-0');
-            document.getElementById('promptModalContent').classList.remove('scale-95');
-        });
-        if(showInput) input.focus();
-    }
-
-    function closeCustomPrompt() {
-        const modal = document.getElementById('customPromptModal');
-        modal.classList.add('opacity-0');
-        document.getElementById('promptModalContent').classList.add('scale-95');
-        setTimeout(() => modal.classList.add('hidden'), 200);
-        promptCallback = null;
-    }
-
-    document.getElementById('promptConfirmBtn').addEventListener('click', () => {
-        const val = document.getElementById('promptInput').value;
-        if (promptCallback) promptCallback(val);
-        closeCustomPrompt();
-    });
-
-    // --- CORE LOGIC ---
-    function initializeDefaultCompetence() {
-      const initialCompId = '10 ATIVIDADES 09-102026';
-      const comp = {
-        id: initialCompId,
-        status: 'OPEN',
-        createdAt: new Date().toISOString(),
-        tasks: JSON.parse(JSON.stringify(DEFAULT_TASK_TEMPLATE)),
-        generalNotes: ''
-      };
-      if (window.saveCompetenceToCloud) window.saveCompetenceToCloud(comp);
-      currentCompetenceId = initialCompId;
-    }
-
-    function switchCompetence(compId) {
-      if (appData.competences[compId]) {
-        currentCompetenceId = compId;
-        renderApp();
+      if(mode === 'login') {
+        tabL.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow";
+        tabR.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
+        btn.textContent = "Entrar no Sistema";
+        hint.classList.add('hidden');
+      } else {
+        tabR.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow";
+        tabL.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
+        btn.textContent = "Finalizar Cadastro";
+        hint.classList.remove('hidden');
       }
     }
 
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        icon.setAttribute('data-lucide', 'sun');
+      } else {
+        html.classList.add('dark');
+        icon.setAttribute('data-lucide', 'moon');
+      }
+      lucide.createIcons();
+    }
+
+    function isValidPassword(pwd) {
+      const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+      return regex.test(pwd);
+    }
+
+    function handleAuthAction(e) {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value;
+      const pwd = document.getElementById('authPassword').value;
+      const errorDiv = document.getElementById('authError');
+      const userKey = `cloud_db_${email}`;
+      let db = localStorage.getItem(userKey);
+
+      if (authMode === 'register') {
+        if (!isValidPassword(pwd)) {
+          errorDiv.textContent = "Erro: A senha precisa ter mínimo 6 caracteres, 1 Maiúscula, 1 Número e 1 Símbolo especial.";
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+        if (db) {
+          errorDiv.textContent = "Erro: Este e-mail já está cadastrado. Vá para a aba 'Entrar'.";
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+        const novoUser = { email, password: pwd, data: { competences: {} } };
+        localStorage.setItem(userKey, JSON.stringify(novoUser));
+        currentUser = { email, userKey, pwd };
+      } else {
+        if (!db) {
+          errorDiv.textContent = "Conta não encontrada! Vá para a aba 'Criar Conta' para se cadastrar.";
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+        db = JSON.parse(db);
+        if (db.password !== pwd) {
+          errorDiv.textContent = "Senha incorreta!";
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+        currentUser = { email, userKey, pwd };
+      }
+
+      errorDiv.classList.add('hidden');
+      localStorage.setItem('saas_session', JSON.stringify(currentUser));
+      loginSuccess();
+    }
+
+    function loginSuccess() {
+      document.getElementById('authScreen').classList.add('hidden');
+      document.getElementById('appContainer').classList.remove('hidden');
+      document.getElementById('appContainer').classList.add('flex');
+      document.getElementById('userEmailDisplay').textContent = currentUser.email;
+      loadCloudData();
+    }
+
+    function logout() {
+      localStorage.removeItem('saas_session');
+      window.location.reload();
+    }
+
+    function loadCloudData() {
+      const db = JSON.parse(localStorage.getItem(currentUser.userKey));
+      appData = db.data;
+
+      if (!appData.competences || Object.keys(appData.competences).length === 0) {
+        const initial = '10 ATIVIDADES 09-10';
+        appData.competences = {
+          [initial]: { id: initial, status: 'OPEN', createdAt: new Date().toISOString(), tasks: [] }
+        };
+        ['ECONET', 'PROVISÕES', 'SENAI', 'ISBET', 'CIEE'].forEach((name, i) => {
+          appData.competences[initial].tasks.push({
+            id: String(i), activity: name, status: 'EM ESPERA', execDate: '', notes: ''
+          });
+        });
+        saveCloudData();
+      }
+
+      currentCompetenceId = Object.keys(appData.competences)[0];
+      renderCompetenceSelector();
+      renderApp();
+    }
+
+    function saveCloudData() {
+      const db = JSON.parse(localStorage.getItem(currentUser.userKey));
+      db.data = appData;
+      localStorage.setItem(currentUser.userKey, JSON.stringify(db));
+    }
+
+    function switchCompetence(val) { currentCompetenceId = val; renderApp(); }
+
     function renderCompetenceSelector() {
-      const select = document.getElementById('competenceSelect');
-      select.innerHTML = '';
+      const sel = document.getElementById('competenceSelect');
+      sel.innerHTML = '';
+      Object.keys(appData.competences).forEach(id => {
+        const opt = document.createElement('option');
+        opt.value = id; opt.textContent = id;
+        if(id === currentCompetenceId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+    }
+
+    function confirmDeleteCompetence() {
+      const pwd = prompt("CYBERSEGURANÇA: Para apagar esta competência permanentemente, digite sua senha de login:");
+      if (pwd === null) return;
+      if (pwd !== currentUser.pwd) { alert("SENHA INCORRETA! Exclusão bloqueada."); return; }
       
-      const sortedKeys = Object.keys(appData.competences).sort((a, b) => {
-        return new Date(appData.competences[b].createdAt) - new Date(appData.competences[a].createdAt);
-      });
+      const keys = Object.keys(appData.competences);
+      if (keys.length <= 1) { alert("Você precisa ter no mínimo 1 competência."); return; }
 
-      sortedKeys.forEach(id => {
-        const comp = appData.competences[id];
-        const option = document.createElement('option');
-        option.value = id;
-        option.textContent = `${id} ${comp.status === 'LOCKED' ? '🔒' : '🔓'}`;
-        if (id === currentCompetenceId) option.selected = true;
-        select.appendChild(option);
-      });
-    }
-
-    function toggleCompetenceLock() {
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp) return;
-      comp.status = comp.status === 'LOCKED' ? 'OPEN' : 'LOCKED';
-      if (window.saveCompetenceToCloud) window.saveCompetenceToCloud(comp);
-    }
-
-    // EXCLUIR COMPETÊNCIA COM RE-AUTENTICAÇÃO (CYBERSEGURANÇA)
-    function promptDeleteCompetence() {
-        const comp = appData.competences[currentCompetenceId];
-        if (!comp) return;
-        
-        showCustomPrompt(
-            "Excluir Competência Definitivamente",
-            `Para apagar a competência "${comp.id}", por motivos de segurança, insira a sua senha de acesso ao sistema (a que você criou no cadastro).`,
-            true,
-            async (pwd) => {
-                if (!pwd) {
-                    showToast("Senha vazia. Ação cancelada.", "error");
-                    return;
-                }
-                
-                try {
-                    // Firebase Auth: Re-authenticate to ensure highest security for deletion
-                    const credential = window.EmailAuthProvider.credential(window.firebaseAuth.currentUser.email, pwd);
-                    await window.reauthenticateWithCredential(window.firebaseAuth.currentUser, credential);
-                    
-                    // Proceed with deletion if Auth succeeds
-                    if(window.deleteCompetenceFromCloud) window.deleteCompetenceFromCloud(comp.id);
-                } catch (error) {
-                    console.error(error);
-                    showToast("Senha incorreta. Exclusão de segurança abortada.", "error");
-                }
-            }
-        );
+      delete appData.competences[currentCompetenceId];
+      saveCloudData();
+      currentCompetenceId = Object.keys(appData.competences)[0];
+      renderCompetenceSelector();
+      renderApp();
+      alert("Competência apagada com sucesso e segurança!");
     }
 
     function renderApp() {
       const comp = appData.competences[currentCompetenceId];
-      if (!comp) return;
-
-      const isLocked = comp.status === 'LOCKED';
-      const banner = document.getElementById('competenceBanner');
-      const badge = document.getElementById('competenceStatusBadge');
-      const bannerText = document.getElementById('competenceBannerText');
-      const lockBtnText = document.getElementById('lockBtnText');
-
-      if (isLocked) {
-        banner.className = "p-3 rounded-xl border bg-amber-100/50 border-amber-300 dark:bg-amber-950/30 dark:border-amber-800/50 flex items-center justify-between";
-        badge.className = "px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-amber-200 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300 border border-amber-400 dark:border-amber-500/30";
-        badge.textContent = "Encerrada / Bloqueada";
-        bannerText.textContent = "Competência finalizada. Somente leitura.";
-        lockBtnText.textContent = "Reabrir";
-      } else {
-        banner.className = "p-3 rounded-xl border bg-emerald-100/50 border-emerald-300 dark:bg-emerald-950/30 dark:border-emerald-800/50 flex items-center justify-between";
-        badge.className = "px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-emerald-200 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-500/30";
-        badge.textContent = "Competência em Aberto";
-        bannerText.textContent = "Edição e alterações liberadas.";
-        lockBtnText.textContent = "Encerrar";
-      }
-
-      document.getElementById('competenceDateInfo').textContent = `ID: ${currentCompetenceId}`;
-
-      const generalNotesArea = document.getElementById('generalNotesArea');
-      generalNotesArea.value = comp.generalNotes || '';
-      generalNotesArea.disabled = isLocked;
-      if (isLocked) generalNotesArea.classList.add('opacity-50', 'cursor-not-allowed');
-      else generalNotesArea.classList.remove('opacity-50', 'cursor-not-allowed');
-
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      const filteredTasks = comp.tasks.filter(t => 
-        t.activity.toLowerCase().includes(search) || 
-        t.notes.toLowerCase().includes(search) ||
-        t.deadline.toLowerCase().includes(search)
-      );
-
-      const counts = { CONCLUÍDO: 0, 'EM ANDAMENTO': 0, 'EM ESPERA': 0, 'NÃO HOUVE': 0 };
-      comp.tasks.forEach(t => { if (counts[t.status] !== undefined) counts[t.status]++; });
-
-      document.getElementById('metricTotal').textContent = comp.tasks.length;
-      document.getElementById('metricConcluido').textContent = counts['CONCLUÍDO'];
-      document.getElementById('metricAndamento').textContent = counts['EM ANDAMENTO'];
-      document.getElementById('metricEspera').textContent = counts['EM ESPERA'];
-      document.getElementById('metricNaoHouve').textContent = counts['NÃO HOUVE'];
-
-      renderTable(filteredTasks, isLocked);
-      renderKanban(filteredTasks, isLocked);
-      lucide.createIcons();
-    }
-
-    function toggleNotesPanel() {
-      document.getElementById('notesPanel').classList.toggle('translate-x-full');
-    }
-
-    function updateGeneralNotes(value) {
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp || comp.status === 'LOCKED') return;
-      comp.generalNotes = value;
-      if (window.saveCompetenceToCloud) window.saveCompetenceToCloud(comp);
-    }
-
-    function autoResize(textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = textarea.scrollHeight + 'px';
-    }
-
-    // ALL INLINE EDITING FUNCTIONS
-    function renderTable(tasks, isLocked) {
       const tbody = document.getElementById('tasksTableBody');
       tbody.innerHTML = '';
-      if (tasks.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 theme-text-muted">Nenhuma atividade encontrada.</td></tr>`;
-        return;
-      }
-      tasks.forEach((task, index) => {
+      
+      comp.tasks.forEach((task, i) => {
         const tr = document.createElement('tr');
-        tr.className = "theme-hover transition border-b theme-border";
-        const statusClass = `status-${task.status.replace(/ /g, '-')}`;
-        
         tr.innerHTML = `
-          <td class="py-3 px-4 text-center theme-text-muted text-xs font-semibold">${index + 1}</td>
-          <td class="py-2 px-2">
-            <input type="text" value="${escapeHtml(task.activity || '')}" 
-                   onchange="updateTaskField('${task.id}', 'activity', this.value)" 
-                   ${isLocked ? 'disabled' : ''}
-                   class="inline-edit text-xs font-bold theme-text" placeholder="Nome...">
-          </td>
-          <td class="py-2 px-2">
-            <input type="text" value="${escapeHtml(task.deadline || '')}" 
-                   onchange="updateTaskField('${task.id}', 'deadline', this.value)" 
-                   ${isLocked ? 'disabled' : ''}
-                   class="inline-edit text-xs theme-text-muted" placeholder="Prazo...">
-          </td>
+          <td class="py-3 px-4">${i+1}</td>
+          <td class="py-3 px-4 font-bold">${task.activity}</td>
           <td class="py-3 px-4">
-            <select onchange="updateTaskStatus('${task.id}', this.value)" ${isLocked ? 'disabled' : ''} class="${statusClass} text-[11px] px-2 py-1.5 rounded-lg border focus:outline-none cursor-pointer">
-              <option value="CONCLUÍDO" ${task.status === 'CONCLUÍDO' ? 'selected' : ''}>CONCLUÍDO</option>
-              <option value="EM ANDAMENTO" ${task.status === 'EM ANDAMENTO' ? 'selected' : ''}>EM ANDAMENTO</option>
-              <option value="EM ESPERA" ${task.status === 'EM ESPERA' ? 'selected' : ''}>EM ESPERA</option>
-              <option value="NÃO HOUVE" ${task.status === 'NÃO HOUVE' ? 'selected' : ''}>NÃO HOUVE</option>
+            <select onchange="updateTask(this, '${task.id}', 'status')" class="glass-input p-1 rounded">
+              <option ${task.status==='CONCLUÍDO'?'selected':''}>CONCLUÍDO</option>
+              <option ${task.status==='EM ANDAMENTO'?'selected':''}>EM ANDAMENTO</option>
+              <option ${task.status==='EM ESPERA'?'selected':''}>EM ESPERA</option>
             </select>
           </td>
-          <td class="py-2 px-2">
-             <input type="text" value="${escapeHtml(task.execDate || '')}" 
-                    onchange="updateTaskField('${task.id}', 'execDate', this.value)" 
-                    ${isLocked ? 'disabled' : ''}
-                    class="inline-edit text-xs theme-text-muted" placeholder="Data...">
+          <td class="py-3 px-4">
+            <input type="text" value="${task.execDate}" onchange="updateTask(this, '${task.id}', 'execDate')" class="inline-textarea text-xs" placeholder="Ex: 10/10">
           </td>
-          <td class="py-2 px-2">
-             <textarea rows="1" oninput="autoResize(this)" onchange="updateTaskNotes('${task.id}', this.value)" 
-                       ${isLocked ? 'disabled' : ''} class="inline-edit text-xs w-full min-h-[32px] theme-text" placeholder="Escreva...">${escapeHtml(task.notes || '')}</textarea>
-          </td>
-          <td class="py-3 px-4 text-center">
-            <button onclick="deleteTask('${task.id}')" ${isLocked ? 'disabled' : ''} class="p-1 theme-text-muted hover:text-red-500 rounded ${isLocked ? 'opacity-30 cursor-not-allowed' : ''}"><i data-lucide="trash-2" class="w-4 h-4 mx-auto"></i></button>
+          <td class="py-3 px-4">
+            <textarea rows="1" onchange="propagateNotes('${task.activity}', this.value)" class="inline-textarea text-xs w-full">${task.notes}</textarea>
           </td>
         `;
         tbody.appendChild(tr);
       });
-      setTimeout(() => document.querySelectorAll('textarea.inline-edit').forEach(el => autoResize(el)), 50);
     }
 
-    function renderKanban(tasks, isLocked) {
-      const container = document.getElementById('kanbanView');
-      container.innerHTML = '';
-      const statuses = [
-        { key: 'CONCLUÍDO', color: 'emerald' },
-        { key: 'EM ANDAMENTO', color: 'yellow' },
-        { key: 'EM ESPERA', color: 'orange' },
-        { key: 'NÃO HOUVE', color: 'red' }
-      ];
-
-      statuses.forEach(st => {
-        const col = document.createElement('div');
-        col.className = "theme-panel rounded-xl p-4 flex flex-col shadow-sm";
-        const stTasks = tasks.filter(t => t.status === st.key);
-        
-        let html = `
-          <div class="flex items-center justify-between mb-3 pb-2 border-b theme-border">
-            <span class="text-xs font-bold text-${st.color}-600 dark:text-${st.color}-500 uppercase tracking-wider flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-${st.color}-500"></span> ${st.key}
-            </span>
-            <span class="text-[10px] bg-${st.color}-100 text-${st.color}-700 dark:bg-${st.color}-500/10 dark:text-${st.color}-400 px-2 py-0.5 rounded-full font-bold">${stTasks.length}</span>
-          </div>
-          <div class="space-y-3 flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, '${st.key}')">
-        `;
-        
-        stTasks.forEach(task => {
-          html += `
-            <div class="bg-white dark:bg-slate-800/80 border theme-border rounded-xl p-3 shadow-sm hover:border-blue-400 transition cursor-grab active:cursor-grabbing" draggable="${!isLocked}" ondragstart="event.dataTransfer.setData('text/plain', '${task.id}')">
-              <div class="flex justify-between items-start mb-1">
-                <h4 class="font-bold text-xs theme-text leading-tight">${escapeHtml(task.activity)}</h4>
-              </div>
-              ${task.deadline ? `<div class="text-[10px] theme-text-muted mb-2 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${escapeHtml(task.deadline)}</div>` : ''}
-              ${task.notes ? `<p class="text-[10px] theme-text line-clamp-2 bg-slate-50 dark:bg-slate-900/50 p-1.5 rounded border theme-border">${escapeHtml(task.notes)}</p>` : ''}
-            </div>
-          `;
-        });
-        html += `</div>`;
-        col.innerHTML = html;
-        container.appendChild(col);
-      });
+    function updateTask(el, id, field) {
+      const t = appData.competences[currentCompetenceId].tasks.find(x => x.id === id);
+      if(t) { t[field] = el.value; saveCloudData(); }
     }
 
-    function allowDrop(ev) { ev.preventDefault(); }
-    function drop(ev, newStatus) {
-      ev.preventDefault();
-      const taskId = ev.dataTransfer.getData('text/plain');
-      updateTaskStatus(taskId, newStatus);
-    }
+    function propagateNotes(activityName, newNote) {
+      const compTarget = appData.competences[currentCompetenceId];
+      const timeOfTarget = new Date(compTarget.createdAt).getTime();
 
-    function updateTaskStatus(taskId, newStatus) {
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp || comp.status === 'LOCKED') return;
-      const task = comp.tasks.find(t => t.id === taskId);
-      if (task) {
-        task.status = newStatus;
-        if(window.saveCompetenceToCloud) window.saveCompetenceToCloud(comp);
-      }
-    }
-
-    function updateTaskField(taskId, field, newValue) {
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp || comp.status === 'LOCKED') return;
-      const task = comp.tasks.find(t => t.id === taskId);
-      if (task) {
-        task[field] = newValue;
-        if(window.saveCompetenceToCloud) window.saveCompetenceToCloud(comp);
-      }
-    }
-
-    // --- AUTO-PROPAGATION OF NOTES ---
-    function updateTaskNotes(taskId, newNotes) {
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp || comp.status === 'LOCKED') return;
-      
-      const task = comp.tasks.find(t => t.id === taskId);
-      if (!task) return;
-      
-      const currentCreatedAt = new Date(comp.createdAt).getTime();
-      const activityName = task.activity;
-
-      // Update current and propagate to future competences
       Object.values(appData.competences).forEach(c => {
         const cTime = new Date(c.createdAt).getTime();
-        // Includes current competence and any created after it (chronological logic)
-        if (cTime >= currentCreatedAt) {
-          if (c.id === currentCompetenceId || c.status !== 'LOCKED') {
-            const targetTask = c.tasks.find(t => t.id === taskId || t.activity === activityName);
-            if (targetTask && targetTask.notes !== newNotes) {
-              targetTask.notes = newNotes;
-              if (window.saveCompetenceToCloud) window.saveCompetenceToCloud(c);
-            }
-          }
+        if (cTime >= timeOfTarget) {
+          const t = c.tasks.find(x => x.activity === activityName);
+          if (t) t.notes = newNote;
         }
       });
+      saveCloudData();
+      renderApp();
     }
 
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function openNewCompetenceModal() { openModal('newCompetenceModal'); }
 
-    function openNewCompetenceModal() {
-      document.getElementById('newCompetenceId').value = '';
-      openModal('newCompetenceModal');
-    }
+    function handleCreateCompetence() {
+      const newId = document.getElementById('newCompetenceId').value;
+      if(!newId) return;
+      
+      const clonedTasks = appData.competences[currentCompetenceId].tasks.map(t => ({
+        ...t, status: 'EM ESPERA', execDate: ''
+      }));
 
-    function handleCreateCompetence(e) {
-      e.preventDefault();
-      const newId = document.getElementById('newCompetenceId').value.trim();
-      const clone = document.getElementById('clonePreviousTasks').checked;
-
-      if (!newId) return;
-      if (appData.competences[newId]) {
-        showToast('Esta competência já existe.', 'error');
-        return;
-      }
-
-      let newTasks = [];
-      if (clone && currentCompetenceId && appData.competences[currentCompetenceId]) {
-        newTasks = appData.competences[currentCompetenceId].tasks.map(t => ({
-          ...t,
-          status: 'EM ESPERA',
-          execDate: '' // Clears date but keeps notes
-        }));
-      } else {
-        newTasks = JSON.parse(JSON.stringify(DEFAULT_TASK_TEMPLATE));
-      }
-
-      const newComp = {
-        id: newId,
-        status: 'OPEN',
-        createdAt: new Date().toISOString(),
-        tasks: newTasks,
-        generalNotes: ''
+      appData.competences[newId] = {
+        id: newId, status: 'OPEN', createdAt: new Date().toISOString(), tasks: clonedTasks
       };
-
-      if (window.saveCompetenceToCloud) window.saveCompetenceToCloud(newComp);
+      
       currentCompetenceId = newId;
+      saveCloudData();
       closeModal('newCompetenceModal');
-    }
-
-    function openAddTaskModal() {
-      const comp = appData.competences[currentCompetenceId];
-      if (comp && comp.status === 'LOCKED') {
-        showToast('Competência encerrada.', 'error'); return;
-      }
-      document.getElementById('taskId').value = '';
-      document.getElementById('taskName').value = '';
-      document.getElementById('taskDeadline').value = '';
-      document.getElementById('taskStatus').value = 'EM ESPERA';
-      openModal('taskModal');
-    }
-
-    function handleSaveTask(e) {
-      e.preventDefault();
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp || comp.status === 'LOCKED') return;
-
-      const activity = document.getElementById('taskName').value.trim();
-      const deadline = document.getElementById('taskDeadline').value.trim();
-      const status = document.getElementById('taskStatus').value;
-
-      if (!activity) return;
-
-      comp.tasks.push({ id: Date.now().toString(), activity, deadline, status, execDate: '', notes: '' });
-
-      if (window.saveCompetenceToCloud) window.saveCompetenceToCloud(comp);
-      closeModal('taskModal');
-    }
-
-    function deleteTask(id) {
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp || comp.status === 'LOCKED') return;
-
-      showCustomPrompt("Excluir Atividade", "Tem certeza que deseja apagar esta linha?", false, () => {
-          comp.tasks = comp.tasks.filter(t => t.id !== id);
-          if (window.saveCompetenceToCloud) window.saveCompetenceToCloud(comp);
-      });
-    }
-
-    function setView(view) {
-      currentView = view;
-      const table = document.getElementById('tableView');
-      const kanban = document.getElementById('kanbanView');
-      const btnTable = document.getElementById('viewTableBtn');
-      const btnKanban = document.getElementById('viewKanbanBtn');
-
-      if (view === 'table') {
-        table.classList.remove('hidden');
-        kanban.classList.add('hidden');
-        btnTable.className = "px-3 py-1.5 rounded-lg text-xs font-medium transition bg-blue-600 text-white shadow-sm";
-        btnKanban.className = "px-3 py-1.5 rounded-lg text-xs font-medium transition theme-text-muted hover:theme-text";
-      } else {
-        table.classList.add('hidden');
-        kanban.classList.remove('hidden');
-        btnTable.className = "px-3 py-1.5 rounded-lg text-xs font-medium transition theme-text-muted hover:theme-text";
-        btnKanban.className = "px-3 py-1.5 rounded-lg text-xs font-medium transition bg-blue-600 text-white shadow-sm";
-      }
-    }
-
-    function exportStyledExcel() {
-      const comp = appData.competences[currentCompetenceId];
-      if (!comp) return;
-
-      const getStyle = (st) => {
-        if (st === 'CONCLUÍDO') return 'background-color: #10b981; color: #ffffff; font-weight: bold; text-align: center;';
-        if (st === 'EM ANDAMENTO') return 'background-color: #f59e0b; color: #ffffff; font-weight: bold; text-align: center;';
-        if (st === 'EM ESPERA') return 'background-color: #f97316; color: #ffffff; font-weight: bold; text-align: center;';
-        return 'background-color: #ef4444; color: #ffffff; font-weight: bold; text-align: center;';
-      };
-
-      let excelHtml = `
-        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-        <head><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
-          <style>
-            th { background-color: #1e3a8a; color: #ffffff; font-family: Arial; font-size: 11pt; border: 1px solid #000; padding: 6px; }
-            td { font-family: Arial; font-size: 10pt; border: 1px solid #d1d5db; padding: 6px; vertical-align: middle; }
-            .h-main { background-color: #1d4ed8; color: white; font-weight: bold; text-align: center; font-size: 12pt; }
-            .h-sub { background-color: #1e40af; color: white; font-weight: bold; text-align: center; font-size: 10pt; }
-          </style>
-        </head><body><table>
-          <tr><th colspan="3" class="h-main">ATIVIDADES E TAREFAS</th><th class="h-main">DATA DE EXECUÇÃO</th><th class="h-main">ANOTAÇÕES</th></tr>
-          <tr><th class="h-sub" style="width:200px;">ATIVIDADES</th><th class="h-sub" style="width:130px;">PRAZOS</th><th class="h-sub" style="width:130px;">SITUAÇÃO</th><th class="h-sub" style="width:180px;">INICIO E FIM</th><th class="h-sub" style="width:350px;">ANOTAÇÕES</th></tr>
-      `;
-
-      comp.tasks.forEach(t => {
-        excelHtml += `<tr><td style="font-weight:bold;">${t.activity||''}</td><td style="text-align:center;">${t.deadline||''}</td><td style="${getStyle(t.status)}">${t.status||''}</td><td style="text-align:center;">${t.execDate||''}</td><td>${t.notes||''}</td></tr>`;
-      });
-      if(comp.generalNotes) {
-        excelHtml += `<tr><td colspan="5" style="border:none; height:20px;"></td></tr><tr><th colspan="5" class="h-sub">NOTAS GERAIS DA COMPETÊNCIA</th></tr><tr><td colspan="5" style="white-space:pre-wrap;">${comp.generalNotes}</td></tr>`;
-      }
-      excelHtml += `</table></body></html>`;
-
-      const blob = new Blob(['\uFEFF' + excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${currentCompetenceId}.xls`;
-      a.click();
-    }
-
-    function openAIModal() { openModal('aiModal'); }
-
-    async function runAIAssistant(type) {
-      const comp = appData.competences[currentCompetenceId];
-      const output = document.getElementById('aiOutput');
-      const apiKey = document.getElementById('geminiApiKey').value.trim();
-
-      output.textContent = "Analisando dados da competência com IA Gemini...";
-      const contextData = JSON.stringify({ tasks: comp.tasks, generalNotes: comp.generalNotes }, null, 2);
-
-      let prompt = "";
-      if (type === 'resumo') prompt = `Resumo executivo situacional para a competência ${currentCompetenceId}. Dados:\n${contextData}`;
-      else if (type === 'pendencias') prompt = `Indique pendências e prioridades da competência ${currentCompetenceId}. Dados:\n${contextData}`;
-      else if (type === 'email') prompt = `Gere minuta formal de e-mail de status sobre a competência ${currentCompetenceId}. Dados:\n${contextData}`;
-
-      if (apiKey) {
-        try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-          });
-          const data = await res.json();
-          output.textContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "Erro na resposta Gemini.";
-        } catch (err) { output.textContent = "Erro na API: " + err.message; }
-      } else {
-        setTimeout(() => {
-          if (type === 'resumo') output.textContent = `[RESUMO EXECUTIVO - ${currentCompetenceId}]\nConcluídos: ${comp.tasks.filter(t=>t.status==='CONCLUÍDO').length}/${comp.tasks.length}\n* Modo offline/simulado. Insira a chave API para IA real.`;
-          else if (type === 'pendencias') output.textContent = `[PENDÊNCIAS CRÍTICAS]\n* Modo offline/simulado. Insira chave API para análise completa.`;
-          else if (type === 'email') output.textContent = `ASSUNTO: Status de Fechamento - ${currentCompetenceId}\n* Modo offline/simulado. Insira chave API.`;
-        }, 600);
-      }
-    }
-
-    function escapeHtml(text) {
-      if (!text) return '';
-      return text.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+      renderCompetenceSelector();
+      renderApp();
     }
   </script>
 </body>
