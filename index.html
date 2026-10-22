@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +8,16 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class', theme: { extend: {} } }
+    // Script rápido para ler a preferência salva antes de renderizar a página
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  
+  <!-- FIREBASE SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
 
@@ -19,20 +25,11 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
 
-   
-    .dark body { background-color: #0f172a; color: #f8fafc; }
-    .dark .glass-panel { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
-    .dark .glass-input { background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: white; }
-    
-    
-    body:not(.dark) { background-color: #f1f5f9; color: #1e293b; }
-    body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    body:not(.dark) .glass-input { background: #ffffff; border: 1px solid #cbd5e1; color: #1e293b; }
+    /* LIGHT MODE CUSTOMIZAÇÕES ESPECÍFICAS DA TABELA */
     body:not(.dark) th { color: #475569 !important; font-weight: 700; }
     body:not(.dark) td { color: #1e293b !important; }
     body:not(.dark) .text-white { color: #ffffff !important; } 
 
-    .glass-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     .dark ::-webkit-scrollbar-track { background: #0f172a; }
     .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -61,13 +58,18 @@
     .inline-textarea:focus { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6 !important; outline: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased pb-10">
+<body class="min-h-screen flex flex-col antialiased pb-10 bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-100 transition-colors duration-300">
 
   <!-- ================= TELA DE LOGIN (FIREBASE) ================= -->
-  <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
+  <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-200 dark:bg-slate-900 flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-8 shadow-2xl relative overflow-hidden border border-slate-200 dark:border-slate-700">
       
-      <div class="text-center mb-6">
+      <!-- Botão de Tema Apenas no Login -->
+      <button onclick="toggleTheme()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Alternar Tema">
+        <i data-lucide="moon" id="themeIcon" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-6 mt-2">
         <div class="inline-flex p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl mb-3">
           <i data-lucide="shield-check" class="w-8 h-8"></i>
         </div>
@@ -75,7 +77,7 @@
         <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Conectado ao Google Firebase.</p>
       </div>
 
-      <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-700">
+      <div class="flex gap-2 mb-6 bg-slate-50 dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-700">
         <button onclick="setAuthMode('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow">Entrar</button>
         <button onclick="setAuthMode('register')" id="tabRegister" class="flex-1 py-2 text-xs font-bold rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">Criar Conta</button>
       </div>
@@ -102,8 +104,8 @@
 
   <!-- ================= APLICATIVO PRINCIPAL ================= -->
   <div id="appContainer" class="hidden flex-1 flex-col">
-    <!-- HEADER -->
-    <header class="bg-white dark:bg-slate-800 sticky top-0 z-30 px-4 lg:px-8 py-3 border-b border-slate-200 dark:border-slate-700 shadow-sm">
+    <!-- HEADER (Botão de tema removido daqui) -->
+    <header class="bg-white dark:bg-slate-800 sticky top-0 z-30 px-4 lg:px-8 py-3 border-b border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <div class="p-2.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl"><i data-lucide="cloud" class="w-6 h-6"></i></div>
@@ -116,8 +118,6 @@
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <button onclick="toggleTheme()" class="p-2 border border-slate-300 dark:border-slate-600 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition"><i data-lucide="sun" id="themeIcon" class="w-4 h-4 text-slate-600 dark:text-slate-300"></i></button>
-
           <div class="flex items-center gap-2 p-1.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900">
             <i data-lucide="calendar" class="w-4 h-4 text-blue-600 dark:text-blue-400 ml-1"></i>
             <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-bold text-sm px-1 py-1 outline-none cursor-pointer text-slate-800 dark:text-white"></select>
@@ -199,6 +199,7 @@
     </main>
   </div>
 
+  <!-- BOTAO FLUTUANTE DE NOTAS -->
   <button id="floatNotesBtn" onclick="toggleNotesPanel()" class="hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105 items-center justify-center"><i data-lucide="sticky-note" class="w-6 h-6"></i></button>
 
   <div id="notesPanel" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white dark:bg-slate-800 border-l border-slate-200 dark:border-slate-700 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
@@ -273,9 +274,8 @@
     </div>
   </div>
 
-  <!-- CONFIGURAÇÃO FIREBASE E LÓGICA -->
   <script>
-    // 1. INICIALIZAÇÃO FIREBASE (COM A SUA CHAVE)
+    // 1. INICIALIZAÇÃO FIREBASE 
     const firebaseConfig = {
       apiKey: "AIzaSyAieBjVHi_-C1AymxBBhztDi3LtI-A3ubI",
       authDomain: "gestorsaas-ae9ed.firebaseapp.com",
@@ -307,12 +307,34 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      // Define icone de tema inicial baseado no localStorage ou preferencia de sistema
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      if (html.classList.contains('dark')) { icon.setAttribute('data-lucide', 'sun'); } 
+      else { icon.setAttribute('data-lucide', 'moon'); }
+      lucide.createIcons();
+
       const savedSession = localStorage.getItem('saas_session');
       if(savedSession) {
         currentUser = JSON.parse(savedSession);
         loginSuccess();
       }
     });
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark'); 
+        localStorage.theme = 'light';
+        icon.setAttribute('data-lucide', 'moon');
+      } else {
+        html.classList.add('dark'); 
+        localStorage.theme = 'dark';
+        icon.setAttribute('data-lucide', 'sun');
+      }
+      lucide.createIcons();
+    }
 
     function setAuthMode(mode) {
       authMode = mode;
@@ -387,17 +409,6 @@
     }
 
     function logout() { localStorage.removeItem('saas_session'); window.location.reload(); }
-
-    function toggleTheme() {
-      const html = document.documentElement;
-      const icon = document.getElementById('themeIcon');
-      if (html.classList.contains('dark')) {
-        html.classList.remove('dark'); icon.setAttribute('data-lucide', 'moon');
-      } else {
-        html.classList.add('dark'); icon.setAttribute('data-lucide', 'sun');
-      }
-      lucide.createIcons();
-    }
 
     // --- FIREBASE CLOUD SYNC ---
     async function loadCloudData() {
