@@ -7,96 +7,93 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: { extend: { colors: { brand: { 500: '#22c55e' } } } }
-    }
+    tailwind.config = { darkMode: 'class', theme: { extend: {} } }
   </script>
-  
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- FIREBASE SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    
     body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
 
-    /* Estilos dos Painéis (Glass) */
+    /* DARK MODE */
+    .dark body { background-color: #0f172a; color: #f8fafc; }
     .dark .glass-panel { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
-    body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    
     .dark .glass-input { background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: white; }
-    body:not(.dark) .glass-input { background: #ffffff; border: 1px solid #cbd5e1; color: #1e293b; }
     
-    .glass-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
+    /* LIGHT MODE */
+    body:not(.dark) { background-color: #f1f5f9; color: #1e293b; }
+    body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    body:not(.dark) .glass-input { background: #ffffff; border: 1px solid #cbd5e1; color: #1e293b; }
+    body:not(.dark) th { color: #475569 !important; font-weight: 700; }
+    body:not(.dark) td { color: #1e293b !important; }
+    body:not(.dark) .text-white { color: #ffffff !important; } 
 
-    /* Scrollbars */
+    .glass-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     .dark ::-webkit-scrollbar-track { background: #0f172a; }
     .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     body:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; }
     body:not(.dark) ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
 
-    /* Cores de Status */
+    /* STATUS BADGES */
     .status-CONCLUÍDO { font-weight: 700; }
     body:not(.dark) .status-CONCLUÍDO { background-color: #ecfdf5 !important; color: #059669 !important; border: 1px solid #a7f3d0 !important; }
     .dark .status-CONCLUÍDO { background-color: rgba(16, 185, 129, 0.15) !important; color: #34d399 !important; border: 1px solid rgba(16, 185, 129, 0.3) !important; }
-
     .status-EM-ANDAMENTO { font-weight: 700; }
     body:not(.dark) .status-EM-ANDAMENTO { background-color: #fefce8 !important; color: #ca8a04 !important; border: 1px solid #fde047 !important; }
     .dark .status-EM-ANDAMENTO { background-color: rgba(234, 179, 8, 0.15) !important; color: #fde047 !important; border: 1px solid rgba(234, 179, 8, 0.3) !important; }
-
     .status-EM-ESPERA { font-weight: 700; }
     body:not(.dark) .status-EM-ESPERA { background-color: #fff7ed !important; color: #ea580c !important; border: 1px solid #fed7aa !important; }
     .dark .status-EM-ESPERA { background-color: rgba(249, 115, 22, 0.15) !important; color: #fdba74 !important; border: 1px solid rgba(249, 115, 22, 0.3) !important; }
-
     .status-NÃO-HOUVE { font-weight: 700; }
     body:not(.dark) .status-NÃO-HOUVE { background-color: #fef2f2 !important; color: #dc2626 !important; border: 1px solid #fecaca !important; }
     .dark .status-NÃO-HOUVE { background-color: rgba(239, 68, 68, 0.15) !important; color: #fca5a5 !important; border: 1px solid rgba(239, 68, 68, 0.3) !important; }
 
-    /* Área de Texto Inline Automática */
-    .inline-textarea {
-      width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; resize: none; overflow: hidden; transition: all 0.2s; font-weight: 500;
-    }
+    .inline-textarea { width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; resize: none; overflow: hidden; transition: all 0.2s; font-weight: 500; }
     body:not(.dark) .inline-textarea { color: #1e293b !important; }
     .dark .inline-textarea { color: #f8fafc !important; }
     body:not(.dark) .inline-textarea:hover { background: #f8fafc; border-color: #cbd5e1; }
     .dark .inline-textarea:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-    .inline-textarea:focus { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6 !important; outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+    .inline-textarea:focus { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6 !important; outline: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased pb-10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+<body class="min-h-screen flex flex-col antialiased pb-10">
 
-  <!-- ================= TELA DE LOGIN ================= -->
+  <!-- ================= TELA DE LOGIN (FIREBASE) ================= -->
   <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-8 shadow-2xl relative overflow-hidden border border-slate-200 dark:border-slate-700">
       
-      <div class="text-center mb-6 relative z-10">
+      <div class="text-center mb-6">
         <div class="inline-flex p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl mb-3">
           <i data-lucide="shield-check" class="w-8 h-8"></i>
         </div>
-        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Acesso SaaS Seguro</h2>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Dados operacionais isolados.</p>
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Acesso SaaS Nuvem</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Conectado ao Google Firebase.</p>
       </div>
 
-      <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-700 relative z-10">
-        <button onclick="setAuthMode('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow">Entrar</button>
+      <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-700">
+        <button onclick="setAuthMode('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow">Entrar</button>
         <button onclick="setAuthMode('register')" id="tabRegister" class="flex-1 py-2 text-xs font-bold rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">Criar Conta</button>
       </div>
 
-      <form id="authForm" onsubmit="handleAuthAction(event)" class="space-y-4 relative z-10">
+      <form id="authForm" onsubmit="handleAuthAction(event)" class="space-y-4">
         <div id="authError" class="hidden bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs p-3 rounded-lg border border-red-200 dark:border-red-800 font-medium"></div>
         
         <div>
           <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">E-mail Corporativo</label>
-          <input type="email" id="authEmail" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none placeholder-slate-400 dark:placeholder-slate-500" placeholder="joao@empresa.com">
+          <input type="email" id="authEmail" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="joao@empresa.com">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Senha de Acesso</label>
-          <input type="password" id="authPassword" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none placeholder-slate-400 dark:placeholder-slate-500" placeholder="••••••••">
+          <input type="password" id="authPassword" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••">
           <p id="pwdHint" class="hidden text-[10px] text-slate-500 dark:text-slate-400 mt-1">Mín. 6 chars, 1 Maiúscula, 1 Número, 1 Símbolo (@!$)</p>
         </div>
 
-        <button type="submit" id="authActionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg mt-2">
+        <button type="submit" id="authActionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
           Entrar no Sistema
         </button>
       </form>
@@ -105,53 +102,40 @@
 
   <!-- ================= APLICATIVO PRINCIPAL ================= -->
   <div id="appContainer" class="hidden flex-1 flex-col">
-    <!-- TOP HEADER -->
+    <!-- HEADER -->
     <header class="bg-white dark:bg-slate-800 sticky top-0 z-30 px-4 lg:px-8 py-3 border-b border-slate-200 dark:border-slate-700 shadow-sm">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-        
         <div class="flex items-center gap-3">
-          <div class="p-2.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl">
-            <i data-lucide="cloud" class="w-6 h-6"></i>
-          </div>
+          <div class="p-2.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl"><i data-lucide="cloud" class="w-6 h-6"></i></div>
           <div>
             <h1 class="font-bold text-lg leading-tight flex items-center gap-2 text-slate-800 dark:text-white">
-              Gestor Operacional Nuvem
+              Gestor Nuvem Firestore
               <span class="text-[10px] px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded-full font-bold" id="userEmailDisplay">Logado</span>
             </h1>
           </div>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <button onclick="toggleTheme()" class="p-2 border border-slate-300 dark:border-slate-600 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Alternar Tema">
-            <i data-lucide="sun" id="themeIcon" class="w-4 h-4 text-slate-600 dark:text-slate-300"></i>
-          </button>
+          <button onclick="toggleTheme()" class="p-2 border border-slate-300 dark:border-slate-600 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition"><i data-lucide="sun" id="themeIcon" class="w-4 h-4 text-slate-600 dark:text-slate-300"></i></button>
 
           <div class="flex items-center gap-2 p-1.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900">
             <i data-lucide="calendar" class="w-4 h-4 text-blue-600 dark:text-blue-400 ml-1"></i>
             <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-bold text-sm px-1 py-1 outline-none cursor-pointer text-slate-800 dark:text-white"></select>
-            <button onclick="openNewCompetenceModal()" class="bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition" title="Nova Competência"><i data-lucide="plus" class="w-4 h-4"></i></button>
-            <button onclick="toggleCompetenceLock()" id="toggleLockBtn" class="bg-amber-500 text-white p-1.5 rounded-lg hover:bg-amber-600 transition" title="Trancar/Destrancar"><i data-lucide="lock" class="w-4 h-4"></i></button>
-            <button onclick="confirmDeleteCompetence()" class="bg-red-500 text-white p-1.5 rounded-lg hover:bg-red-600 transition" title="Apagar Mês"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="openNewCompetenceModal()" class="bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700" title="Nova Competência"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            <button onclick="toggleCompetenceLock()" id="toggleLockBtn" class="bg-amber-500 text-white p-1.5 rounded-lg hover:bg-amber-600" title="Trancar"><i data-lucide="lock" class="w-4 h-4"></i></button>
+            <button onclick="confirmDeleteCompetence()" class="bg-red-500 text-white p-1.5 rounded-lg hover:bg-red-600" title="Apagar Mês"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
 
           <div class="hidden sm:flex items-center gap-2 ml-2 pl-2 border-l border-slate-300 dark:border-slate-600">
-            <button onclick="exportData()" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition text-slate-700 dark:text-slate-300">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i> JSON
-            </button>
-            <button onclick="exportStyledExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
-              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Excel
-            </button>
-            <button onclick="logout()" class="p-2 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-xl transition ml-1" title="Sair">
-              <i data-lucide="log-out" class="w-4 h-4"></i>
-            </button>
+            <button onclick="exportStyledExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition"><i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Excel</button>
+            <button onclick="logout()" class="p-2 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-xl transition ml-1" title="Sair"><i data-lucide="log-out" class="w-4 h-4"></i></button>
           </div>
         </div>
       </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex-1 w-full space-y-6">
-
-      <!-- BANNER DA COMPETÊNCIA -->
+      <!-- BANNER & METRICS -->
       <div id="competenceBanner" class="p-3 rounded-xl border flex items-center justify-between transition-all">
         <div class="flex items-center gap-3">
           <span id="competenceStatusBadge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider"></span>
@@ -160,10 +144,9 @@
         <div class="text-xs font-mono font-bold text-slate-500 dark:text-slate-400" id="competenceDateInfo"></div>
       </div>
 
-      <!-- CARDS MENSURAÇÃO -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col shadow-sm">
-          <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Total Tarefas</span>
+          <span class="text-xs font-bold text-slate-500">Total Tarefas</span>
           <span id="metricTotal" class="text-2xl font-black text-slate-800 dark:text-white mt-1">0</span>
         </div>
         <div class="bg-white dark:bg-slate-800 border-l-4 border-emerald-500 border-y border-r border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col shadow-sm">
@@ -184,32 +167,17 @@
         </div>
       </div>
 
-      <!-- BARRA DE AÇÕES -->
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <div class="flex items-center gap-2 flex-1 max-w-md relative">
           <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
-          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade ou anotação..." class="w-full pl-9 pr-3 py-2 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white shadow-sm placeholder-slate-400 dark:placeholder-slate-500">
+          <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade..." class="w-full pl-9 pr-3 py-2 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white">
         </div>
-
         <div class="flex items-center gap-2">
-          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
-            <i data-lucide="plus-circle" class="w-4 h-4"></i> Nova Atividade
-          </button>
-          
-          <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-1"></div>
-          
-          <div class="p-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 flex items-center">
-            <button id="viewTableBtn" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white">
-              <i data-lucide="table" class="w-3.5 h-3.5 inline mr-1"></i> Tabela
-            </button>
-            <button id="viewKanbanBtn" onclick="setView('kanban')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <i data-lucide="kanban" class="w-3.5 h-3.5 inline mr-1"></i> Kanban
-            </button>
-          </div>
+          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm"><i data-lucide="plus-circle" class="w-4 h-4"></i> Nova Atividade</button>
         </div>
       </div>
 
-      <!-- TABELA VIEW -->
+      <!-- TABLE VIEW -->
       <div id="tableView" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-sm">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
@@ -228,100 +196,102 @@
           </table>
         </div>
       </div>
-
-      <!-- KANBAN VIEW -->
-      <div id="kanbanView" class="hidden grid grid-cols-1 md:grid-cols-4 gap-4">
-      </div>
     </main>
   </div>
 
-  <button id="floatNotesBtn" onclick="toggleNotesPanel()" class="hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105 items-center justify-center">
-    <i data-lucide="sticky-note" class="w-6 h-6"></i>
-  </button>
+  <button id="floatNotesBtn" onclick="toggleNotesPanel()" class="hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105 items-center justify-center"><i data-lucide="sticky-note" class="w-6 h-6"></i></button>
 
   <div id="notesPanel" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white dark:bg-slate-800 border-l border-slate-200 dark:border-slate-700 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
     <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50">
-      <h3 class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-white">
-        <i data-lucide="book-open" class="w-5 h-5 text-blue-600 dark:text-blue-500"></i> Notas da Competência
-      </h3>
+      <h3 class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-white"><i data-lucide="book-open" class="w-5 h-5 text-blue-600"></i> Notas da Competência</h3>
       <button onclick="toggleNotesPanel()" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition text-slate-500"><i data-lucide="x" class="w-5 h-5"></i></button>
     </div>
     <div class="p-4 flex-1 flex flex-col">
-      <textarea id="generalNotesArea" oninput="updateGeneralNotes(this.value)" class="flex-1 w-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-sm font-medium resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-inner custom-scrollbar text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500" placeholder="Rascunhos gerais do mês..."></textarea>
+      <textarea id="generalNotesArea" oninput="updateGeneralNotes(this.value)" class="flex-1 w-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-sm font-medium resize-none outline-none focus:ring-2 focus:ring-blue-500 transition custom-scrollbar text-slate-800 dark:text-slate-200"></textarea>
     </div>
   </div>
 
-  <!-- MODAL NOVA COMPETENCIA -->
+  <!-- MODAL: NOVA COMPETÊNCIA -->
   <div id="newCompetenceModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white"><i data-lucide="folder-plus" class="w-5 h-5 text-blue-600"></i> Criar Mês</h3>
-        <button onclick="closeModal('newCompetenceModal')" class="text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <div class="flex justify-between mb-4">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white">Criar Mês</h3>
+        <button onclick="closeModal('newCompetenceModal')" class="text-slate-500 hover:text-slate-900 dark:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form onsubmit="handleCreateCompetence(event)" class="space-y-4">
-        <input type="text" id="newCompetenceId" required placeholder="Nome/ID (Ex: MÊS 11-2026)" class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium text-sm px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+        <input type="text" id="newCompetenceId" required placeholder="Nome/ID (Ex: MÊS 11-2026)" class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 rounded-xl outline-none focus:border-blue-500">
         <div class="p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900/50">
           <label class="flex items-center gap-2 text-xs font-bold cursor-pointer text-slate-700 dark:text-slate-300">
-            <input type="checkbox" id="clonePreviousTasks" checked class="rounded border-slate-300"> Copiar base de tarefas do mês atual
+            <input type="checkbox" id="clonePreviousTasks" checked class="rounded"> Copiar base de tarefas atual
           </label>
         </div>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">Cancelar</button>
-          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition">Criar</button>
+          <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl">Criar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL TAREFA -->
+  <!-- MODAL: TAREFA -->
   <div id="taskModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
-      <div class="flex items-center justify-between mb-4">
-        <h3 id="modalTaskTitle" class="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white"><i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> Tarefa</h3>
-        <button onclick="closeModal('taskModal')" class="text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <div class="flex justify-between mb-4">
+        <h3 id="modalTaskTitle" class="text-base font-bold text-slate-900 dark:text-white">Tarefa</h3>
+        <button onclick="closeModal('taskModal')" class="text-slate-500 hover:text-slate-900 dark:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form onsubmit="handleSaveTask(event)" class="space-y-4">
         <input type="hidden" id="taskId">
         <div>
           <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Atividade *</label>
-          <input type="text" id="taskName" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm font-medium px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+          <input type="text" id="taskName" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 rounded-xl outline-none focus:border-blue-500">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Prazo</label>
-            <input type="text" id="taskDeadline" class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm font-medium px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+            <input type="text" id="taskDeadline" class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 rounded-xl outline-none focus:border-blue-500">
           </div>
           <div>
             <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Situação</label>
-            <select id="taskStatus" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm font-bold px-3 py-2 rounded-xl outline-none focus:border-blue-500 cursor-pointer">
-              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="CONCLUÍDO">CONCLUÍDO</option>
-              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="EM ANDAMENTO">EM ANDAMENTO</option>
-              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="EM ESPERA">EM ESPERA</option>
-              <option class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white" value="NÃO HOUVE">NÃO HOUVE</option>
+            <select id="taskStatus" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold px-3 py-2 rounded-xl outline-none focus:border-blue-500 cursor-pointer">
+              <option class="bg-white dark:bg-slate-800" value="CONCLUÍDO">CONCLUÍDO</option>
+              <option class="bg-white dark:bg-slate-800" value="EM ANDAMENTO">EM ANDAMENTO</option>
+              <option class="bg-white dark:bg-slate-800" value="EM ESPERA">EM ESPERA</option>
+              <option class="bg-white dark:bg-slate-800" value="NÃO HOUVE">NÃO HOUVE</option>
             </select>
           </div>
         </div>
         <div>
           <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Data Execução</label>
-          <input type="text" id="taskExecDate" class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm font-medium px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+          <input type="text" id="taskExecDate" class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 rounded-xl outline-none focus:border-blue-500">
         </div>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('taskModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">Cancelar</button>
-          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition">Salvar</button>
+          <button type="button" onclick="closeModal('taskModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl">Salvar</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- CONFIGURAÇÃO FIREBASE E LÓGICA -->
   <script>
-    // --- ESTADO & DADOS ---
+    // 1. INICIALIZAÇÃO FIREBASE (COM A SUA CHAVE)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAieBjVHi_-C1AymxBBhztDi3LtI-A3ubI",
+      authDomain: "gestorsaas-ae9ed.firebaseapp.com",
+      projectId: "gestorsaas-ae9ed",
+      storageBucket: "gestorsaas-ae9ed.firebasestorage.app",
+      messagingSenderId: "604845770947",
+      appId: "1:604845770947:web:e50187efff9faabe997a76"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const cloudDB = firebase.firestore();
+
     let currentUser = null;
     let appData = { competences: {} };
     let currentCompetenceId = '';
     let authMode = 'login';
-    let currentView = 'table';
 
-    // O modelo Master
     const DEFAULT_TASKS = [
       { id: '1', activity: 'ECONET', deadline: '1º DIA DO MÊS', status: 'CONCLUÍDO', execDate: '', notes: '' },
       { id: '2', activity: 'PROVISÕES', deadline: 'APÓS 5º UTIL', status: 'CONCLUÍDO', execDate: '', notes: 'QUANDO FOR FAZER PROVISÃO DO MÊS 12/2026 E 13º ALTERAR A PARAMETRIZAÇÃO' },
@@ -344,75 +314,76 @@
       }
     });
 
-    // --- LÓGICA DE AUTH ---
     function setAuthMode(mode) {
       authMode = mode;
       const tabL = document.getElementById('tabLogin');
       const tabR = document.getElementById('tabRegister');
       const btn = document.getElementById('authActionBtn');
-      const hint = document.getElementById('pwdHint');
       document.getElementById('authError').classList.add('hidden');
 
       if(mode === 'login') {
         tabL.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow transition-all";
         tabR.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
-        btn.textContent = "Entrar no Sistema";
-        hint.classList.add('hidden');
+        btn.innerHTML = "Entrar no Sistema";
+        document.getElementById('pwdHint').classList.add('hidden');
       } else {
         tabR.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow transition-all";
         tabL.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
-        btn.textContent = "Finalizar Cadastro";
-        hint.classList.remove('hidden');
+        btn.innerHTML = "Finalizar Cadastro";
+        document.getElementById('pwdHint').classList.remove('hidden');
       }
     }
 
-    function handleAuthAction(e) {
+    async function handleAuthAction(e) {
       e.preventDefault();
       const email = document.getElementById('authEmail').value.trim();
       const pwd = document.getElementById('authPassword').value;
       const errorDiv = document.getElementById('authError');
-      const userKey = `cloud_db_${email}`;
-      let db = localStorage.getItem(userKey);
+      const btn = document.getElementById('authActionBtn');
+      const originalText = btn.innerHTML;
+      
+      const userKey = email.toLowerCase();
 
-      if (authMode === 'register') {
-        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-        if (!regex.test(pwd)) {
-          errorDiv.textContent = "Erro: Mín. 6 chars, 1 Maiúscula, 1 Número, 1 Símbolo.";
-          errorDiv.classList.remove('hidden'); return;
+      try {
+        btn.innerHTML = `<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> Conectando...`;
+        lucide.createIcons();
+        errorDiv.classList.add('hidden');
+
+        const docRef = cloudDB.collection("users").doc(userKey);
+        const docSnap = await docRef.get();
+        let dbUser = docSnap.exists ? docSnap.data() : null;
+
+        if (authMode === 'register') {
+          const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+          if (!regex.test(pwd)) throw new Error("A senha precisa de Mín. 6 chars, 1 Maiúscula, 1 Número, 1 Símbolo.");
+          if (dbUser) throw new Error("Este e-mail já existe. Vá para a aba 'Entrar'.");
+          
+          dbUser = { email, password: pwd, data: { competences: {} } };
+          await docRef.set(dbUser);
+          currentUser = { email, userKey, pwd };
+        } else {
+          if (!dbUser) throw new Error("Conta não encontrada no Firebase!");
+          if (dbUser.password !== pwd) throw new Error("Senha incorreta!");
+          currentUser = { email, userKey, pwd };
         }
-        if (db) {
-          errorDiv.textContent = "Erro: Este e-mail já existe. Vá para 'Entrar'.";
-          errorDiv.classList.remove('hidden'); return;
-        }
-        const novoUser = { email, password: pwd, data: { competences: {} } };
-        localStorage.setItem(userKey, JSON.stringify(novoUser));
-        currentUser = { email, userKey, pwd };
-      } else {
-        if (!db) {
-          errorDiv.textContent = "Conta não encontrada!";
-          errorDiv.classList.remove('hidden'); return;
-        }
-        db = JSON.parse(db);
-        if (db.password !== pwd) {
-          errorDiv.textContent = "Senha incorreta!";
-          errorDiv.classList.remove('hidden'); return;
-        }
-        currentUser = { email, userKey, pwd };
+
+        localStorage.setItem('saas_session', JSON.stringify(currentUser));
+        loginSuccess();
+      } catch(err) {
+        errorDiv.textContent = err.message || "Erro de conexão.";
+        errorDiv.classList.remove('hidden');
+        btn.innerHTML = originalText;
       }
-
-      errorDiv.classList.add('hidden');
-      localStorage.setItem('saas_session', JSON.stringify(currentUser));
-      loginSuccess();
     }
 
-    function loginSuccess() {
+    async function loginSuccess() {
       document.getElementById('authScreen').classList.add('hidden');
       document.getElementById('appContainer').classList.remove('hidden');
       document.getElementById('appContainer').classList.add('flex');
       document.getElementById('floatNotesBtn').classList.remove('hidden');
       document.getElementById('floatNotesBtn').classList.add('flex');
       document.getElementById('userEmailDisplay').textContent = currentUser.email;
-      loadCloudData();
+      await loadCloudData();
     }
 
     function logout() { localStorage.removeItem('saas_session'); window.location.reload(); }
@@ -428,32 +399,40 @@
       lucide.createIcons();
     }
 
-    // --- CARGA DE DADOS ---
-    function loadCloudData() {
-      const db = JSON.parse(localStorage.getItem(currentUser.userKey));
-      appData = db.data;
+    // --- FIREBASE CLOUD SYNC ---
+    async function loadCloudData() {
+      try {
+        const docSnap = await cloudDB.collection("users").doc(currentUser.userKey).get();
+        if(docSnap.exists && docSnap.data().data) {
+          appData = docSnap.data().data;
+        }
 
-      if (!appData.competences || Object.keys(appData.competences).length === 0) {
-        const isMaster = currentUser.email === 'dp-aprendiz2@serttel.com.br';
-        const initialId = isMaster ? '10 ATIVIDADES 09-102026' : 'MÊS INICIAL';
-        const initialTasks = isMaster ? JSON.parse(JSON.stringify(DEFAULT_TASKS)) : [];
+        if (!appData.competences || Object.keys(appData.competences).length === 0) {
+          const isMaster = currentUser.email === 'dp-aprendiz2@serttel.com.br';
+          const initialId = isMaster ? '10 ATIVIDADES 09-102026' : 'MÊS INICIAL';
+          const initialTasks = isMaster ? JSON.parse(JSON.stringify(DEFAULT_TASKS)) : [];
 
-        appData.competences = {
-          [initialId]: { id: initialId, status: 'OPEN', createdAt: new Date().toISOString(), tasks: initialTasks, generalNotes: '' }
-        };
-        saveCloudData();
+          appData.competences = {
+            [initialId]: { id: initialId, status: 'OPEN', createdAt: new Date().toISOString(), tasks: initialTasks, generalNotes: '' }
+          };
+          await saveCloudData();
+        }
+
+        const keys = Object.keys(appData.competences).sort((a, b) => new Date(appData.competences[b].createdAt) - new Date(appData.competences[a].createdAt));
+        currentCompetenceId = keys[0];
+        renderCompetenceSelector();
+        renderApp();
+      } catch(err) {
+        console.error("Erro ao carregar dados da nuvem:", err);
       }
-
-      const keys = Object.keys(appData.competences).sort((a, b) => new Date(appData.competences[b].createdAt) - new Date(appData.competences[a].createdAt));
-      currentCompetenceId = keys[0];
-      renderCompetenceSelector();
-      renderApp();
     }
 
-    function saveCloudData() {
-      const db = JSON.parse(localStorage.getItem(currentUser.userKey));
-      db.data = appData;
-      localStorage.setItem(currentUser.userKey, JSON.stringify(db));
+    async function saveCloudData() {
+      try {
+        await cloudDB.collection("users").doc(currentUser.userKey).update({ data: appData });
+      } catch(err) {
+        console.error("Erro ao sincronizar com Firebase:", err);
+      }
     }
 
     function switchCompetence(val) { currentCompetenceId = val; renderApp(); }
@@ -474,7 +453,7 @@
     }
 
     function confirmDeleteCompetence() {
-      const pwd = prompt("Para apagar este mês permanentemente, digite sua senha de login:");
+      const pwd = prompt("EXCLUSÃO EM NUVEM: Para apagar este mês permanentemente, digite sua senha de login:");
       if (pwd === null) return;
       if (pwd !== currentUser.pwd) { alert("SENHA INCORRETA! Exclusão bloqueada."); return; }
       
@@ -495,7 +474,6 @@
       saveCloudData(); renderCompetenceSelector(); renderApp();
     }
 
-    // --- RENDERIZAÇÃO ---
     function renderApp() {
       const comp = appData.competences[currentCompetenceId];
       if(!comp) return;
@@ -512,7 +490,7 @@
         banner.className = "p-3 rounded-xl border bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 flex items-center justify-between";
         badge.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400";
         badge.textContent = "Em Aberto";
-        document.getElementById('competenceBannerText').textContent = "Edição livre.";
+        document.getElementById('competenceBannerText').textContent = "Edição livre. Salvo na nuvem.";
       }
       document.getElementById('competenceDateInfo').textContent = currentCompetenceId;
       document.getElementById('generalNotesArea').value = comp.generalNotes || '';
@@ -530,7 +508,6 @@
       document.getElementById('metricNaoHouve').textContent = counts['NÃO HOUVE'];
 
       renderTable(filteredTasks, isLocked);
-      renderKanban(filteredTasks, isLocked);
       lucide.createIcons();
     }
 
@@ -581,52 +558,6 @@
       setTimeout(() => document.querySelectorAll('textarea.inline-textarea').forEach(el => autoResize(el)), 50);
     }
 
-    function renderKanban(tasks, isLocked) {
-      const cols = [
-        { id: 'CONCLUÍDO', color: 'emerald' },
-        { id: 'EM ANDAMENTO', color: 'yellow' },
-        { id: 'EM ESPERA', color: 'orange' },
-        { id: 'NÃO HOUVE', color: 'red' }
-      ];
-
-      const container = document.getElementById('kanbanView');
-      container.innerHTML = '';
-
-      cols.forEach(col => {
-        const stTasks = tasks.filter(t => t.status === col.id);
-        const colDiv = document.createElement('div');
-        colDiv.className = "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col shadow-sm border-t-4 border-t-"+col.color+"-500";
-        
-        let cardsHtml = '';
-        stTasks.forEach(task => {
-          cardsHtml += `
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 shadow-sm hover:border-blue-500 dark:hover:border-blue-500/50 transition cursor-grab active:cursor-grabbing mb-3" draggable="${!isLocked}" ondragstart="event.dataTransfer.setData('text/plain', '${task.id}')">
-              <div class="flex justify-between items-start mb-1">
-                <h4 class="font-bold text-xs text-slate-800 dark:text-white">${escapeHtml(task.activity)}</h4>
-                <button onclick="openEditTaskModal('${task.id}')" class="text-slate-400 hover:text-blue-500"><i data-lucide="more-horizontal" class="w-3 h-3"></i></button>
-              </div>
-              ${task.deadline ? `<div class="text-[10px] text-slate-500 mb-2 flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3 h-3"></i> ${escapeHtml(task.deadline)}</div>` : ''}
-              ${task.notes ? `<p class="text-[11px] text-slate-600 dark:text-slate-300 font-medium line-clamp-2 bg-slate-50 dark:bg-slate-800 p-1.5 rounded border border-slate-100 dark:border-slate-700">${escapeHtml(task.notes)}</p>` : ''}
-            </div>
-          `;
-        });
-
-        colDiv.innerHTML = `
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-200 dark:border-slate-700">
-            <span class="text-xs font-bold text-${col.color}-600 dark:text-${col.color}-500 uppercase tracking-wider">${col.id}</span>
-            <span class="text-xs bg-${col.color}-100 dark:bg-${col.color}-500/20 text-${col.color}-700 dark:text-${col.color}-400 px-2 py-0.5 rounded-full font-bold">${stTasks.length}</span>
-          </div>
-          <div class="flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, '${col.id}')">
-            ${cardsHtml}
-          </div>
-        `;
-        container.appendChild(colDiv);
-      });
-    }
-
-    function allowDrop(ev) { ev.preventDefault(); }
-    function drop(ev, st) { ev.preventDefault(); updateTaskStatus(ev.dataTransfer.getData('text/plain'), st); }
-
     function updateTaskStatus(id, st) {
       const comp = appData.competences[currentCompetenceId];
       if (!comp || comp.status === 'LOCKED') return;
@@ -666,18 +597,6 @@
     function updateGeneralNotes(val) {
       const comp = appData.competences[currentCompetenceId];
       if(comp && comp.status !== 'LOCKED') { comp.generalNotes = val; saveCloudData(); }
-    }
-
-    function setView(v) {
-      currentView = v;
-      document.getElementById('tableView').classList.toggle('hidden', v !== 'table');
-      document.getElementById('kanbanView').classList.toggle('hidden', v !== 'kanban');
-      
-      const btnT = document.getElementById('viewTableBtn');
-      const btnK = document.getElementById('viewKanbanBtn');
-      
-      btnT.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition ${v==='table'?'bg-blue-600 text-white shadow':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
-      btnK.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition ${v==='kanban'?'bg-blue-600 text-white shadow':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
     }
 
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
@@ -745,12 +664,7 @@
     function deleteTask(id) {
       const comp = appData.competences[currentCompetenceId];
       if(!comp || comp.status === 'LOCKED') return;
-      if(confirm('Apagar esta atividade?')) { comp.tasks = comp.tasks.filter(t => t.id !== id); saveCloudData(); renderApp(); }
-    }
-
-    function exportData() {
-      const data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-      const a = document.createElement('a'); a.href = data; a.download = `backup_saas_${currentCompetenceId}.json`; document.body.appendChild(a); a.click(); a.remove();
+      if(confirm('Apagar esta atividade da nuvem?')) { comp.tasks = comp.tasks.filter(t => t.id !== id); saveCloudData(); renderApp(); }
     }
 
     function exportStyledExcel() {
