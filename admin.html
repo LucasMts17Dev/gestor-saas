@@ -56,6 +56,7 @@
 
     <main class="max-w-7xl mx-auto px-6 mt-8 flex-1 w-full space-y-6">
       
+      <!-- INDICADORES -->
       <div class="grid grid-cols-3 gap-4 mb-6">
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex items-center gap-4">
           <div class="p-3 bg-blue-500/10 text-blue-500 rounded-lg"><i data-lucide="users" class="w-6 h-6"></i></div>
@@ -80,10 +81,19 @@
         </div>
       </div>
 
+      <!-- TABELA DE USUÁRIOS -->
       <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
         <div class="p-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
           <h2 class="font-bold text-sm flex items-center gap-2"><i data-lucide="table-2" class="w-4 h-4 text-indigo-400"></i> Tabela de Usuários (cloud_db)</h2>
-          <button onclick="renderDatabase()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Atualizar Dados</button>
+          
+          <div class="flex items-center gap-3">
+            <button onclick="openCreateUserModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 shadow-lg">
+              <i data-lucide="user-plus" class="w-4 h-4"></i> Novo Usuário
+            </button>
+            <button onclick="renderDatabase()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition">
+              <i data-lucide="refresh-cw" class="w-3 h-3"></i> Atualizar Dados
+            </button>
+          </div>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm border-collapse">
@@ -102,6 +112,31 @@
         </div>
       </div>
     </main>
+  </div>
+
+  <!-- MODAL: NOVO USUÁRIO -->
+  <div id="createUserModal" class="fixed inset-0 bg-[#020617]/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-bold flex items-center gap-2 text-white"><i data-lucide="user-plus" class="w-5 h-5 text-indigo-500"></i> Cadastrar Novo Usuário</h3>
+        <button onclick="closeModal('createUserModal')" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form onsubmit="handleCreateUser(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-400 mb-1">E-mail do Funcionário</label>
+          <input type="email" id="newUserId" required placeholder="joao@empresa.com" class="w-full border border-slate-700 bg-slate-950 text-white text-sm px-3 py-2 rounded-xl outline-none focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-400 mb-1">Senha de Acesso</label>
+          <input type="text" id="newUserPwd" required placeholder="Exemplo@123" class="w-full border border-slate-700 bg-slate-950 text-white text-sm px-3 py-2 rounded-xl outline-none focus:border-indigo-500">
+          <p class="text-[10px] text-slate-500 mt-1">Mín. 6 caracteres, 1 Maiúscula, 1 Número, 1 Símbolo (@!$)</p>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('createUserModal')" class="px-4 py-2 text-xs font-bold border border-slate-700 rounded-xl text-slate-400 hover:text-white transition">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-lg">Criar Conta</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -199,8 +234,43 @@
       lucide.createIcons();
     }
 
+    // --- FUNÇÕES DE CRIAÇÃO E CONTROLE (MODAL) ---
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function openCreateUserModal() {
+      document.getElementById('newUserId').value = '';
+      document.getElementById('newUserPwd').value = '';
+      openModal('createUserModal');
+    }
+
+    function handleCreateUser(e) {
+      e.preventDefault();
+      const email = document.getElementById('newUserId').value.trim();
+      const pwd = document.getElementById('newUserPwd').value;
+      
+      const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+      if (!regex.test(pwd)) { 
+        alert("Falha de Segurança: A senha deve ter no mínimo 6 caracteres, 1 Maiúscula, 1 Número e 1 Símbolo especial."); 
+        return; 
+      }
+
+      const userKey = `cloud_db_${email}`;
+      if (localStorage.getItem(userKey)) {
+        alert("Erro: Este e-mail já possui uma conta registrada no banco de dados.");
+        return;
+      }
+
+      const novoUser = { email: email, password: pwd, data: { competences: {} } };
+      localStorage.setItem(userKey, JSON.stringify(novoUser));
+      
+      closeModal('createUserModal');
+      renderDatabase();
+      alert(`Conta para ${email} criada com sucesso no sistema!`);
+    }
+
     function editPassword(key) {
-      const newPwd = prompt("Insira a nova senha para o usuário (Mínimo 6 caracteres, 1 Maiúscula, 1 Número, 1 Símbolo):");
+      const newPwd = prompt("Insira a nova senha para o usuário (Mín. 6, 1 Maiuscula, 1 Num, 1 Simbolo):");
       if (!newPwd) return;
       const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
       if (!regex.test(newPwd)) { 
