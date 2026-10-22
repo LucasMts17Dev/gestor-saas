@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor Executivo Cloud SaaS - Versão Completa</title>
+  <title>Gestor Executivo Cloud SaaS</title>
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,7 +17,6 @@
     }
   </script>
   
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
@@ -26,19 +24,17 @@
     
     body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
 
-    /* DARK MODE (Padrão) */
-    .dark body { background-color: #0b0f19; color: #f3f4f6; }
-    .dark .glass-panel { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+    /* ================= DESIGN MINIMALISTA (CLARO / ESCURO) ================= */
+    
+    /* DARK MODE */
+    .dark body { background-color: #0b0f19; color: #f8fafc; }
+    .dark .glass-panel { background: #111827; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
     .dark .glass-input { background: rgba(31, 41, 55, 0.6); border: 1px solid rgba(255,255,255,0.12); color: white; }
     
     /* LIGHT MODE */
     body:not(.dark) { background-color: #f8fafc; color: #0f172a; }
-    body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-    body:not(.dark) .glass-input { background: #f1f5f9; border: 1px solid #cbd5e1; color: #0f172a; }
-    body:not(.dark) th { color: #334155; }
-    body:not(.dark) .text-slate-400 { color: #64748b; }
-    body:not(.dark) .text-slate-300 { color: #475569; }
-    body:not(.dark) .text-white { color: #0f172a; } /* Ajuste de contrastes claros */
+    body:not(.dark) .glass-panel { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    body:not(.dark) .glass-input { background: #ffffff; border: 1px solid #cbd5e1; color: #0f172a; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); }
 
     .glass-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
 
@@ -46,61 +42,71 @@
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     .dark ::-webkit-scrollbar-track { background: #0f172a; }
     .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    body:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; }
-    body:not(.dark) ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    body:not(.dark) ::-webkit-scrollbar-track { background: #f1f5f9; }
+    body:not(.dark) ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-    /* Cores de Status - Badges */
-    .status-CONCLUÍDO { background-color: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .status-EM-ANDAMENTO { background-color: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.3); }
-    .status-EM-ESPERA { background-color: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }
-    .status-NÃO-HOUVE { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    /* STATUS BADGES - ALTO CONTRASTE */
+    .status-CONCLUÍDO { font-weight: 700; }
+    body:not(.dark) .status-CONCLUÍDO { background-color: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .dark .status-CONCLUÍDO { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-    /* Textarea invisível para edição rápida */
+    .status-EM-ANDAMENTO { font-weight: 700; }
+    body:not(.dark) .status-EM-ANDAMENTO { background-color: #fefce8; color: #ca8a04; border: 1px solid #fde047; }
+    .dark .status-EM-ANDAMENTO { background-color: rgba(234, 179, 8, 0.15); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.3); }
+
+    .status-EM-ESPERA { font-weight: 700; }
+    body:not(.dark) .status-EM-ESPERA { background-color: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+    .dark .status-EM-ESPERA { background-color: rgba(249, 115, 22, 0.15); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.3); }
+
+    .status-NÃO-HOUVE { font-weight: 700; }
+    body:not(.dark) .status-NÃO-HOUVE { background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .dark .status-NÃO-HOUVE { background-color: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    /* Textarea Inline Automático */
     .inline-textarea {
       width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; resize: none; overflow: hidden; transition: all 0.2s;
     }
+    body:not(.dark) .inline-textarea { color: #334155; }
     .dark .inline-textarea { color: #e2e8f0; }
-    body:not(.dark) .inline-textarea { color: #0f172a; }
-    .inline-textarea:hover { background: rgba(128, 128, 128, 0.1); border-color: rgba(128, 128, 128, 0.2); }
-    .inline-textarea:focus { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+    
+    body:not(.dark) .inline-textarea:hover { background: #f1f5f9; border-color: #e2e8f0; }
+    .dark .inline-textarea:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+    
+    .inline-textarea:focus { background: rgba(59, 130, 246, 0.05); border-color: #3b82f6; outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased pb-10">
 
   <!-- ================= TELA DE LOGIN / CYBERSECURITY ================= -->
-  <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center p-4">
-    <div class="glass-panel w-full max-w-md rounded-2xl p-8 border border-slate-800 shadow-2xl relative overflow-hidden">
-      <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-600 rounded-full blur-3xl opacity-20"></div>
-      
+  <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-8 shadow-2xl relative overflow-hidden">
       <div class="text-center mb-6 relative z-10">
-        <div class="inline-flex p-3 bg-blue-600/20 text-blue-500 rounded-xl mb-3 border border-blue-500/30">
+        <div class="inline-flex p-3 bg-blue-100 dark:bg-blue-600/20 text-blue-600 dark:text-blue-500 rounded-xl mb-3">
           <i data-lucide="shield-check" class="w-8 h-8"></i>
         </div>
-        <h2 class="text-2xl font-bold text-white">Acesso SaaS Seguro</h2>
-        <p class="text-sm text-slate-400 mt-1">Dados operacionais isolados e criptografados.</p>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Acesso SaaS Seguro</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Dados operacionais isolados.</p>
       </div>
 
-      <!-- SELETOR DE ABAS -->
-      <div class="flex gap-2 mb-6 bg-slate-900 p-1 rounded-lg border border-slate-800 relative z-10">
+      <div class="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700 relative z-10">
         <button onclick="setAuthMode('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow">Entrar</button>
-        <button onclick="setAuthMode('register')" id="tabRegister" class="flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all">Criar Conta</button>
+        <button onclick="setAuthMode('register')" id="tabRegister" class="flex-1 py-2 text-xs font-bold rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">Criar Conta</button>
       </div>
 
       <form id="authForm" onsubmit="handleAuthAction(event)" class="space-y-4 relative z-10">
-        <div id="authError" class="hidden bg-red-500/20 text-red-400 text-xs p-3 rounded-lg border border-red-500/30"></div>
+        <div id="authError" class="hidden bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 text-xs p-3 rounded-lg border border-red-200 dark:border-red-500/30"></div>
         
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">E-mail Corporativo</label>
-          <input type="email" id="authEmail" required class="w-full glass-input px-4 py-2.5 rounded-xl text-white" placeholder="joao@empresa.com">
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">E-mail Corporativo</label>
+          <input type="email" id="authEmail" required class="w-full glass-input px-4 py-2.5 rounded-xl" placeholder="joao@empresa.com">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Senha de Acesso</label>
-          <input type="password" id="authPassword" required class="w-full glass-input px-4 py-2.5 rounded-xl text-white" placeholder="••••••••">
-          <p id="pwdHint" class="hidden text-[10px] text-slate-500 mt-1">Mínimo 6 caracteres, 1 Maiúscula, 1 Número, 1 Símbolo (@!$)</p>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Senha de Acesso</label>
+          <input type="password" id="authPassword" required class="w-full glass-input px-4 py-2.5 rounded-xl" placeholder="••••••••">
+          <p id="pwdHint" class="hidden text-[10px] text-slate-500 mt-1">Mín. 6 chars, 1 Maiúscula, 1 Número, 1 Símbolo (@!$)</p>
         </div>
 
-        <button type="submit" id="authActionBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg shadow-blue-900/50 mt-2">
+        <button type="submit" id="authActionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition shadow-lg mt-2">
           Entrar no Sistema
         </button>
       </form>
@@ -110,45 +116,46 @@
   <!-- ================= APLICATIVO PRINCIPAL ================= -->
   <div id="appContainer" class="hidden flex-1 flex-col">
     <!-- TOP HEADER -->
-    <header class="glass-panel sticky top-0 z-30 border-b border-slate-800/50 px-4 lg:px-8 py-3">
+    <header class="glass-panel sticky top-0 z-30 px-4 lg:px-8 py-3 rounded-none border-t-0 border-l-0 border-r-0 border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         
         <div class="flex items-center gap-3">
-          <div class="p-2.5 bg-blue-600/20 text-blue-500 rounded-xl border border-blue-500/30">
+          <div class="p-2.5 bg-blue-100 dark:bg-blue-600/20 text-blue-600 dark:text-blue-500 rounded-xl">
             <i data-lucide="cloud" class="w-6 h-6"></i>
           </div>
           <div>
-            <h1 class="font-bold text-lg leading-tight flex items-center gap-2">
+            <h1 class="font-bold text-lg leading-tight flex items-center gap-2 text-slate-900 dark:text-white">
               Gestor Operacional Nuvem
-              <span class="text-xs px-2 py-0.5 bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 rounded-full font-normal" id="userEmailDisplay">Logado</span>
+              <span class="text-[10px] px-2 py-0.5 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 rounded-full font-bold" id="userEmailDisplay">Logado</span>
             </h1>
-            <p class="text-xs text-slate-400">Controle Integrado com IA</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Controle Integrado com IA</p>
           </div>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <button onclick="toggleTheme()" class="p-2 glass-input rounded-xl hover:bg-blue-500/20 transition" title="Alternar Tema Claro/Escuro">
-            <i data-lucide="sun" id="themeIcon" class="w-4 h-4"></i>
+          <!-- Botão Tema -->
+          <button onclick="toggleTheme()" class="p-2 glass-input rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Alternar Tema">
+            <i data-lucide="sun" id="themeIcon" class="w-4 h-4 text-slate-600 dark:text-slate-300"></i>
           </button>
 
           <!-- SELETOR DE COMPETÊNCIA -->
-          <div class="flex items-center gap-2 p-1.5 rounded-xl border glass-input shadow-inner">
-            <i data-lucide="calendar" class="w-4 h-4 text-blue-500 ml-1"></i>
-            <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-semibold text-sm px-2 py-1 outline-none cursor-pointer"></select>
-            <button onclick="openNewCompetenceModal()" class="bg-blue-600 text-white p-1.5 rounded-lg" title="Nova Competência"><i data-lucide="plus" class="w-4 h-4"></i></button>
-            <button onclick="toggleCompetenceLock()" id="toggleLockBtn" class="bg-amber-600 text-white p-1.5 rounded-lg" title="Trancar/Destrancar"><i data-lucide="lock" class="w-4 h-4"></i></button>
-            <button onclick="confirmDeleteCompetence()" class="bg-red-600 text-white p-1.5 rounded-lg" title="Apagar Mês (Exige Senha)"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          <div class="flex items-center gap-2 p-1.5 rounded-xl glass-input">
+            <i data-lucide="calendar" class="w-4 h-4 text-blue-600 dark:text-blue-400 ml-1"></i>
+            <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-bold text-sm px-1 py-1 outline-none cursor-pointer text-slate-800 dark:text-white"></select>
+            <button onclick="openNewCompetenceModal()" class="bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition" title="Nova Competência"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            <button onclick="toggleCompetenceLock()" id="toggleLockBtn" class="bg-amber-500 text-white p-1.5 rounded-lg hover:bg-amber-600 transition" title="Trancar/Destrancar"><i data-lucide="lock" class="w-4 h-4"></i></button>
+            <button onclick="confirmDeleteCompetence()" class="bg-red-500 text-white p-1.5 rounded-lg hover:bg-red-600 transition" title="Apagar Mês (Exige Senha)"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
 
-          <!-- AÇÕES DE EXPORTAÇÃO -->
-          <div class="hidden sm:flex items-center gap-2 ml-2 pl-2 border-l border-slate-700/50">
-            <button onclick="exportData()" class="glass-input px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 hover:bg-slate-800/50 transition">
+          <!-- AÇÕES EXTRAS -->
+          <div class="hidden sm:flex items-center gap-2 ml-2 pl-2 border-l border-slate-200 dark:border-slate-700">
+            <button onclick="exportData()" class="glass-input px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-slate-700 dark:text-slate-300">
               <i data-lucide="download" class="w-3.5 h-3.5"></i> JSON
             </button>
-            <button onclick="exportStyledExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition">
+            <button onclick="exportStyledExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
               <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Excel
             </button>
-            <button onclick="logout()" class="p-2 glass-input text-red-500 hover:bg-red-500/20 rounded-xl transition ml-1" title="Sair do Sistema">
+            <button onclick="logout()" class="p-2 glass-input text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition ml-1" title="Sair">
               <i data-lucide="log-out" class="w-4 h-4"></i>
             </button>
           </div>
@@ -162,184 +169,154 @@
       <div id="competenceBanner" class="p-3 rounded-xl border flex items-center justify-between transition-all">
         <div class="flex items-center gap-3">
           <span id="competenceStatusBadge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider"></span>
-          <span id="competenceBannerText" class="text-xs"></span>
+          <span id="competenceBannerText" class="text-xs text-slate-600 dark:text-slate-300 font-medium"></span>
         </div>
-        <div class="text-xs font-mono opacity-60" id="competenceDateInfo"></div>
+        <div class="text-xs font-mono font-bold text-slate-400 dark:text-slate-500" id="competenceDateInfo"></div>
       </div>
 
       <!-- CARDS MENSURAÇÃO -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div class="glass-panel p-4 rounded-xl flex flex-col">
-          <span class="text-xs font-medium text-slate-400">Total Tarefas</span>
-          <span id="metricTotal" class="text-2xl font-bold mt-1">0</span>
+          <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Total Tarefas</span>
+          <span id="metricTotal" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
         <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-emerald-500">
-          <span class="text-xs font-medium text-emerald-500">Concluído</span>
-          <span id="metricConcluido" class="text-2xl font-bold mt-1">0</span>
+          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Concluído</span>
+          <span id="metricConcluido" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
         <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-yellow-500">
-          <span class="text-xs font-medium text-yellow-500">Em Andamento</span>
-          <span id="metricAndamento" class="text-2xl font-bold mt-1">0</span>
+          <span class="text-xs font-bold text-yellow-600 dark:text-yellow-400">Em Andamento</span>
+          <span id="metricAndamento" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
         <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-orange-500">
-          <span class="text-xs font-medium text-orange-500">Em Espera</span>
-          <span id="metricEspera" class="text-2xl font-bold mt-1">0</span>
+          <span class="text-xs font-bold text-orange-600 dark:text-orange-400">Em Espera</span>
+          <span id="metricEspera" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
         <div class="glass-panel p-4 rounded-xl flex flex-col border-l-4 border-red-500 col-span-2 md:col-span-1">
-          <span class="text-xs font-medium text-red-500">Não Houve</span>
-          <span id="metricNaoHouve" class="text-2xl font-bold mt-1">0</span>
+          <span class="text-xs font-bold text-red-600 dark:text-red-400">Não Houve</span>
+          <span id="metricNaoHouve" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</span>
         </div>
       </div>
 
-      <!-- BARRA DE AÇÕES -->
+      <!-- BARRA DE AÇÕES E BUSCA -->
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <div class="flex items-center gap-2 flex-1 max-w-md">
           <div class="relative w-full">
             <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
-            <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade ou anotação..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl glass-input">
+            <input type="text" id="searchInput" oninput="renderApp()" placeholder="Buscar atividade ou anotação..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl glass-input font-medium">
           </div>
         </div>
 
         <div class="flex items-center gap-2">
-          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition shadow-lg shadow-blue-600/20">
+          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-md">
             <i data-lucide="plus-circle" class="w-4 h-4"></i> Nova Atividade
           </button>
 
-          <div class="h-6 w-px bg-slate-700/50 mx-1"></div>
+          <div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
 
-          <div class="p-1 rounded-xl border glass-input flex items-center">
-            <button id="viewTableBtn" onclick="setView('table')" class="px-3 py-1 rounded-lg text-xs font-medium transition bg-blue-600 text-white">
+          <div class="p-1 rounded-xl glass-input flex items-center">
+            <button id="viewTableBtn" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white">
               <i data-lucide="table" class="w-3.5 h-3.5 inline mr-1"></i> Tabela
             </button>
-            <button id="viewKanbanBtn" onclick="setView('kanban')" class="px-3 py-1 rounded-lg text-xs font-medium transition text-slate-400 hover:text-white">
+            <button id="viewKanbanBtn" onclick="setView('kanban')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
               <i data-lucide="kanban" class="w-3.5 h-3.5 inline mr-1"></i> Kanban
             </button>
           </div>
 
-          <button onclick="openAIModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition shadow-lg shadow-purple-600/20">
+          <button onclick="openAIModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-md">
             <i data-lucide="sparkles" class="w-4 h-4"></i> Assistente IA
           </button>
         </div>
       </div>
 
       <!-- TABELA VIEW -->
-      <div id="tableView" class="glass-panel rounded-xl overflow-hidden shadow-2xl">
+      <div id="tableView" class="glass-panel rounded-xl overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
             <thead>
-              <tr class="font-semibold uppercase tracking-wider border-b border-slate-700/50">
-                <th class="py-3.5 px-4 w-12 text-center opacity-60">#</th>
-                <th class="py-3.5 px-4 min-w-[200px]">ATIVIDADES</th>
-                <th class="py-3.5 px-4 min-w-[140px]">PRAZOS</th>
-                <th class="py-3.5 px-4 min-w-[150px]">SITUAÇÃO</th>
-                <th class="py-3.5 px-4 min-w-[180px]">DATA EXECUÇÃO</th>
-                <th class="py-3.5 px-4 min-w-[320px]">ANOTAÇÕES (Auto-Propaga)</th>
-                <th class="py-3.5 px-4 w-24 text-center">AÇÕES</th>
+              <tr class="bg-slate-50 dark:bg-slate-800/50 font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                <th class="py-3 px-4 w-12 text-center">#</th>
+                <th class="py-3 px-4 min-w-[200px]">Atividades</th>
+                <th class="py-3 px-4 min-w-[140px]">Prazos</th>
+                <th class="py-3 px-4 min-w-[150px]">Situação</th>
+                <th class="py-3 px-4 min-w-[180px]">Data Execução</th>
+                <th class="py-3 px-4 min-w-[320px]">Anotações (Auto-Propaga)</th>
+                <th class="py-3 px-4 w-24 text-center">Ações</th>
               </tr>
             </thead>
-            <tbody id="tasksTableBody" class="divide-y divide-slate-700/50 font-medium"></tbody>
+            <tbody id="tasksTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
           </table>
         </div>
       </div>
 
       <!-- KANBAN VIEW -->
       <div id="kanbanView" class="hidden grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="glass-panel border-slate-700/50 rounded-xl p-4 flex flex-col">
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-700/50">
-            <span class="text-xs font-bold text-emerald-500 uppercase tracking-wider flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> CONCLUÍDO</span>
-            <span id="count-kanban-concluido" class="text-xs bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full font-bold">0</span>
-          </div>
-          <div id="kanban-CONCLUÍDO" class="space-y-3 flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, 'CONCLUÍDO')"></div>
-        </div>
-
-        <div class="glass-panel border-slate-700/50 rounded-xl p-4 flex flex-col">
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-700/50">
-            <span class="text-xs font-bold text-yellow-500 uppercase tracking-wider flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> EM ANDAMENTO</span>
-            <span id="count-kanban-andamento" class="text-xs bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded-full font-bold">0</span>
-          </div>
-          <div id="kanban-EM ANDAMENTO" class="space-y-3 flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, 'EM ANDAMENTO')"></div>
-        </div>
-
-        <div class="glass-panel border-slate-700/50 rounded-xl p-4 flex flex-col">
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-700/50">
-            <span class="text-xs font-bold text-orange-500 uppercase tracking-wider flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> EM ESPERA</span>
-            <span id="count-kanban-espera" class="text-xs bg-orange-500/10 text-orange-500 px-2 py-0.5 rounded-full font-bold">0</span>
-          </div>
-          <div id="kanban-EM ESPERA" class="space-y-3 flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, 'EM ESPERA')"></div>
-        </div>
-
-        <div class="glass-panel border-slate-700/50 rounded-xl p-4 flex flex-col">
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-700/50">
-            <span class="text-xs font-bold text-red-500 uppercase tracking-wider flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> NÃO HOUVE</span>
-            <span id="count-kanban-naohouve" class="text-xs bg-red-500/10 text-red-500 px-2 py-0.5 rounded-full font-bold">0</span>
-          </div>
-          <div id="kanban-NÃO HOUVE" class="space-y-3 flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, 'NÃO HOUVE')"></div>
-        </div>
+        <!-- Colunas geradas via JS -->
       </div>
     </main>
   </div>
 
-  <!-- BOTÃO FLUTUANTE DO PAINEL DE NOTAS -->
-  <button id="floatNotesBtn" onclick="toggleNotesPanel()" class="hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-full shadow-2xl transition-transform hover:scale-105 items-center justify-center group">
+  <!-- BOTÃO FLUTUANTE DE NOTAS -->
+  <button id="floatNotesBtn" onclick="toggleNotesPanel()" class="hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105 items-center justify-center">
     <i data-lucide="sticky-note" class="w-6 h-6"></i>
   </button>
 
-  <!-- PAINEL LATERAL DE NOTAS (GAVETA) -->
-  <div id="notesPanel" class="fixed top-0 right-0 h-full w-full sm:w-[400px] glass-panel border-l border-slate-700/50 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
-    <div class="p-4 border-b border-slate-700/50 flex items-center justify-between">
-      <h3 class="text-base font-bold flex items-center gap-2">
-        <i data-lucide="book-open" class="w-5 h-5 text-blue-500"></i> Notas da Competência
+  <!-- PAINEL LATERAL DE NOTAS -->
+  <div id="notesPanel" class="fixed top-0 right-0 h-full w-full sm:w-[400px] glass-panel border-l border-slate-200 dark:border-slate-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50">
+      <h3 class="text-base font-bold flex items-center gap-2 text-slate-800 dark:text-white">
+        <i data-lucide="book-open" class="w-5 h-5 text-blue-600 dark:text-blue-500"></i> Notas da Competência
       </h3>
-      <button onclick="toggleNotesPanel()" class="p-2 hover:bg-slate-700/30 rounded-lg transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button onclick="toggleNotesPanel()" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition text-slate-500"><i data-lucide="x" class="w-5 h-5"></i></button>
     </div>
-    <div class="p-4 flex-1 flex flex-col">
-      <textarea id="generalNotesArea" oninput="updateGeneralNotes(this.value)" class="flex-1 w-full glass-input rounded-xl p-4 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-inner custom-scrollbar" placeholder="Rascunhos, lembretes do mês..."></textarea>
+    <div class="p-4 flex-1 flex flex-col bg-white dark:bg-transparent">
+      <textarea id="generalNotesArea" oninput="updateGeneralNotes(this.value)" class="flex-1 w-full glass-input rounded-xl p-4 text-sm font-medium resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-inner custom-scrollbar text-slate-800 dark:text-slate-200" placeholder="Rascunhos gerais do mês..."></textarea>
     </div>
   </div>
 
   <!-- MODAL: NOVA COMPETÊNCIA -->
-  <div id="newCompetenceModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4">
+  <div id="newCompetenceModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold flex items-center gap-2"><i data-lucide="folder-plus" class="w-5 h-5 text-blue-500"></i> Criar Mês/Competência</h3>
-        <button onclick="closeModal('newCompetenceModal')"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <h3 class="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white"><i data-lucide="folder-plus" class="w-5 h-5 text-blue-600"></i> Criar Mês</h3>
+        <button onclick="closeModal('newCompetenceModal')" class="text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form onsubmit="handleCreateCompetence(event)" class="space-y-4">
-        <input type="text" id="newCompetenceId" required placeholder="Ex: 11 ATIVIDADES 10-112026" class="w-full glass-input text-xs px-3 py-2 rounded-xl">
-        <div class="p-3 rounded-xl border border-slate-700/50 glass-input">
-          <label class="flex items-center gap-2 text-xs font-medium cursor-pointer">
-            <input type="checkbox" id="clonePreviousTasks" checked class="rounded"> Copiar base de tarefas atual
+        <input type="text" id="newCompetenceId" required placeholder="Ex: 11 ATIVIDADES 10-112026" class="w-full glass-input font-medium text-sm px-3 py-2 rounded-xl">
+        <div class="p-3 rounded-xl glass-input">
+          <label class="flex items-center gap-2 text-xs font-bold cursor-pointer text-slate-700 dark:text-slate-300">
+            <input type="checkbox" id="clonePreviousTasks" checked class="rounded border-slate-300"> Copiar base de tarefas do mês atual
           </label>
         </div>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs glass-input rounded-xl">Cancelar</button>
-          <button type="submit" class="px-4 py-2 text-xs text-white bg-blue-600 rounded-xl">Criar</button>
+          <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs font-bold glass-input rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl">Criar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: NOVA TAREFA -->
-  <div id="taskModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4">
+  <!-- MODAL: TAREFA -->
+  <div id="taskModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-lg rounded-2xl p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <h3 id="modalTaskTitle" class="text-base font-bold flex items-center gap-2"><i data-lucide="edit" class="w-5 h-5 text-blue-500"></i> Tarefa</h3>
-        <button onclick="closeModal('taskModal')"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <h3 id="modalTaskTitle" class="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white"><i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> Tarefa</h3>
+        <button onclick="closeModal('taskModal')" class="text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form onsubmit="handleSaveTask(event)" class="space-y-4">
         <input type="hidden" id="taskId">
         <div>
-          <label class="block text-xs font-semibold mb-1 opacity-70">Atividade *</label>
-          <input type="text" id="taskName" required class="w-full glass-input text-xs px-3 py-2 rounded-xl">
+          <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Atividade *</label>
+          <input type="text" id="taskName" required class="w-full glass-input text-sm font-medium px-3 py-2 rounded-xl">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold mb-1 opacity-70">Prazo</label>
-            <input type="text" id="taskDeadline" class="w-full glass-input text-xs px-3 py-2 rounded-xl">
+            <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Prazo</label>
+            <input type="text" id="taskDeadline" class="w-full glass-input text-sm font-medium px-3 py-2 rounded-xl">
           </div>
           <div>
-            <label class="block text-xs font-semibold mb-1 opacity-70">Situação</label>
-            <select id="taskStatus" required class="w-full glass-input text-xs px-3 py-2 rounded-xl">
+            <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Situação</label>
+            <select id="taskStatus" required class="w-full glass-input text-sm font-bold px-3 py-2 rounded-xl cursor-pointer">
               <option value="CONCLUÍDO">CONCLUÍDO</option>
               <option value="EM ANDAMENTO">EM ANDAMENTO</option>
               <option value="EM ESPERA">EM ESPERA</option>
@@ -348,35 +325,35 @@
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold mb-1 opacity-70">Data Execução</label>
-          <input type="text" id="taskExecDate" class="w-full glass-input text-xs px-3 py-2 rounded-xl">
+          <label class="block text-xs font-bold mb-1 text-slate-600 dark:text-slate-400">Data Execução</label>
+          <input type="text" id="taskExecDate" class="w-full glass-input text-sm font-medium px-3 py-2 rounded-xl">
         </div>
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeModal('taskModal')" class="px-4 py-2 text-xs glass-input rounded-xl">Cancelar</button>
-          <button type="submit" class="px-4 py-2 text-xs text-white bg-blue-600 rounded-xl">Salvar</button>
+          <button type="button" onclick="closeModal('taskModal')" class="px-4 py-2 text-xs font-bold glass-input rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl">Salvar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- MODAL: IA ASSISTANT -->
-  <div id="aiModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4">
-    <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 border-purple-500/30 shadow-2xl flex flex-col max-h-[90vh]">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-700/50">
-        <h3 class="text-sm font-bold flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-purple-500"></i> Assistente IA Operacional</h3>
-        <button onclick="closeModal('aiModal')"><i data-lucide="x" class="w-5 h-5"></i></button>
+  <div id="aiModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 shadow-2xl flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+        <h3 class="text-sm font-bold flex items-center gap-2 text-slate-900 dark:text-white"><i data-lucide="sparkles" class="w-5 h-5 text-purple-600"></i> Assistente IA</h3>
+        <button onclick="closeModal('aiModal')" class="text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      <div class="my-3 flex-1 glass-input rounded-xl p-4 overflow-y-auto text-xs font-mono min-h-[200px]" id="aiOutput">
+      <div class="my-3 flex-1 glass-input rounded-xl p-4 overflow-y-auto text-sm font-mono font-medium min-h-[200px]" id="aiOutput">
         Selecione uma análise abaixo para a IA examinar as tarefas...
       </div>
       <div class="grid grid-cols-3 gap-2 mb-2">
-        <button onclick="runAIAssistant('resumo')" class="p-2 glass-input rounded-xl text-xs font-medium text-purple-400 transition flex items-center gap-2">
+        <button onclick="runAIAssistant('resumo')" class="p-2 glass-input rounded-xl text-xs font-bold text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-500/10 transition flex items-center justify-center gap-2">
           <i data-lucide="file-text" class="w-4 h-4"></i> Resumo
         </button>
-        <button onclick="runAIAssistant('pendencias')" class="p-2 glass-input rounded-xl text-xs font-medium text-amber-400 transition flex items-center gap-2">
+        <button onclick="runAIAssistant('pendencias')" class="p-2 glass-input rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-500/10 transition flex items-center justify-center gap-2">
           <i data-lucide="alert-circle" class="w-4 h-4"></i> Pendências
         </button>
-        <button onclick="runAIAssistant('email')" class="p-2 glass-input rounded-xl text-xs font-medium text-blue-400 transition flex items-center gap-2">
+        <button onclick="runAIAssistant('email')" class="p-2 glass-input rounded-xl text-xs font-bold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 transition flex items-center justify-center gap-2">
           <i data-lucide="mail" class="w-4 h-4"></i> E-mail
         </button>
       </div>
@@ -406,7 +383,6 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      document.documentElement.classList.add('dark'); // Modo Escuro padrão
       const savedSession = localStorage.getItem('saas_session');
       if(savedSession) {
         currentUser = JSON.parse(savedSession);
@@ -414,7 +390,7 @@
       }
     });
 
-    // --- AUTH & LOGIN ---
+    // --- AUTH ---
     function setAuthMode(mode) {
       authMode = mode;
       const tabL = document.getElementById('tabLogin');
@@ -425,12 +401,12 @@
 
       if(mode === 'login') {
         tabL.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow";
-        tabR.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
+        tabR.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
         btn.textContent = "Entrar no Sistema";
         hint.classList.add('hidden');
       } else {
         tabR.className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition-all shadow";
-        tabL.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
+        tabL.className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all";
         btn.textContent = "Finalizar Cadastro";
         hint.classList.remove('hidden');
       }
@@ -491,9 +467,9 @@
       const html = document.documentElement;
       const icon = document.getElementById('themeIcon');
       if (html.classList.contains('dark')) {
-        html.classList.remove('dark'); icon.setAttribute('data-lucide', 'sun');
+        html.classList.remove('dark'); icon.setAttribute('data-lucide', 'moon');
       } else {
-        html.classList.add('dark'); icon.setAttribute('data-lucide', 'moon');
+        html.classList.add('dark'); icon.setAttribute('data-lucide', 'sun');
       }
       lucide.createIcons();
     }
@@ -538,7 +514,6 @@
       });
     }
 
-    // --- LÓGICA DE EXCLUSÃO CYBERSEC ---
     function confirmDeleteCompetence() {
       const pwd = prompt("Para apagar este mês permanentemente, digite sua senha de login:");
       if (pwd === null) return;
@@ -561,23 +536,22 @@
       saveCloudData(); renderCompetenceSelector(); renderApp();
     }
 
-    // --- RENDERIZAÇÃO DA APP (Métricas, Tabela, Kanban) ---
+    // --- RENDERIZAÇÃO ---
     function renderApp() {
       const comp = appData.competences[currentCompetenceId];
       if(!comp) return;
       const isLocked = comp.status === 'LOCKED';
 
-      // Atualiza Banner Superior
       const banner = document.getElementById('competenceBanner');
       const badge = document.getElementById('competenceStatusBadge');
       if (isLocked) {
-        banner.className = "p-3 rounded-xl border bg-amber-500/10 border-amber-500/30 flex items-center justify-between";
-        badge.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-amber-500/20 text-amber-500 border border-amber-500/30";
+        banner.className = "p-3 rounded-xl border bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/30 flex items-center justify-between";
+        badge.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-500 border border-amber-200 dark:border-amber-500/30";
         badge.textContent = "Bloqueada";
         document.getElementById('competenceBannerText').textContent = "Competência finalizada. Edição bloqueada.";
       } else {
-        banner.className = "p-3 rounded-xl border bg-emerald-500/10 border-emerald-500/30 flex items-center justify-between";
-        badge.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-500/20 text-emerald-500 border border-emerald-500/30";
+        banner.className = "p-3 rounded-xl border bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/30 flex items-center justify-between";
+        badge.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-500/30";
         badge.textContent = "Em Aberto";
         document.getElementById('competenceBannerText').textContent = "Edição livre.";
       }
@@ -585,11 +559,9 @@
       document.getElementById('generalNotesArea').value = comp.generalNotes || '';
       document.getElementById('generalNotesArea').disabled = isLocked;
 
-      // Busca e Filtros
       const search = document.getElementById('searchInput').value.toLowerCase();
       const filteredTasks = comp.tasks.filter(t => t.activity.toLowerCase().includes(search) || t.notes.toLowerCase().includes(search));
 
-      // Atualiza Métricas
       const counts = { CONCLUÍDO: 0, 'EM ANDAMENTO': 0, 'EM ESPERA': 0, 'NÃO HOUVE': 0 };
       comp.tasks.forEach(t => { if(counts[t.status] !== undefined) counts[t.status]++; });
       document.getElementById('metricTotal').textContent = comp.tasks.length;
@@ -598,7 +570,6 @@
       document.getElementById('metricEspera').textContent = counts['EM ESPERA'];
       document.getElementById('metricNaoHouve').textContent = counts['NÃO HOUVE'];
 
-      // Renderiza Tabela e Kanban
       renderTable(filteredTasks, isLocked);
       renderKanban(filteredTasks, isLocked);
       lucide.createIcons();
@@ -609,19 +580,19 @@
     function renderTable(tasks, isLocked) {
       const tbody = document.getElementById('tasksTableBody');
       tbody.innerHTML = '';
-      if(tasks.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 opacity-50">Sem resultados.</td></tr>`; return; }
+      if(tasks.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 font-medium text-slate-500">Nenhum resultado encontrado.</td></tr>`; return; }
 
       tasks.forEach((task, i) => {
         const tr = document.createElement('tr');
-        tr.className = "border-b border-slate-700/50 hover:bg-slate-500/5 transition";
+        tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/40 transition group";
         const stClass = `status-${task.status.replace(/ /g, '-')}`;
         
         tr.innerHTML = `
-          <td class="py-3 px-4 text-center opacity-60">${i+1}</td>
-          <td class="py-3 px-4 font-bold text-white">${escapeHtml(task.activity)}</td>
-          <td class="py-3 px-4">${escapeHtml(task.deadline || '-')}</td>
+          <td class="py-3 px-4 text-center font-bold text-slate-400 dark:text-slate-500">${i+1}</td>
+          <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-100">${escapeHtml(task.activity)}</td>
+          <td class="py-3 px-4 font-medium text-slate-600 dark:text-slate-300">${escapeHtml(task.deadline || '-')}</td>
           <td class="py-3 px-4">
-            <select onchange="updateTaskStatus('${task.id}', this.value)" ${isLocked?'disabled':''} class="${stClass} text-xs font-bold px-2 py-1 rounded-lg cursor-pointer outline-none w-full">
+            <select onchange="updateTaskStatus('${task.id}', this.value)" ${isLocked?'disabled':''} class="${stClass} text-xs px-2 py-1.5 rounded-lg cursor-pointer outline-none w-full text-center appearance-none">
               <option value="CONCLUÍDO" ${task.status==='CONCLUÍDO'?'selected':''}>CONCLUÍDO</option>
               <option value="EM ANDAMENTO" ${task.status==='EM ANDAMENTO'?'selected':''}>EM ANDAMENTO</option>
               <option value="EM ESPERA" ${task.status==='EM ESPERA'?'selected':''}>EM ESPERA</option>
@@ -629,14 +600,14 @@
             </select>
           </td>
           <td class="py-3 px-4">
-            <input type="text" value="${escapeHtml(task.execDate)}" onchange="updateTaskField('${task.id}', 'execDate', this.value)" ${isLocked?'disabled':''} class="inline-textarea text-xs" placeholder="Adicionar data...">
+            <input type="text" value="${escapeHtml(task.execDate)}" onchange="updateTaskField('${task.id}', 'execDate', this.value)" ${isLocked?'disabled':''} class="inline-textarea text-xs font-medium" placeholder="Adicionar data...">
           </td>
           <td class="py-3 px-4">
-            <textarea rows="1" oninput="autoResize(this)" onchange="propagateTaskNotes('${task.id}', this.value)" ${isLocked?'disabled':''} class="inline-textarea text-xs min-h-[32px]">${escapeHtml(task.notes)}</textarea>
+            <textarea rows="1" oninput="autoResize(this)" onchange="propagateTaskNotes('${task.id}', this.value)" ${isLocked?'disabled':''} class="inline-textarea text-xs font-medium min-h-[32px]" placeholder="...">${escapeHtml(task.notes)}</textarea>
           </td>
-          <td class="py-3 px-4 text-center flex justify-center gap-1">
-            <button onclick="openEditTaskModal('${task.id}')" class="p-1 hover:text-blue-500 transition"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-            <button onclick="deleteTask('${task.id}')" ${isLocked?'disabled':''} class="p-1 hover:text-red-500 transition ${isLocked?'opacity-30':''}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          <td class="py-3 px-4 text-center flex justify-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+            <button onclick="openEditTaskModal('${task.id}')" class="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-500/10 text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 rounded transition"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+            <button onclick="deleteTask('${task.id}')" ${isLocked?'disabled':''} class="p-1.5 hover:bg-red-50 dark:hover:bg-red-500/10 text-slate-500 hover:text-red-600 dark:hover:text-red-400 rounded transition ${isLocked?'opacity-30':''}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -645,28 +616,45 @@
     }
 
     function renderKanban(tasks, isLocked) {
-      ['CONCLUÍDO', 'EM ANDAMENTO', 'EM ESPERA', 'NÃO HOUVE'].forEach(st => {
-        const cont = document.getElementById(`kanban-${st}`);
-        const cntSpan = document.getElementById(`count-kanban-${st.replace(/ /g, '').toLowerCase()}`);
-        cont.innerHTML = '';
-        const stTasks = tasks.filter(t => t.status === st);
-        if(cntSpan) cntSpan.textContent = stTasks.length;
+      const cols = [
+        { id: 'CONCLUÍDO', color: 'emerald' },
+        { id: 'EM ANDAMENTO', color: 'yellow' },
+        { id: 'EM ESPERA', color: 'orange' },
+        { id: 'NÃO HOUVE', color: 'red' }
+      ];
 
+      const container = document.getElementById('kanbanView');
+      container.innerHTML = '';
+
+      cols.forEach(col => {
+        const stTasks = tasks.filter(t => t.status === col.id);
+        const colDiv = document.createElement('div');
+        colDiv.className = "glass-panel rounded-xl p-4 flex flex-col border-t-4 border-t-"+col.color+"-500";
+        
+        let cardsHtml = '';
         stTasks.forEach(task => {
-          const c = document.createElement('div');
-          c.className = "glass-panel rounded-xl p-3 shadow-md hover:border-blue-500/50 transition cursor-grab active:cursor-grabbing";
-          c.draggable = !isLocked;
-          c.ondragstart = (e) => e.dataTransfer.setData('text/plain', task.id);
-          c.innerHTML = `
-            <div class="flex justify-between items-start mb-1">
-              <h4 class="font-bold text-xs text-white">${escapeHtml(task.activity)}</h4>
-              <button onclick="openEditTaskModal('${task.id}')" class="hover:text-blue-500"><i data-lucide="more-horizontal" class="w-3 h-3"></i></button>
+          cardsHtml += `
+            <div class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 shadow-sm hover:border-blue-500 dark:hover:border-blue-500/50 transition cursor-grab active:cursor-grabbing mb-3" draggable="${!isLocked}" ondragstart="event.dataTransfer.setData('text/plain', '${task.id}')">
+              <div class="flex justify-between items-start mb-1">
+                <h4 class="font-bold text-xs text-slate-800 dark:text-white">${escapeHtml(task.activity)}</h4>
+                <button onclick="openEditTaskModal('${task.id}')" class="text-slate-400 hover:text-blue-500"><i data-lucide="more-horizontal" class="w-3 h-3"></i></button>
+              </div>
+              ${task.deadline ? `<div class="text-[10px] text-slate-500 mb-2 flex items-center gap-1 font-medium"><i data-lucide="clock" class="w-3 h-3"></i> ${escapeHtml(task.deadline)}</div>` : ''}
+              ${task.notes ? `<p class="text-[11px] text-slate-600 dark:text-slate-300 font-medium line-clamp-2 bg-slate-50 dark:bg-black/20 p-1.5 rounded">${escapeHtml(task.notes)}</p>` : ''}
             </div>
-            ${task.deadline ? `<div class="text-[10px] opacity-60 mb-2 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${escapeHtml(task.deadline)}</div>` : ''}
-            ${task.notes ? `<p class="text-[11px] opacity-80 line-clamp-2 bg-black/10 p-1.5 rounded">${escapeHtml(task.notes)}</p>` : ''}
           `;
-          cont.appendChild(c);
         });
+
+        colDiv.innerHTML = `
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+            <span class="text-xs font-bold text-${col.color}-600 dark:text-${col.color}-500 uppercase tracking-wider">${col.id}</span>
+            <span class="text-xs bg-${col.color}-100 dark:bg-${col.color}-500/20 text-${col.color}-700 dark:text-${col.color}-400 px-2 py-0.5 rounded-full font-bold">${stTasks.length}</span>
+          </div>
+          <div class="flex-1 min-h-[300px]" ondragover="allowDrop(event)" ondrop="drop(event, '${col.id}')">
+            ${cardsHtml}
+          </div>
+        `;
+        container.appendChild(colDiv);
       });
     }
 
@@ -687,7 +675,6 @@
       if(t) { t[field] = val; saveCloudData(); }
     }
 
-    // --- PROPAGAÇÃO INTELIGENTE DE NOTAS PARA O FUTURO ---
     function propagateTaskNotes(taskId, newNotes) {
       const compTarget = appData.competences[currentCompetenceId];
       if (!compTarget || compTarget.status === 'LOCKED') return;
@@ -699,9 +686,7 @@
 
       Object.values(appData.competences).forEach(c => {
         const cTime = new Date(c.createdAt).getTime();
-        // Apenas aplica nesta competência e nas futuras
         if (cTime >= timeOfTarget) {
-          // Só altera se não estiver trancada
           if (c.id === currentCompetenceId || c.status !== 'LOCKED') {
             const t = c.tasks.find(x => x.activity === activityName || x.id === taskId);
             if (t) t.notes = newNotes;
@@ -721,11 +706,14 @@
       currentView = v;
       document.getElementById('tableView').classList.toggle('hidden', v !== 'table');
       document.getElementById('kanbanView').classList.toggle('hidden', v !== 'kanban');
-      document.getElementById('viewTableBtn').className = `px-3 py-1 rounded-lg text-xs font-medium transition ${v==='table'?'bg-blue-600 text-white':'text-slate-400 hover:text-white'}`;
-      document.getElementById('viewKanbanBtn').className = `px-3 py-1 rounded-lg text-xs font-medium transition ${v==='kanban'?'bg-blue-600 text-white':'text-slate-400 hover:text-white'}`;
+      
+      const btnT = document.getElementById('viewTableBtn');
+      const btnK = document.getElementById('viewKanbanBtn');
+      
+      btnT.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition ${v==='table'?'bg-blue-600 text-white shadow':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
+      btnK.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition ${v==='kanban'?'bg-blue-600 text-white shadow':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
     }
 
-    // --- MODAIS ---
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
@@ -752,7 +740,7 @@
       if(appData.competences[currentCompetenceId].status === 'LOCKED') return alert('Encerrada.');
       document.getElementById('taskId').value=''; document.getElementById('taskName').value=''; document.getElementById('taskDeadline').value='';
       document.getElementById('taskStatus').value='EM ESPERA'; document.getElementById('taskExecDate').value='';
-      document.getElementById('modalTaskTitle').innerHTML = '<i data-lucide="plus" class="w-5 h-5 text-blue-500"></i> Nova Atividade';
+      document.getElementById('modalTaskTitle').innerHTML = '<i data-lucide="plus-circle" class="w-5 h-5 text-blue-600"></i> Nova Atividade';
       openModal('taskModal'); lucide.createIcons();
     }
 
@@ -761,7 +749,7 @@
       if(!t) return;
       document.getElementById('taskId').value = t.id; document.getElementById('taskName').value = t.activity; document.getElementById('taskDeadline').value = t.deadline || '';
       document.getElementById('taskStatus').value = t.status; document.getElementById('taskExecDate').value = t.execDate || '';
-      document.getElementById('modalTaskTitle').innerHTML = '<i data-lucide="edit" class="w-5 h-5 text-blue-500"></i> Editar Atividade';
+      document.getElementById('modalTaskTitle').innerHTML = '<i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> Editar Atividade';
       openModal('taskModal'); lucide.createIcons();
     }
 
@@ -791,7 +779,6 @@
       if(confirm('Apagar esta atividade?')) { comp.tasks = comp.tasks.filter(t => t.id !== id); saveCloudData(); renderApp(); }
     }
 
-    // --- EXPORTAÇÃO EXCEL/JSON ---
     function exportData() {
       const data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
       const a = document.createElement('a'); a.href = data; a.download = `backup_saas_${currentCompetenceId}.json`; document.body.appendChild(a); a.click(); a.remove();
@@ -805,7 +792,7 @@
         if (st === 'EM ESPERA') return 'background-color: #f97316; color: white; font-weight: bold; text-align: center;';
         return 'background-color: #ef4444; color: white; font-weight: bold; text-align: center;';
       };
-      let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"><style>th{background:#1e40af;color:white;border:1px solid #000;padding:6px}td{border:1px solid #d1d5db;padding:6px}</style></head><body><table><tr><th colspan="3">ATIVIDADES</th><th>DATA EXECUÇÃO</th><th>ANOTAÇÕES</th></tr>`;
+      let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"><style>th{background:#1e40af;color:white;border:1px solid #000;padding:6px}td{border:1px solid #d1d5db;padding:6px;vertical-align:middle}</style></head><body><table><tr><th colspan="3">ATIVIDADES</th><th>DATA EXECUÇÃO</th><th>ANOTAÇÕES</th></tr>`;
       comp.tasks.forEach(t => html += `<tr><td style="font-weight:bold">${t.activity}</td><td style="text-align:center">${t.deadline}</td><td style="${getStyle(t.status)}">${t.status}</td><td style="text-align:center">${t.execDate}</td><td>${t.notes}</td></tr>`);
       if(comp.generalNotes) html += `<tr><td colspan="5" style="height:20px;border:none"></td></tr><tr><th colspan="5" style="background:#1e3a8a">NOTAS GERAIS</th></tr><tr><td colspan="5" style="white-space:pre-wrap">${comp.generalNotes}</td></tr>`;
       html += `</table></body></html>`;
@@ -813,11 +800,10 @@
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${currentCompetenceId}.xls`; document.body.appendChild(a); a.click(); a.remove();
     }
 
-    // --- ASSISTENTE IA SIMULADO ---
     function openAIModal() { openModal('aiModal'); }
     function runAIAssistant(type) {
       const out = document.getElementById('aiOutput');
-      out.textContent = "A analisar os dados operacionais...";
+      out.textContent = "A analisar os dados...";
       setTimeout(() => {
         if(type === 'resumo') out.textContent = `[RESUMO EXECUTIVO]\n\n• Competência: ${currentCompetenceId}\n• Taxa de Conclusão: ${appData.competences[currentCompetenceId].tasks.filter(t=>t.status==='CONCLUÍDO').length} de ${appData.competences[currentCompetenceId].tasks.length} tarefas finalizadas.\n• Operação segue fluxo normal.`;
         else if(type === 'pendencias') out.textContent = `[ALERTA DE PENDÊNCIAS]\n\nFocar atenção nas tarefas com status 'EM ESPERA' e prazos a decorrer nas próximas 48h.`;
