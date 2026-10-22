@@ -8,7 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class', theme: { extend: {} } }
-    // Script rápido para ler a preferência salva antes de renderizar a página
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
     } else {
@@ -24,12 +23,9 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
-
-    /* LIGHT MODE CUSTOMIZAÇÕES ESPECÍFICAS DA TABELA */
     body:not(.dark) th { color: #475569 !important; font-weight: 700; }
     body:not(.dark) td { color: #1e293b !important; }
     body:not(.dark) .text-white { color: #ffffff !important; } 
-
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     .dark ::-webkit-scrollbar-track { background: #0f172a; }
     .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -60,15 +56,12 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased pb-10 bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-100 transition-colors duration-300">
 
-  <!-- ================= TELA DE LOGIN (FIREBASE) ================= -->
+  <!-- ================= TELA DE LOGIN ================= -->
   <div id="authScreen" class="fixed inset-0 z-[100] bg-slate-200 dark:bg-slate-900 flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-8 shadow-2xl relative overflow-hidden border border-slate-200 dark:border-slate-700">
-      
-      <!-- Botão de Tema Apenas no Login -->
       <button onclick="toggleTheme()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Alternar Tema">
         <i data-lucide="moon" id="themeIcon" class="w-5 h-5"></i>
       </button>
-
       <div class="text-center mb-6 mt-2">
         <div class="inline-flex p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl mb-3">
           <i data-lucide="shield-check" class="w-8 h-8"></i>
@@ -84,7 +77,6 @@
 
       <form id="authForm" onsubmit="handleAuthAction(event)" class="space-y-4">
         <div id="authError" class="hidden bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs p-3 rounded-lg border border-red-200 dark:border-red-800 font-medium"></div>
-        
         <div>
           <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">E-mail Corporativo</label>
           <input type="email" id="authEmail" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="joao@empresa.com">
@@ -94,7 +86,6 @@
           <input type="password" id="authPassword" required class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••">
           <p id="pwdHint" class="hidden text-[10px] text-slate-500 dark:text-slate-400 mt-1">Mín. 6 chars, 1 Maiúscula, 1 Número, 1 Símbolo (@!$)</p>
         </div>
-
         <button type="submit" id="authActionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg mt-2 flex items-center justify-center gap-2">
           Entrar no Sistema
         </button>
@@ -104,7 +95,6 @@
 
   <!-- ================= APLICATIVO PRINCIPAL ================= -->
   <div id="appContainer" class="hidden flex-1 flex-col">
-    <!-- HEADER (Botão de tema removido daqui) -->
     <header class="bg-white dark:bg-slate-800 sticky top-0 z-30 px-4 lg:px-8 py-3 border-b border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -120,8 +110,10 @@
         <div class="flex items-center gap-2 flex-wrap">
           <div class="flex items-center gap-2 p-1.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900">
             <i data-lucide="calendar" class="w-4 h-4 text-blue-600 dark:text-blue-400 ml-1"></i>
-            <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-bold text-sm px-1 py-1 outline-none cursor-pointer text-slate-800 dark:text-white"></select>
+            <select id="competenceSelect" onchange="switchCompetence(this.value)" class="bg-transparent font-bold text-sm px-1 py-1 outline-none cursor-pointer text-slate-800 dark:text-white max-w-[200px] truncate"></select>
+            
             <button onclick="openNewCompetenceModal()" class="bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700" title="Nova Competência"><i data-lucide="plus" class="w-4 h-4"></i></button>
+            <button onclick="openEditCompetenceModal()" class="bg-indigo-500 text-white p-1.5 rounded-lg hover:bg-indigo-600" title="Renomear Planilha"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
             <button onclick="toggleCompetenceLock()" id="toggleLockBtn" class="bg-amber-500 text-white p-1.5 rounded-lg hover:bg-amber-600" title="Trancar"><i data-lucide="lock" class="w-4 h-4"></i></button>
             <button onclick="confirmDeleteCompetence()" class="bg-red-500 text-white p-1.5 rounded-lg hover:bg-red-600" title="Apagar Mês"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
@@ -135,7 +127,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex-1 w-full space-y-6">
-      <!-- BANNER & METRICS -->
       <div id="competenceBanner" class="p-3 rounded-xl border flex items-center justify-between transition-all">
         <div class="flex items-center gap-3">
           <span id="competenceStatusBadge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider"></span>
@@ -199,7 +190,6 @@
     </main>
   </div>
 
-  <!-- BOTAO FLUTUANTE DE NOTAS -->
   <button id="floatNotesBtn" onclick="toggleNotesPanel()" class="hidden fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105 items-center justify-center"><i data-lucide="sticky-note" class="w-6 h-6"></i></button>
 
   <div id="notesPanel" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white dark:bg-slate-800 border-l border-slate-200 dark:border-slate-700 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
@@ -229,6 +219,23 @@
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeModal('newCompetenceModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
           <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl">Criar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: RENOMEAR COMPETÊNCIA -->
+  <div id="editCompetenceModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
+      <div class="flex justify-between mb-4">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white">Renomear Planilha</h3>
+        <button onclick="closeModal('editCompetenceModal')" class="text-slate-500 hover:text-slate-900 dark:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form onsubmit="handleEditCompetence(event)" class="space-y-4">
+        <input type="text" id="editCompetenceId" required placeholder="Novo nome da planilha" class="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 rounded-xl outline-none focus:border-blue-500">
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('editCompetenceModal')" class="px-4 py-2 text-xs font-bold border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl">Salvar</button>
         </div>
       </form>
     </div>
@@ -307,7 +314,6 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      // Define icone de tema inicial baseado no localStorage ou preferencia de sistema
       const html = document.documentElement;
       const icon = document.getElementById('themeIcon');
       if (html.classList.contains('dark')) { icon.setAttribute('data-lucide', 'sun'); } 
@@ -410,13 +416,10 @@
 
     function logout() { localStorage.removeItem('saas_session'); window.location.reload(); }
 
-    // --- FIREBASE CLOUD SYNC ---
     async function loadCloudData() {
       try {
         const docSnap = await cloudDB.collection("users").doc(currentUser.userKey).get();
-        if(docSnap.exists && docSnap.data().data) {
-          appData = docSnap.data().data;
-        }
+        if(docSnap.exists && docSnap.data().data) { appData = docSnap.data().data; }
 
         if (!appData.competences || Object.keys(appData.competences).length === 0) {
           const isMaster = currentUser.email === 'dp-aprendiz2@serttel.com.br';
@@ -433,17 +436,12 @@
         currentCompetenceId = keys[0];
         renderCompetenceSelector();
         renderApp();
-      } catch(err) {
-        console.error("Erro ao carregar dados da nuvem:", err);
-      }
+      } catch(err) { console.error("Erro ao carregar dados da nuvem:", err); }
     }
 
     async function saveCloudData() {
-      try {
-        await cloudDB.collection("users").doc(currentUser.userKey).update({ data: appData });
-      } catch(err) {
-        console.error("Erro ao sincronizar com Firebase:", err);
-      }
+      try { await cloudDB.collection("users").doc(currentUser.userKey).update({ data: appData }); } 
+      catch(err) { console.error("Erro ao sincronizar com Firebase:", err); }
     }
 
     function switchCompetence(val) { currentCompetenceId = val; renderApp(); }
@@ -464,16 +462,39 @@
     }
 
     function confirmDeleteCompetence() {
-      const pwd = prompt("EXCLUSÃO EM NUVEM: Para apagar este mês permanentemente, digite sua senha de login:");
-      if (pwd === null) return;
-      if (pwd !== currentUser.pwd) { alert("SENHA INCORRETA! Exclusão bloqueada."); return; }
-      
       const keys = Object.keys(appData.competences);
-      if (keys.length <= 1) { alert("Você precisa ter no mínimo 1 competência."); return; }
+      if (keys.length <= 1) { alert("Atenção: Você precisa ter no mínimo 1 planilha no sistema."); return; }
+      
+      const confirmou = confirm(`Tem certeza que deseja apagar a planilha "${currentCompetenceId}" e todas as suas tarefas?\nEsta ação apagará tudo da nuvem permanentemente.`);
+      if (!confirmou) return;
 
       delete appData.competences[currentCompetenceId];
       saveCloudData();
       currentCompetenceId = Object.keys(appData.competences)[0];
+      renderCompetenceSelector();
+      renderApp();
+    }
+
+    function openEditCompetenceModal() {
+      if(appData.competences[currentCompetenceId].status === 'LOCKED') return alert('Esta planilha está trancada. Destranque-a no botão de cadeado para renomear.');
+      document.getElementById('editCompetenceId').value = currentCompetenceId;
+      openModal('editCompetenceModal');
+    }
+
+    function handleEditCompetence(e) {
+      e.preventDefault();
+      const newId = document.getElementById('editCompetenceId').value.trim();
+      if(!newId || newId === currentCompetenceId) return closeModal('editCompetenceModal');
+      if(appData.competences[newId]) return alert('Já existe uma planilha com este nome!');
+
+      const compData = appData.competences[currentCompetenceId];
+      compData.id = newId;
+      appData.competences[newId] = compData;
+      delete appData.competences[currentCompetenceId];
+
+      currentCompetenceId = newId;
+      saveCloudData();
+      closeModal('editCompetenceModal');
       renderCompetenceSelector();
       renderApp();
     }
